@@ -17,7 +17,7 @@
         <template v-slot:header>
           <div>
             <h3>{{item.come_in_date}} | {{item.car_brand}} |{{'    '+item.name}}&nbsp;{{item.last_name}}
-              <v-badge right overlap v-if="1==1">
+              <v-badge right overlap color="red" v-if="1==1">
                 <template v-slot:badge>
                   <span>1</span>
                 </template>
