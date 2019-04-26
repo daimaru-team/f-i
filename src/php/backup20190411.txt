@@ -1,0 +1,1332 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using TenTec.Windows.iGridLib;
+using Excel = Microsoft.Office.Interop.Excel;
+using ClosedXML;
+using ThinkGeo.MapSuite.Layers;
+using ClosedXML.Excel;
+using System.Diagnostics;
+using IniParser;
+using IniParser.Model;
+namespace UIFinalDesign
+{
+    public partial class Form1 : Form
+    {
+        public static string[] version = homepage.ProductVersion;
+        public static int totalfield = 0;
+        public static string[,] columnCount;
+        public static BackgroundWorker backgroundWorker1;
+        static String path = homepage.filepathFm1;
+        progress progressDlg;
+        public static int loop_count = 0;
+        private static DataSet dsToExport = new DataSet();
+        private static DataTable dtCheckback = new DataTable();
+        static List<string> listForCheckBack = new List<string>();
+        static List<string> lsitFolderforCheckback = new List<string>();
+        String[,] filecheckback;
+        String parent;
+        public static int percentage;
+        DataTable dtforCheckback = new DataTable();
+        DataSet dsCheckBack = new DataSet();
+        String[,] strCheckback;
+        public Form1()
+        {
+            InitializeComponent();
+            backgroundWorker1 = new BackgroundWorker();
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
+            backgroundWorker1.DoWork += new DoWorkEventHandler(backgroundWorker1_DoWork);
+            backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker1_RunWorkerCompleted);
+            backgroundWorker1.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker1_ProgressChanged);
+            backgroundWorker1.RunWorkerAsync();
+            progressDlg = new progress();
+            progressDlg.ShowDialog();
+        }
+        static void ProgressUpdate(int total_process, string strFolder)
+        {
+            System.Threading.Thread.Sleep(10);
+            percentage = ((loop_count * 100) / total_process);
+            if (percentage >= 99)
+            {
+                percentage = 99;
+                //MessageBox.Show(strFolder + " per:" + percentage);
+            }
+            loop_count++;
+            backgroundWorker1.ReportProgress(percentage, strFolder + " total :" + loop_count + " : folder added");
+        }
+        static DataTable dtExport = new DataTable();
+        static void clearDTB()
+        {
+            if (dtExport.Columns.Count != 0)
+                dtExport.Columns.Clear();
+        }
+        static string[,] readVersion_prototype(string productname, string type/*file or folder*/)
+        {
+            string[,] resultVersion;
+            bool findIni = false;
+            string path = null;
+            var str = Directory.GetFiles(Directory.GetCurrentDirectory() + @"\product\" + productname, " *.ini");
+            var parser = new FileIniDataParser();
+            int totalkey = 0;
+            var list1 = new List<string>();
+            var list2 = new List<string>();
+            var list3 = new List<string>();
+            if (str!=null)
+            {
+                if (type == "File")
+                {
+                    path = Directory.GetCurrentDirectory()+@"\product\"+productname+@"\" + productname + @"_format_version_config.ini";
+                    IniData dataRead = parser.ReadFile(path);
+                    totalkey = dataRead.Sections.Count;
+                    for (int i = 0; i < totalkey; i++)
+                    {
+                        SectionData sd = dataRead.Sections.GetSectionData("FileVersionKey" + i);
+                        list1.Add(sd.Keys.GetKeyData("filename").Value);
+                        list2.Add(sd.Keys.GetKeyData("format").Value);
+                        list3.Add(sd.Keys.GetKeyData("filetype").Value);
+                    }
+                }
+                else if(type =="Folder")
+                {
+                    path = Directory.GetCurrentDirectory() + @"\product\"+productname+ @"\"+ productname + @"_folder_format_version_config.ini";
+                    IniData dataRead = parser.ReadFile(path);
+                    totalkey = dataRead.Sections.Count;
+                    for (int i = 0; i < totalkey; i++)
+                    {
+                        SectionData sd = dataRead.Sections.GetSectionData("FolderVersionKey" + i);
+                        list1.Add(sd.Keys.GetKeyData("FolderName").Value);
+                        list2.Add(sd.Keys.GetKeyData("format").Value);
+                    }
+                }
+            }
+            int count = 0;
+            if (type == "File")
+            {
+                resultVersion = new string[list1.Count, 3];
+                for(int i = 0; i < list1.Count; i++)
+                {
+                    resultVersion[i,0] = list1[i];
+                    resultVersion[i, 1] = list2[i];
+                    resultVersion[i, 2] = list3[i];
+                }
+            }
+            else
+            {
+                resultVersion = new string[list1.Count, 2];
+                for (int i = 0; i < list1.Count; i++)
+                {
+                    resultVersion[i, 0] = list1[i];
+                    resultVersion[i, 1] = list2[i];
+                }
+            }
+        return resultVersion;
+        }
+        public static string[] FindFolderVersion(string[,] format_arr,string filename)
+        {
+            var result = new string[4];
+            string[,] versionPTT = format_arr;
+            bool check = false;
+            bool checkCase = false;
+            var file = Path.GetFileName(filename);
+            int total_correct_digit = 0;
+            string most_digit_ordinal = null;
+            for (int i = 0; i < versionPTT.Length / 2; i++)
+            {
+                if (file.Contains(versionPTT[i, 0]))
+                {
+                    check = true;
+                    int total = file.Replace(versionPTT[i, 0], "").Length;
+                    if (versionPTT[i, 1] == "xxxx_xx")
+                        versionPTT[i, 1] = version[0] + "_" + version[1];
+                    else if (versionPTT[i, 1] == "Vxxxx-xx")
+                        versionPTT[i, 1] = "V" + version[0] + "-" + version[1];
+                    if (total_correct_digit < total)
+                    {
+                        most_digit_ordinal = versionPTT[i, 0] + versionPTT[i, 1];
+                        total_correct_digit = total;
+                    }
+                }
+                else if ((file.ToLower()).Contains(versionPTT[i, 0].ToLower()))
+                {
+                    check = true;
+                    checkCase = true;
+                    int total = (file.ToLower()).Replace(versionPTT[i, 0].ToLower(), "").Length;
+                    if (versionPTT[i, 1] == "xxxx_xx")
+                        versionPTT[i, 1] = version[0] + "_" + version[1];
+                    else if (versionPTT[i, 1] == "Vxxxx-xx")
+                        versionPTT[i, 1] = "V" + version[0] + "-" + version[1];
+                    if (total_correct_digit < total)
+                    {
+                        most_digit_ordinal = versionPTT[i, 0] + versionPTT[i, 1];
+                        total_correct_digit = total;
+                    }
+                }
+            }
+            if (check == true)
+            {
+                result[0] = true.ToString();//เช็คว่าตรวจเวอร์ชั่น
+                result[1] = file;
+                result[2] = most_digit_ordinal;
+                if (checkCase != true)
+                    result[3] = "Ver";
+                else
+                    result[3] = "CaseSen";
+                //Console.WriteLine("=================================================================================");
+                //Console.WriteLine("Folder :{0} Detect :{1}", file, file == most_digit_ordinal);
+                //Console.WriteLine("=================================================================================");
+            }
+            else
+            {
+                result[0] = false.ToString();//ไมจำเป็นต้องตรวจเวอร์ชั่น
+                result[1] = file;
+                result[2] = "";
+                result[3] = "NotV";
+            }
+            return result;
+        }
+        static string[] FindFileVersion(string[,] format_arr, string filename)
+        {
+            var result = new string[4];
+            string[,] versionPTT = format_arr;
+            bool check = false;
+            bool checkCase = false;
+            var file = Path.GetFileName(filename);
+            int total_correct_digit = 0;
+            string most_digit_ordinal = null;
+            for (int i = 0; i < versionPTT.Length / 3; i++)
+            {
+                if (file.Contains(versionPTT[i, 0]) && file.Contains(versionPTT[i, 2]))
+                {
+                    check = true;
+                    int total = file.Replace(versionPTT[i, 0], "").Length + file.Replace(versionPTT[i, 2], "").Length;
+                    if (versionPTT[i, 1] == "xxxx_xx")
+                        versionPTT[i, 1] = version[0] + "_" + version[1];
+                    else if (versionPTT[i, 1] == "Vxxxx-xx")
+                        versionPTT[i, 1] = "V" + version[0] + "-" + version[1];
+                    if (total_correct_digit < total)
+                    {
+                        most_digit_ordinal = versionPTT[i, 0] + versionPTT[i, 1] + versionPTT[i, 2];
+                        total_correct_digit = total;
+                    }
+                }
+            }
+            if (check == true)
+            {
+                result[0] = true.ToString();//เช็คว่าตรวจเวอร์ชั่น
+                result[1] = file;
+                result[2] = most_digit_ordinal;
+                if (checkCase != true)
+                    result[3] = "Ver";
+                else
+                    result[3] = "CaseSen";
+                //Console.WriteLine("=================================================================================");
+                //Console.WriteLine("Folder :{0} Detect :{1}", file, file == most_digit_ordinal);
+                //Console.WriteLine("=================================================================================");
+            }
+            else
+            {
+                result[0] = false.ToString();//ไมจำเป็นต้องตรวจเวอร์ชั่น
+                result[1] = file;
+                result[2] = "";
+                result[3] = "NotV";
+            }
+            return result;
+        }
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                iGrid1.BeginUpdate();
+                //Add column name
+                clearDTB();
+                iGrid1.Cols.Add("Prototype");
+                iGrid1.Cols.Add("Delivery Data");
+                iGrid1.Cols.Add("Remark");
+                iGrid1.Cols.Add("Folder");
+                dtExport.Columns.Add("Prototype");
+                dtExport.Columns.Add("Delivery Data");
+                dtExport.Columns.Add("Remark");
+                dtExport.Columns.Add("Folder");
+                int a = 0;
+                //create Main DataSet
+                DataSet dsPrototype = new DataSet();
+                dsPrototype = Read(homepage.productName);
+                //MessageBox.Show(dsPrototype.Tables.Count.ToString());
+                //MessageBox.Show("feen after read");
+                List<string> pttName = new List<string>();
+                //ชือไฟล์ XML หรือ prototype
+                foreach (DataTable tb in dsPrototype.Tables)
+                    pttName.Add(tb.TableName.Replace(".dbf", ""));
+                //create Data table file&folder
+                DataTable dtFile = new DataTable();
+                DataTable dtFolder = new DataTable();
+                dtFile = dsPrototype.Tables["File"];
+                dtforCheckback = dtFile;
+                dtFolder = dsPrototype.Tables["Folder"];
+                dtCheckback = dsPrototype.Tables["File"];
+                //  MessageBox.Show(dtFile.Rows.Count.ToString());
+                string[,] folderstruc = DataTableToArray(dtFolder);//convert to array2D
+                string[] folder = Directory.GetDirectories(path, "*.*.*", SearchOption.AllDirectories); //get all directory in path
+                                                                                                        //   string[] folder_correct = FolderNameDetect(folderstruc, folder); //check parent , compare name of folder path
+                                                                                                        //test new func
+                var folder_finish = FolderNameDetect(folderstruc, folder, homepage.filepathFm1);
+                var Lf = new List<string>();
+                for (int i = 0; i < folder.Length; i++)
+                {
+                    if (folder_finish[i, 2] == "P"|| folder_finish[i, 2]=="Ver")
+                        Lf.Add(folder_finish[i, 0]);
+                }
+                var folder_correct = Lf.ToArray();
+                int totalfolder = folder_correct.Length;
+                int totalfile = 0;
+                foreach (string str in folder_correct)//loop for cal total file
+                    totalfile = totalfile + Directory.GetFiles(str).Length;
+                //get path root of product
+                string rootpath = Path.GetPathRoot(homepage.filepathFm1);
+                int total_process = totalfile + totalfield + totalfolder;
+                //loop for add directory to Grid
+                //foreach (string strFolder in folder_correct)
+                for (int i = 0; i < folder.Length; i++)
+                {
+                    var strFolder = folder_finish[i, 0];
+                    var strStruc = folder_finish[i, 1];
+                    var strStatus = folder_finish[i, 2];
+                    ProgressUpdate(total_process, strFolder);
+                    a++;
+                    parent = strFolder.Replace(rootpath, "").Replace(@"\" + Path.GetFileName(strFolder), "").Replace(@"\", "");
+                    var key = strFolder.Replace(rootpath, "").Replace("\\", "");
+                    if (strFolder.Split('\\').Length - 1 == path.Split('\\').Length)
+                    {
+                        if (strStatus == "P")
+                        {
+                            AddRootNode(Path.GetFileName(strFolder), key);
+                            iGrid1.Rows[key].Cells[1].Value = strStruc;
+                            // iGrid1.Rows[key].CellStyle.TextAlign=
+                            iGrid1.Rows[key].Cells[2].BackColor = Color.PaleTurquoise;
+                            iGrid1.Rows[key].Cells[2].ForeColor = Color.Black;
+                            iGrid1.Rows[key].Cells[2].Value = "PASS";
+                            iGrid1.Rows[key].Cells[3].Value = "Folder";
+                        }
+                        else
+                        {
+                            if (strStatus == "Version Detect")
+                            {
+                                AddRootNode(Path.GetFileName(strFolder), key);
+                                iGrid1.Rows[key].Cells[1].Value = strStruc;
+                                iGrid1.Rows[key].Cells[2].Value = "Check Version".ToUpper();
+                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                            }
+                            else if (strStatus == "CaseSen")
+                            {
+                                AddRootNode(Path.GetFileName(strFolder), key);
+                                iGrid1.Rows[key].Cells[1].Value = strStruc;
+                                iGrid1.Rows[key].Cells[2].Value = "Case Sensitive".ToUpper();
+                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[2].BackColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[3].Value = "Folder";
+                                iGrid1.Rows[key].Cells[3].ForeColor = Color.Crimson;
+                            }
+                            else if (strStruc == "")//กรณีไม่มีตรงกัน
+                            {
+                                AddRootNode(" - ", key);
+                                iGrid1.Rows[key].Cells[1].Value = Path.GetFileName(strFolder);
+                                iGrid1.Rows[key].Cells[2].Value = "Unneccessary folder".ToUpper();
+                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                            }
+                            else//กรณี case sensitive
+                            {
+                                AddRootNode(Path.GetFileName(strFolder), key);
+                                iGrid1.Rows[key].Cells[1].Value = strStruc;
+                                iGrid1.Rows[key].Cells[2].Value = "Case Sensitive".ToUpper();
+                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[2].BackColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[3].Value = "Folder";
+                                iGrid1.Rows[key].Cells[3].ForeColor = Color.Crimson;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (strStatus == "P")
+                        {
+                            InsertChildNode(Path.GetFileName(strFolder), parent, key);
+                            iGrid1.Rows[key].Cells[1].Value = strStruc;
+                            iGrid1.Rows[key].Cells[2].BackColor = Color.PaleTurquoise;
+                            iGrid1.Rows[key].Cells[1].ForeColor = Color.Black;
+                            iGrid1.Rows[key].Cells[2].Value = "PASS";
+                            iGrid1.Rows[key].Cells[3].Value = "Folder";
+                        }
+                        else
+                        {
+                            if (strStruc == "")//กรณีไม่มีตรงกัน
+                            {
+                                InsertChildNode("-", parent, key);
+                                iGrid1.Rows[key].Cells[1].Value = Path.GetFileName(strFolder);
+                                iGrid1.Rows[key].Cells[2].Value = "Unneccessary folder".ToUpper();
+                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                            }
+                            else//กรณี case sensitive
+                            {
+                                InsertChildNode(Path.GetFileName(strFolder), parent, key);
+                                iGrid1.Rows[key].Cells[1].Value = strStruc;
+                                iGrid1.Rows[key].Cells[2].Value = "Case Sensitive".ToUpper();
+                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[2].BackColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Crimson;
+                                iGrid1.Rows[key].Cells[3].Value = "Folder";
+                                iGrid1.Rows[key].Cells[3].ForeColor = Color.Crimson;
+                            }
+                        }
+                    }
+                    var TxtPrototype = iGrid1.Rows[key].Cells[0].Value.ToString();
+                    var TxtDeli = iGrid1.Rows[key].Cells[1].Value.ToString();
+                    var TxtRemark = iGrid1.Rows[key].Cells[2].Value.ToString();
+                }
+                #region Old code read folder
+                //foreach (string strFolder in folder_correct)
+                //{
+                //    ProgressUpdate(total_process, strFolder);
+                //    a++;
+                //    parent = strFolder.Replace(rootpath, "").Replace(@"\" + Path.GetFileName(strFolder), "").Replace(@"\", "");
+                //    if (strFolder.Split('\\').Length - 1 == path.Split('\\').Length)
+                //    {
+                //        AddRootNode(Path.GetFileName(strFolder), strFolder.Replace(rootpath, "").Replace("\\", ""));
+                //    }
+                //    else
+                //    {
+                //        InsertChildNode(Path.GetFileName(strFolder), parent, strFolder.Replace(rootpath, "").Replace("\\", ""));
+                //    }
+                //}
+                #endregion
+                //loop for insert file_name to grid and 
+                foreach (string strFolder in folder_correct)
+                {
+                    try
+                    {
+                        if (Directory.GetFiles(strFolder).Length != 0)
+                            if (strFolder.Split('\\').Length > path.Split('\\').Length)
+                            {
+                                string[] filelist = Directory.GetFiles(strFolder);
+                                foreach (string stradd in filelist)
+                                    listForCheckBack.Add(stradd.Replace(homepage.filepathFm1 + @"\", ""));
+                                string[,] file_correct = FileNameDetect(DataTableToArray(dtFile), filelist);
+                                string parent = strFolder.Replace(rootpath, "").Replace("\\", "");
+                                int parentRow = iGrid1.Rows[parent].Index;
+                                int rowcount = iGrid1.Rows.Count - 1;
+                                strCheckback = file_correct;
+                                string checkroot = strFolder.Replace(rootpath, "");
+                                DataTable dt1 = new DataTable();
+                                if (file_correct.Length != 0)
+                                    for (int i = 0; i < file_correct.Length / 3; i++)
+                                    {
+                                        ProgressUpdate(total_process, strFolder);
+                                        if (file_correct[i, 1] == "1")
+                                        {
+                                            var key = file_correct[i, 0].Replace(rootpath, "").Replace(@"\", "");
+                                            if (parentRow != rowcount)
+                                            {
+                                                a++;
+                                                InsertChildNode(Path.GetFileName(file_correct[i, 0].Replace(path, "")), parent, key);
+                                                iGrid1.Rows[key].Cells[1].Value = file_correct[i, 2];
+                                                iGrid1.Rows[key].Cells[2].Value = "PASS";
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Aquamarine;
+                                            }
+                                            else if (parentRow == rowcount)//ไฟล์ปกติ
+                                            {
+                                                a++;
+                                                AddChildNode(file_correct[i, 2], parent, key);
+                                                iGrid1.Rows[key].Cells[1].Value = file_correct[i, 0].Replace(path, "");
+                                                iGrid1.Rows[key].Cells[2].Value = "PASS";
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Aquamarine;
+                                            }
+                                            var TxtPrototype = iGrid1.Rows[key].Cells[0].Value.ToString();
+                                            var TxtDeli = iGrid1.Rows[key].Cells[1].Value.ToString();
+                                            var TxtRemark = iGrid1.Rows[key].Cells[2].Value.ToString();
+                                        }
+                                        else if (file_correct[i, 1] == "0")//ไฟล์ไม่จำเป็น
+                                        {
+                                            var key = file_correct[i, 0].Replace(@"\", "");
+                                            if (parentRow != rowcount)
+                                            {
+                                                a++;
+                                                InsertChildNode(" - ", parent, key);
+                                                //int colRows = iGrid1.Rows[file_correct[i, 0].Replace(@"\", "")].Index;
+                                                iGrid1.Rows[key].Cells[1].Value = Path.GetFileName(file_correct[i, 0].Replace(path, ""));
+                                                iGrid1.Rows[key].Cells[2].Value = "Unneccessary file".ToUpper();
+                                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                            }
+                                            else if (parentRow == rowcount)
+                                            {
+                                                a++;
+                                                AddChildNode(" - ", parent, key);
+                                                int colRows = iGrid1.Rows[file_correct[i, 0].Replace(@"\", "")].Index;
+                                                iGrid1.Rows[key].Cells[1].Value = Path.GetFileName(file_correct[i, 0].Replace(path, ""));
+                                                iGrid1.Rows[key].Cells[2].Value = "Unneccessary file".ToUpper();
+                                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                            }
+                                            var TxtPrototype = iGrid1.Rows[key].Cells[0].Value.ToString();
+                                            var TxtDeli = iGrid1.Rows[key].Cells[1].Value.ToString();
+                                            var TxtRemark = iGrid1.Rows[key].Cells[2].Value.ToString();
+                                        }
+                                        else if (file_correct[i, 1] == "2")
+                                        {
+                                            var key = file_correct[i, 0].Replace(@"\", "");
+                                            if (parentRow != rowcount)
+                                            {
+                                                a++;
+                                                InsertChildNode(Path.GetFileName(file_correct[i, 0].Replace(path, "")), parent, key);
+                                                iGrid1.Rows[key].Cells[1].Value = file_correct[i, 2];
+                                                iGrid1.Rows[key].Cells[2].Value = "Case Sensitive".ToUpper();
+                                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Crimson;
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Crimson;
+                                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Crimson;
+                                            }
+                                            else if (parentRow == rowcount)
+                                            {
+                                                a++;
+                                                AddChildNode(file_correct[i, 2], parent, key);
+                                                iGrid1.Rows[key].Cells[1].Value = Path.GetFileName(file_correct[i, 0].Replace(path, ""));
+                                                iGrid1.Rows[key].Cells[2].Value = "Case Sensitive".ToUpper();
+                                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                            }
+                                        }
+                                        else if (file_correct[i, 1] == "3")//version detect
+                                        {
+                                            var key = file_correct[i, 0].Replace(@"\", "");
+                                            if (parentRow != rowcount)
+                                            {
+                                                a++;
+                                                InsertChildNode(Path.GetFileName(file_correct[i, 0].Replace(path, "")), parent, key);
+                                                iGrid1.Rows[key].Cells[1].Value = file_correct[i, 2];
+                                                iGrid1.Rows[key].Cells[2].Value = "CHECK VERSION".ToUpper();
+                                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Crimson;
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Crimson;
+                                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Crimson;
+                                            }
+                                            else if (parentRow == rowcount)
+                                            {
+                                                a++;
+                                                AddChildNode(file_correct[i, 2], parent, key);
+                                                iGrid1.Rows[key].Cells[1].Value = Path.GetFileName(file_correct[i, 0].Replace(path, ""));
+                                                iGrid1.Rows[key].Cells[2].Value = "CHECK VERSION".ToUpper();
+                                                iGrid1.Rows[key].Cells[1].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[0].ForeColor = Color.Red;
+                                                iGrid1.Rows[key].Cells[2].BackColor = Color.Red;
+                                            }
+                                        }
+                                    }
+                            }
+                    }
+                    catch (Exception exq)
+                    {
+                        MessageBox.Show(exq.StackTrace);
+                    }
+                }
+                //foreach (DataTable dtAdd in dsToExport.Tables)
+                //{
+                //    comboBox1.Items.Add(Path.GetFileName(dtAdd.TableName));
+                //}
+                string keyExcep = null;
+                string nameExcep = null;
+                iGrid1.Cols[0].Width = 300;
+                filecheckback = checkback(dtCheckback);
+                if (filecheckback.Length != 0)
+                {
+                    try
+                    {
+                        AddRootNode("Unknown file", "unknown");
+                        iGrid1.Rows["unknown"].Cells[1].Value = " - ";
+                        iGrid1.Rows["unknown"].Cells[2].Value = " - ";
+                        for (int i = 0; i < filecheckback.Length / 2; i++)
+                        {
+                            System.Threading.Thread.Sleep(1 / 100);
+                            backgroundWorker1.ReportProgress(98, "checkback total:" + i.ToString() + "/" + filecheckback.Length / 2);
+                            string parentCheckback = filecheckback[i, 1].Replace(@"\" + filecheckback[i, 0], "").Replace(@"\", "").Replace(".", "");
+                            keyExcep = parentCheckback;
+                            bool checkbackBool = checkFolderForCheckback(parentCheckback);
+                            nameExcep = filecheckback[i, 1];
+                            string keyCheckback = filecheckback[i, 1].Replace(@"\", "")+"_checkback";
+                            if (checkbackBool == true)
+                            {
+                                InsertChildNode(filecheckback[i, 0], parentCheckback, keyCheckback);
+                                //iGrid1.Rows[keyCheckback].Cells[1].Value = " - ";
+                                //iGrid1.Rows[keyCheckback].Cells[2].Value = "Missing file";
+                                //iGrid1.Rows[keyCheckback].Cells[1].ForeColor = Color.Red;
+                                //iGrid1.Rows[keyCheckback].Cells[2].BackColor = Color.Red;
+                                //iGrid1.Rows[keyCheckback].Cells[0].ForeColor = Color.Red;
+                                //Console.WriteLine("seee name : {0} parent :{1} key : {2}", filecheckback[i, 0], parentCheckback, keyCheckback);
+                            }
+                            else
+                            {
+                                DateTime Dtime = DateTime.Now.Date;
+                                int parentrow = iGrid1.Rows["unknown"].Index;
+                                if (parentrow == iGrid1.Rows.Count - 1)
+                                {
+                                    AddChildNode(filecheckback[i, 1], "unknown", keyCheckback);
+                                }
+                                else
+                                {
+                                    AddChildNode(filecheckback[i, 1], "unknown", keyCheckback);
+                                }
+                            }
+                            //     //Console.WriteLine("added");
+                            int rowCheckback = iGrid1.Rows[keyCheckback].Index;
+                            iGrid1.Rows[keyCheckback].Cells[1].Value = " - ";
+                            iGrid1.Rows[keyCheckback].Cells[2].Value = "Missing file";
+                            iGrid1.Rows[keyCheckback].Cells[1].ForeColor = Color.Red;
+                            iGrid1.Rows[keyCheckback].Cells[2].BackColor = Color.Red;
+                            iGrid1.Rows[keyCheckback].Cells[0].ForeColor = Color.Red;
+                            var TxtPrototype = iGrid1.Rows[keyCheckback].Cells[0].Value.ToString();
+                            var TxtDeli = iGrid1.Rows[keyCheckback].Cells[1].Value.ToString();
+                            var TxtRemark = iGrid1.Rows[keyCheckback].Cells[2].Value.ToString();
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+                        MessageBox.Show(exp.Message.ToString() + " key :" + keyExcep);
+                        //Console.WriteLine(keyExcep + " len :" + keyExcep.Length + " name :" + nameExcep);
+                    }
+                }
+                #region checkback Prototype
+                #endregion
+                for (int i = 0; i < (iGrid1.Rows.Count); i++)
+                {
+                    var TxtFolder = " ";
+                    var TxtPrototype = iGrid1.Rows[i].Cells[0].Value.ToString();
+                    var TxtDeli = iGrid1.Rows[i].Cells[1].Value.ToString();
+                    var TxtRemark = iGrid1.Rows[i].Cells[2].Value.ToString();
+                    if (iGrid1.Rows[i].Cells[3].Value != null)
+                    {
+                        TxtFolder = iGrid1.Rows[i].Cells[3].Value.ToString();
+                    }
+                    dtExport.Rows.Add(TxtPrototype, TxtDeli, TxtRemark,TxtFolder);
+                }
+                Console.WriteLine("total : {0}",dtExport.Rows.Count);
+                dtExport.TableName = "export";
+                System.Threading.Thread.Sleep(10);
+                backgroundWorker1.ReportProgress(100, "finishing...");
+                iGrid1.EndUpdate();
+            }
+            catch (Exception EX)
+            {
+                MessageBox.Show(EX.StackTrace, "main try error");
+            }
+        }
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressDlg.ProgressValue = e.ProgressPercentage;
+            progressDlg.Message = (e.ProgressPercentage.ToString() + "%");
+            progressDlg.Status = e.UserState as string;
+            progressDlg.ProgressValue = e.ProgressPercentage;
+        }
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressDlg.Hide();
+            int foldercut = Directory.GetDirectories(path, "*.*", SearchOption.AllDirectories).Length;
+            this.Show();
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LbStatus.Text = homepage.filepathFm1;
+        }
+        private void exportToMicrosoftExcelxlsxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fileName = null;
+            string savePath = null;
+            bool sCancel = false;
+            try
+            {
+                sfd.Filter = ".xlsx Files (*.xlsx)|*.xlsx";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    fileName = Path.GetFileName(sfd.FileName);
+                    savePath = sfd.FileName.Replace(@"\" + fileName, "");
+                    path = sfd.FileName;
+                    sCancel = true;
+                }
+                else
+                {
+                }
+            }
+            catch (Exception ezx)
+            {
+                MessageBox.Show("error :"+ezx.StackTrace.ToString());
+            }
+            var wb = new XLWorkbook();
+            if (sCancel == true)
+            {
+                var dtAdd = dtExport;
+                var tbName = Path.GetFileName(dtAdd.TableName);
+                ////Console.WriteLine("Ad :" + tbName);
+                wb.Worksheets.Add(dtAdd, tbName);
+                wb.SaveAs(@path);
+                Process.Start(path);
+            }
+            else
+                MessageBox.Show("Data Not found, Please try again. ");
+        }
+        public static DataSet Read(string ProductName)
+        {
+            DataSet ds = new DataSet();
+            //string xmlFile = @"C:\Users\Feenz\AppData\Local\UIFinalDesign\UIFinalDesign\IPC_For_TEST";
+            string xmlFile = null;
+            //string outputDir = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.LocalUserAppDataPath);
+            string outputDir = @"..\ForFirstRun\product\";
+            string[] DirectoryName = Directory.GetDirectories(outputDir, "*", SearchOption.AllDirectories);
+            foreach (string str in DirectoryName)
+            {
+                bool check = false;
+                string name = Path.GetFileName(str);
+                if (name == ProductName)
+                {
+                    check = true;
+                    xmlFile = str;
+                }
+                if (check == true) break;
+            }
+            if (xmlFile != null)
+            {
+                string[] FilePath = Directory.GetFiles(xmlFile, "*.xml", SearchOption.AllDirectories);
+                int z = 0;
+                foreach (string fp in FilePath)
+                {
+                    ds.ReadXml(fp);
+                    z++;
+                }
+            }
+            else
+            {
+            }
+            return ds;
+        }
+        public static bool Find(string ProductName)
+        {
+            bool CheckName = false;
+            //string outputDir = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.LocalUserAppDataPath);
+            string outputDir = @"..\ForFirstRun\product\";
+            string[] DirectoryName = Directory.GetDirectories(outputDir, "*", SearchOption.AllDirectories);
+            foreach (string str in DirectoryName)
+            {
+                string name = Path.GetFileName(str);
+                if (name == ProductName)
+                {
+                    CheckName = true;
+                }
+                if (CheckName == true) break;
+            }
+            return CheckName;
+        }
+        #region detectAll
+        public static string[] FolderNameDetect(string[,] structure, string[] readfolder)
+        {
+            List<string> correct = new List<string>();
+            for (int i = 0; i < readfolder.Length; i++)
+            {
+                string parent = Path.GetFileName(readfolder[i].Replace(@"\" + Path.GetFileName(readfolder[i]), ""));
+                for (int j = 0; j < structure.Length / 4; j++)
+                {
+                    if (structure[j, 2] == Path.GetFileName(readfolder[i]))
+                    {
+                        string CutPath = readfolder[i].Replace(path, "");
+                        //check ordinal of folderName
+                        if (structure[j, 3] == (CutPath.Split('\\').Length - 1).ToString())
+                        {
+                            if (structure[j, 1].Replace(@"\", "") == parent)
+                            {
+                                correct.Add(readfolder[i]);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            //edit total
+            string[] result = correct.ToArray();
+            return result;
+        }
+        public static string[,] FolderNameDetect(string[,] structure, string[] readfolder, string root)
+        {
+            List<string> correct = new List<string>();
+            var result = new string[readfolder.Length, 3];
+            string[,] FolderVersion = readVersion_prototype("IPC", "Folder");// get foldername ที่ต้องตรวจ version
+            for (int i = 0; i < readfolder.Length; i++)
+            {
+                string[] verStr = FindFolderVersion(FolderVersion, Path.GetFileName(readfolder[i]));              
+                string parent = Path.GetFileName(readfolder[i].Replace(@"\" + Path.GetFileName(readfolder[i]), ""));
+                if (Convert.ToBoolean(verStr[0]) == false) //false = ไม่ต้องตรวจ version จึงใช้ loop ปกติ
+                {
+                for (int j = 0; j < structure.Length / 4; j++)
+                {                  
+                    //จุดเริ่มตรวจชื่อไฟล์
+                    if (structure[j, 2] == Path.GetFileName(readfolder[i]))
+                    {                       
+                        string CutPath = readfolder[i].Replace(path, "");
+                        //check ordinal of folderName
+                        if (structure[j, 3] == (CutPath.Split('\\').Length - 1).ToString() && structure[j, 3] != "1")
+                        {
+                            if (structure[j, 1].Replace(@"\", "").Contains(parent))
+                            {
+                                correct.Add(readfolder[i]);
+                                result[i, 0] = readfolder[i];
+                                result[i, 1] = structure[j, 2];
+                                result[i, 2] = "P";
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            correct.Add(readfolder[i]);
+                            result[i, 0] = readfolder[i];
+                            result[i, 1] = structure[j, 2];
+                            result[i, 2] = "P";
+                        }
+                    }
+                    else if (structure[j, 2].ToLower() == Path.GetFileName(readfolder[i]).ToLower())
+                    {
+                        result[i, 0] = readfolder[i];
+                        result[i, 1] = structure[j, 2];
+                        result[i, 2] = "Detected(Case Sensitive)";
+                    }
+                    //---------------------------------------
+                }
+                    if (result[i, 0] == null)
+                    {
+                        result[i, 0] = readfolder[i];
+                        result[i, 1] = "";
+                        result[i, 2] = "Detected(Not found)";
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(verStr[1] + " :::: " + verStr[2]);
+                    if (verStr[1] == verStr[2])
+                    {
+                        correct.Add(readfolder[i]);
+                        result[i, 0] = readfolder[i];
+                        result[i, 1] = verStr[2];
+                        result[i, 2] = "P";
+                    }
+                    else if (verStr[1].ToLower() == verStr[2].ToLower())
+                    {
+                        //correct.Add(readfolder[i]);
+                        result[i, 0] = readfolder[i];
+                        result[i, 1] = verStr[2];
+                        result[i, 2] = "CaseSen";
+                    }
+                    else
+                    {
+                        result[i, 0] = readfolder[i];
+                        result[i, 1] = verStr[2];
+                        result[i, 2] = "Version Detect";
+                    }
+                }
+                    //else if (Convert.ToBoolean(verStr[0]) == true)
+                    //{
+                    //    if (verStr[1]== verStr[2])
+                    //    {
+                    //        correct.Add(readfolder[i]);
+                    //        result[i, 0] = readfolder[i];
+                    //        result[i, 1] = verStr[2];
+                    //        result[i, 2] = "P";
+                //    }
+                //    else if (verStr[1].ToLower() == verStr[2].ToLower())
+                //    {
+                //        //correct.Add(readfolder[i]);
+                //        result[i, 0] = readfolder[i];
+                //        result[i, 1] = verStr[2];
+                //        result[i, 2] = "CaseSen";
+                //    }
+                //    else
+                //    {
+                //        result[i, 0] = readfolder[i];
+                //        result[i, 1] = verStr[2];
+                //        result[i, 2] = "Version Detect";
+                //    }
+                //}
+                if (result[i, 0] == null)
+                {
+                    result[i, 0] = readfolder[i];
+                    result[i, 1] = "";
+                    result[i, 2] = "Detected(Not found)";
+                }
+                //Console.WriteLine("test foldername detect  || 1: {0} || 2:{1} || 3:{2}", result[i, 0], result[i, 1], result[i, 2]);
+            }
+            //edit total
+            //string[] result = correct.ToArray();
+            return result;
+        }
+
+        public static string[,] FileNameDetect(string[,] Filestructure, string[] readfile)
+        {
+            List<string> correct = new List<string>();
+            List<string> check = new List<string>();
+            List<string> strPrototype = new List<string>();
+            for (int i = 0; i < readfile.Length; i++)
+            {
+                string parent = Path.GetFileName(readfile[i].Replace(@"\" + Path.GetFileName(readfile[i]), ""));
+                string[,] FileVersion = readVersion_prototype("IPC", "File");
+                string[] verStr = FindFileVersion(FileVersion, Path.GetFileName(readfile[i]));
+                bool TFcheck = false;
+                if (Convert.ToBoolean(verStr[0]) == false) //false = ไม่ต้องตรวจ version จึงใช้ loop ปกติ
+                {
+                    for (int j = 0; j < Filestructure.Length / 5; j++)
+                    {
+                        // ////Console.WriteLine(j + " equal " + ((Filestructure.Length / 5) - 1).ToString());                
+                        if (Filestructure[j, 2] == Path.GetFileName(readfile[i]))
+                        {
+                            //  ////Console.WriteLine(Filestructure[j, 2] + " vs " + Path.GetFileName(readfile[i]));
+                            string CutPath = readfile[i].Replace(path, "");
+                            //check ordinal of folderName
+                            if (Filestructure[j, 1].Replace(@"\", "") == parent)
+                            {
+                                correct.Add(readfile[i]);
+                                strPrototype.Add(Filestructure[j, 2]);
+                                check.Add("1");
+                                TFcheck = true;
+                                break;
+                            }
+                        }
+                        else if (Filestructure[j, 2].ToLower() == Path.GetFileName(readfile[i]).ToLower())
+                        {
+                            correct.Add(readfile[i]);
+                            strPrototype.Add(Filestructure[j, 2]);
+                            check.Add("2");
+                            TFcheck = true;
+                            break;
+                        }
+                        else if (j == (Filestructure.Length / 5) - 1 && TFcheck == false)
+                        {
+                            correct.Add(readfile[i]);
+                            strPrototype.Add(Filestructure[j, 2]);
+                            check.Add("0");
+                            ////Console.WriteLine(readfile.Length + " count feen  " + readfile[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    //MessageBox.Show(verStr[1] + " :::: " + verStr[2]);
+                    if (verStr[1] == verStr[2])
+                    {
+                        correct.Add(verStr[1]);
+                        strPrototype.Add(verStr[2]);
+                        check.Add("1");
+                        TFcheck = true;
+                    }
+                    else if (verStr[1].ToLower() == verStr[2].ToLower())
+                    {
+                        correct.Add(verStr[1]);
+                        strPrototype.Add(verStr[2]);
+                        check.Add("2");
+                        TFcheck = true;
+                    }
+                    else
+                    {
+                        correct.Add(verStr[1]);
+                        strPrototype.Add(verStr[2]);
+                        check.Add("3");
+                    }
+                }
+            }
+            //List "check " ถ้า data==0 แสดงว่า  not found แต่ถ้าdata== 1 แสดงว่า ปกติ
+            //edit total
+            string[] filename = correct.ToArray();//file in products
+            string[] checkArr = check.ToArray();//check number 1:correct  2:caseSensitive 3:notfound
+            var strPro = strPrototype.ToArray();//filename from prototype
+            string[,] result = new string[filename.Length, 3];
+            for (int i = 0; i < filename.Length; i++)
+            {
+                result[i, 0] = filename[i];
+                result[i, 1] = checkArr[i];
+                result[i, 2] = strPro[i];
+            }
+            return result;
+        }
+        #endregion
+        #region Database design ThinkGeo
+
+        public static string[,] getStructureDBFGeo(string dir)
+        {
+            GeoDbf dbf = new GeoDbf(@dir);
+            dbf.Open();
+            // เพิ่ม array size เป็น [*,5] อย่าลืมแก้ใน forloop ของหน้าอื่นที่ใช้คอมโพเนนต์
+            string[,] DesignTa = new string[dbf.ColumnCount, 5];
+            for (int i = 1; i <= dbf.ColumnCount; i++)
+            {
+                int or = i - 1;
+                DesignTa[or, 0] = dbf.GetColumnName(i).ToString();//GetColumnName
+                DesignTa[or, 1] = dbf.GetColumn(i).ColumnType.ToString();//GetType
+                DesignTa[or, 2] = dbf.GetColumn(i).MaxLength.ToString();//GetWidth
+                int plus = 0;
+                DesignTa[or, 3] = plus.ToString();//GetPrecision
+                if (dbf.GetColumn(i).DecimalLength != 0)
+                {
+                    int pri = (dbf.GetColumn(i).MaxLength - 1) - (dbf.GetColumn(i).DecimalLength + 1);///setscale
+                    plus = dbf.GetColumn(i).DecimalLength;//set precision    
+                    DesignTa[or, 3] = pri.ToString();//scale
+                    DesignTa[or, 4] = plus.ToString();//GetPrecision
+                    DesignTa[or, 2] = (Int32.Parse(DesignTa[or, 3]) + Int32.Parse(DesignTa[or, 4])).ToString();
+                }
+                else
+                {
+                    DesignTa[or, 4] = plus.ToString();//GetPrecision
+                    DesignTa[or, 4] = "0";
+                }
+            }
+            dbf.Close();
+            return DesignTa;
+        }
+
+        public static string TotalRecord(string Path)
+        {
+            string total = "-";
+            if (Path.Contains(".dbf"))
+            {
+                GeoDbf dbf = new GeoDbf(Path);
+                dbf.Open();
+                total = dbf.RecordCount.ToString();
+                dbf.Close();
+                for (int i = total.Length; i >= 1; i = i - 3)
+                {
+                    if (i != total.Length)
+                    {
+                        total = total.Insert(i, ",");
+                    }
+                }
+            }
+            return total;
+        }
+
+        #endregion
+
+        #region DataTable
+        private static DataTable FileAdd(DataTable file, string rootName, string ordinal)
+        {
+            string[,] fileArr = DataTableToArray(file);
+            DataTable dt = new DataTable();
+            foreach (DataColumn dc in file.Columns)
+                dt.Columns.Add(dc.ColumnName);
+            for (int i = 0; i < file.Rows.Count; i++)
+            {
+                Console.WriteLine(rootName + " :::::: " + ordinal);
+                if (fileArr[i, 3] == ordinal && fileArr[i, 1].Replace(@"\", "") == rootName)
+                {
+                    Console.WriteLine("true");
+                    dt.Rows.Add(file.Rows[i].ItemArray);
+                }
+            }
+            return dt;
+        }
+
+        public static string[,] DataTableToArray(DataTable data)
+        {
+            var ret = Array.CreateInstance(typeof(string), data.Rows.Count, data.Columns.Count) as string[,];
+            for (var i = 0; i < data.Rows.Count; i++)
+                for (var j = 0; j < data.Columns.Count; j++)
+                    ret[i, j] = data.Rows[i][j].ToString();
+            return ret;
+        }
+
+        #endregion
+
+        #region 10tec iGrid libary method class(insert)
+
+        private void InsertChildNode(string text, string parentRow)
+        {
+            InsertChildNode(text, parentRow, null);
+        }
+
+        private void InsertChildNode(string text, string parentRow, string key)
+        {
+            iGRow myParentRow;
+            myParentRow = iGrid1.Rows[parentRow];
+            myParentRow.TreeButton = iGTreeButtonState.Visible;
+            iGRow myRow;
+            int iRow = myParentRow.Index;
+            while (true)
+            {
+                iRow++;
+                if (iRow > iGrid1.Rows.Count)
+                {
+                    myRow = iGrid1.Rows.Add();
+                    break;
+                }
+                if (iGrid1.Rows[iRow].Level <= myParentRow.Level)
+                {
+                    myRow = iGrid1.Rows.Insert(iRow);
+                    break;
+                }
+            }
+            myRow.Key = key;
+            myRow.TreeButton = iGTreeButtonState.Hidden;
+            myRow.Level = myParentRow.Level + 1;
+            myRow.VisibleUnderGrouping = myParentRow.VisibleUnderGrouping && myParentRow.Expanded;
+            myRow.Cells[0].Value = text;
+        }
+
+        #endregion
+
+        #region 10tec iGrid libary method class to add nodes to the end of the grid
+
+        private void AddRootNode(string text)
+        {
+            AddRootNode(text, null);
+        }
+
+        private void AddRootNode(string text, string key)
+        {
+            iGRow myRow;
+            myRow = iGrid1.Rows.Add();
+            myRow.Key = key;
+            myRow.TreeButton = iGTreeButtonState.Hidden;
+            myRow.Cells[0].Value = text;
+        }
+
+
+        private void AddChildNode(string text, string parentRow)
+        {
+            AddChildNode(text, parentRow, null);
+        }
+
+        private void AddChildNode(string text, string parentRow, string key)
+        {
+            iGRow myParentRow;
+            myParentRow = iGrid1.Rows[parentRow];
+            myParentRow.TreeButton = iGTreeButtonState.Visible;
+            if (parentRow.Contains(".dbf"))
+                myParentRow.Expanded = false;
+            iGRow myRow;
+            myRow = iGrid1.Rows.Add();
+            myRow.Key = key;
+            myRow.TreeButton = iGTreeButtonState.Hidden;
+            myRow.Level = myParentRow.Level + 1;
+            myRow.VisibleUnderGrouping = myParentRow.VisibleUnderGrouping && myParentRow.Expanded;
+            myRow.Cells[0].Value = text;
+        }
+        #endregion
+
+        #region Export to Microsoft Excel
+
+        private string GetExcelAddr(int rowNo, int colNo)
+        {
+            return (char)(65 + colNo) + (rowNo + 1).ToString();
+        }
+
+        #endregion
+
+        #region prototype class
+
+        static string[,] FindPrototype(string fileapath, string[] PrototypeName)
+        {
+            var MatchingName = new string[1, 2];
+            var CutFileName = Path.GetFileName(fileapath).Replace(".dbf", "");
+            var result = Matching(CutFileName, PrototypeName);
+            if (result != null)
+            {
+                MatchingName[0, 0] = fileapath;
+                MatchingName[0, 1] = result;
+                //Console.WriteLine("  filename: " + fileapath + " prototype: " + MatchingName[0, 1]);
+            }
+            else
+            {
+                var csstResult = MatchingCaseSensitive(CutFileName, PrototypeName);
+                //Console.WriteLine("  Case Sensitive: " + fileapath + " prototype: " + MatchingName[0, 1]);
+                if (csstResult != null)
+                {
+                    MatchingName[0, 0] = fileapath;
+                    MatchingName[0, 1] = csstResult;
+                }
+                else if (csstResult == null)
+                {
+                    MatchingName[0, 0] = fileapath;
+                    MatchingName[0, 1] = result;
+                }
+            }
+            return MatchingName;
+        }
+
+        public static string Matching(string filenameMat, string[] prototypeName)
+        {
+            var list = new List<string>();
+            string prototypeNameCal = null;
+            bool checkMatch = false;
+            for (int i = 0; i < prototypeName.Length; i++)
+            {
+                if (prototypeName[i] == filenameMat)
+                {
+                    prototypeNameCal = prototypeName[i];
+                    //Console.WriteLine("ตรงตัวเปะ :" + filenameMat + " proto :" + prototypeName[i]);
+                    checkMatch = true;
+                    list.Clear();
+                    break;
+                }
+                else
+                {
+                    if (filenameMat.Contains(prototypeName[i]) == true)
+                        list.Add(prototypeName[i]);
+                }
+            }
+            if (checkMatch == false)
+            {
+                int most = 0;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Length > most)
+                    {
+                        most = list[i].Length;
+                        prototypeNameCal = list[i];
+                    }
+                    else if (list[i].Length == most)
+                    {
+                        string sub = filenameMat.Substring(0, most);
+                        if (sub == prototypeNameCal)
+                        {
+                        }
+                        else if (sub == list[i])
+                        {
+                            prototypeNameCal = list[i];
+                        }
+                    }
+                }
+            }
+            list.Clear();
+            return prototypeNameCal;
+        }
+
+        public static string MatchingCaseSensitive(string filenameMat, string[] prototypeName)
+        {
+            var list = new List<string>();
+            string prototypeNameCal = null;
+            bool checkMatch = false;
+            for (int i = 0; i < prototypeName.Length; i++)
+            {
+                if (prototypeName[i].ToLower() == filenameMat.ToLower())
+                {
+                    prototypeNameCal = prototypeName[i];
+                    //Console.WriteLine("Case sensitive" + filenameMat + " proto :" + prototypeName[i]);
+                    checkMatch = true;
+                    list.Clear();
+                    break;
+                }
+                else
+                {
+                    if (filenameMat.ToLower().Contains(prototypeName[i].ToLower()) == true)
+                        list.Add(prototypeName[i]);
+                }
+            }
+            if (checkMatch == false)
+            {
+                int most = 0;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Length > most)
+                    {
+                        most = list[i].Length;
+                        prototypeNameCal = list[i];
+                    }
+                    else if (list[i].Length == most)
+                    {
+                        string sub = filenameMat.Substring(0, most);
+                        if (sub == prototypeNameCal)
+                        {
+                        }
+                        else if (sub == list[i])
+                        {
+                            prototypeNameCal = list[i];
+                        }
+                    }
+                }
+            }
+            list.Clear();
+            return prototypeNameCal;
+        }
+        #endregion
+
+        #region check back
+        public static bool checkFolderForCheckback(string foldername)
+        {
+            bool check = false;
+            string[] productFolder = Directory.GetDirectories(homepage.filepathFm1, "*.*", SearchOption.AllDirectories);
+            for (int i = 0; i < productFolder.Length; i++)
+            {
+                productFolder[i] = productFolder[i].Replace(Path.GetPathRoot(productFolder[i]), "").Replace(@"\", "");
+            }
+            foreach (string strName in productFolder)
+                if (strName == foldername)
+                {
+                    check = true;
+                    break;
+                }
+            return check;
+        }
+
+        static string[,] checkback(DataTable dtCheck)
+        {
+            string[,] fileNames = DataTableToArray(dtCheck);
+            List<string> list = new List<string>();
+            List<string> list_remove = new List<string>();
+            string[] FileInProduct = listForCheckBack.ToArray();
+            for (int i = 0; i < fileNames.Length / 5; i++)
+                list.Add(/*Path.GetFileName(homepage.filepathFm1) + @"\" +*/ fileNames[i, 0]);
+            list_remove = list.ToList<string>();
+            for (int i = 0; i < FileInProduct.Length; i++)
+            {
+                string productFileName = FileInProduct[i];
+                for (int j = 0; j < list.Count; j++)
+                {
+                    var Listcut = list[j].Replace(list[j].Substring(0, list[j].IndexOf(@"\") + 1), "");   //string cut first node (productname) substring เพื่อตัดnodeแรกออก โดยใช้การนับเครื่องหมาย "\" ว่าอยู่ตำแหน่งไหนโดยการใช้ IndexOF 
+                    Console.WriteLine("list:{0} productname:{1}  check:{2} test replace:{3}", Listcut, productFileName, Listcut == productFileName, list[j].Substring(0, list[j].IndexOf(@"\") + 1));
+                    if (Listcut == productFileName)
+                    {
+                        //list[j] ใช้เพื่อเช็คใน if เท่านั้น
+                        list.Remove(list[j]);
+                        break;
+                    }
+                    else if (Listcut.ToLower() == productFileName.ToLower())
+                    {
+                        list.Remove(list[j]);
+                        break;
+                    }
+                }
+            }
+            string[,] incorrectfileback = new string[list.Count, 2];
+            for (int i = 0; i < list.Count; i++)
+            {
+                incorrectfileback[i, 0] = Path.GetFileName(list[i]);
+                incorrectfileback[i, 1] = list[i];
+            }
+            return incorrectfileback;
+        }
+        #endregion
+
+        private void toolStripHomepage_Click(object sender, EventArgs e)
+        {
+            homepage h = new homepage();
+            h.Show();
+            this.Close();
+        }
+    }
+}
