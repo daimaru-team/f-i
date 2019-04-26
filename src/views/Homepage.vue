@@ -1,6 +1,6 @@
 <template>
 <div>
-
+<v-app>
   <v-toolbar class="v-toolbar v-toolbar--clipped v-toolbar--fixed theme--dark red elevation-6" height="50" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
     <v-layout>
             <v-flex v-if="window.width > 1300" headline xs12 sm2 md2 ml-3></v-flex>
@@ -113,6 +113,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+   </v-app>
   </div>
 </template>
 
