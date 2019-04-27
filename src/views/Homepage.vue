@@ -228,32 +228,32 @@ export default {
       },
       {
         key: 'Cars',
-        title: 'Cars in stock',
+        title: 'Work in process',
         // icon: 'label',
         link: '/Cars',
         name: 'Cars',
       },
-      {
-        key: 'Celender',
-        title: 'Celenders work',
-        // icon: 'label',
-        link: '/Celenders',
-        name: 'Celenders',
-      },
-      {
-        key: 'History',
-        title: 'History',
-        // icon: 'label',
-        link: '/History',
-        name: 'History',
-      },
+      // {
+      //   // key: 'Celender',
+      //   // title: 'Celenders work',
+      //   // // icon: 'label',
+      //   // link: '/Celenders',
+      //   // name: 'Celenders',
+      // },
+      // {
+      //   // key: 'History',
+      //   // title: 'History',
+      //   // // icon: 'label',
+      //   // link: '/History',
+      //   // name: 'History',
+      // },
       ],
     }
   },
 
   mounted() {
     const a = this.Store.IDforSELECT;
-    alert(a)
+    // alert(a)
     const api = 'https://testtingfuck.000webhostapp.com/data_user_select.php';
     const user_data_params = new URLSearchParams();
     user_data_params.append('Table', 'Employee')

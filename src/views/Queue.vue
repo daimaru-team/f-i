@@ -2,14 +2,7 @@
 <template>
 <v-card width="100%">
     <v-alert fixed :value="alert" type="success" transition="scale-transition" dismissible>Insert queue successfully!</v-alert>
-    <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-            <v-btn fab dark fixed right bottom color="pink" v-on="on" class="elevation-10" style="margin-bottom:10px;" @click="dialog_Insert = true,alert = false">
-                <v-icon dark>add</v-icon>
-            </v-btn>
-        </template>
-        <span>Insert Queue</span>
-    </v-tooltip>
+
 
     <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
         <v-expansion-panel-content v-for="item in display_booking">
@@ -38,6 +31,7 @@
                                 <v-flex mt-2>
                                     <h3>ข้อมูลเจ้าของรถ</h3><br/>
                                     <v-flex ml-3>
+                                        <p><b> เลขที่บัตรประชาชน : </b> {{item.name}}</p>
                                         <p><b> ชื่อ-สกุล :</b> {{item.name}}</p>
                                         <p><b> line ID :</b> {{item.lineID}}</p>
                                         <p><b> เบอร์โทรศัพท์ :</b> {{item.tel}}</p>
@@ -71,33 +65,48 @@
                         </v-flex>
 
                         <v-flex md1 xl1 sm1 lg1 xs1>
+                            
                             <v-layout justify-end wrap>
+                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,alert = false">
+                                        <v-btn large fab dark color="light-blue darken-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
+                                            <v-icon dark>keyboard_tab</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>รับรถเข้าอู่</span>
+                                </v-tooltip>
+                                </v-flex>
+                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+                                <v-tooltip left>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn fab small dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,alert = false">
                                             <v-icon dark>edit</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>แก้ไขวันรับรถ</span>
                                 </v-tooltip>
+                                </v-flex>
+                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
+                                        <v-btn  small fab dark right color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
                                             <v-icon dark>check_circle</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>ยืนยันรับงาน</span>
                                 </v-tooltip>
-
+                                </v-flex>
+                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                        <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
                                             <v-icon dark>delete_forever</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>ลบคิว</span>
                                 </v-tooltip>
-
+                                </v-flex>
                             </v-layout>
                         </v-flex>
                     </v-layout>
@@ -137,54 +146,73 @@
             </v-card>
 
             <v-dialog v-model="dialog_confrim" persistent max-width="700px">
-                <v-card color="grey darken-4" elevation="10">
-                    <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
-                        <v-layout wrap mt-1>
-                            <v-flex mt-2 mb-2 class="white--text">
-                                <h2>
-                                    <v-icon medium color="red">description</v-icon> Booking ID : {{item.book_ID}}
-                                </h2>
-                            </v-flex>
-                            <v-card elevation="3" color="grey lighten-3" width="100%">
-                                <v-layout wrap pl-4 pr-4 pb-3 pt-3 subheading>
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>ชื่อ-สกุล : </b>{{item.name}}</div>
-                                    </v-flex>
+                <v-card color="grey darken-4" class="white--text">
+                    <v-card-text>
+                        <h1 class="text-xs-center red--text">ยืนยันรับคิว</h1>
+                        <h3 class="text-xs-center">F&I GARAGE</h3>
 
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>Line ID : </b> {{item.lineID}}</div>
-                                    </v-flex>
+                        <v-container grid-list-md style="padding: 0px 10px 10px 15px;">
+                            <v-layout wrap>
 
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>เบอร์โทรศัพท์ : </b> {{item.tel}}</div>
-                                    </v-flex>
+                                <v-card-text>แผนงาน</v-card-text>
 
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>อีเมลล์ :</b> {{item.Email}}</div>
-                                    </v-flex>
+                                <v-card elevation="0" color="grey lighten-3" width="100%">
+                                    <v-layout wrap pl-4 pr-4 pt-2>
 
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>เบอร์โทร :</b> 0916984687</div>
-                                    </v-flex>
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>Car :</b> {{item.car_brand+' '+item.car_model}}</div>
-                                    </v-flex>
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>Year :</b> {{item.car_year}}</div>
-                                    </v-flex>
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>อาการเบื้องต้น :</b> {{item.broken_desc}}</div>
-                                    </v-flex>
-                                    <v-flex xs12 sm12 md12 pt-3>
-                                        <div><b>วันที่ต้องการนำรถมาเข้ารับบริการ :</b> {{item.come_in_date}}</div>
-                                    </v-flex>
-                                </v-layout>
-                            </v-card>
+                                        <v-flex xs12 sm6 pr-2>
+                                            <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+                                                <template v-slot:activator="{ on }">
+                                                    <v-text-field v-model="dateFormatted" label="กำหนดการวันรับรถเข้ามารับบริการ" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
+                                                    </v-text-field>
+                                                </template>
+                                                <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                                            </v-menu>
+                                        </v-flex>
 
-                        </v-layout>
-                    </v-container>
-                    <!-- <small>*indicates required field</small> -->
-                    <v-flex pl-3 pr-3>
+                                        <v-flex xs12 sm6>
+                                            <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card>
+
+                                <v-card-text>ข้อมูลส่วนตัว</v-card-text>
+                                <v-card elevation="0" color="grey lighten-3" width="100%">
+                                    <v-layout wrap pl-4 pr-4 pb-3>
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>ชื่อ-สกุล : </b>{{item.name}}</div>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>Line ID : </b> {{item.lineID}}</div>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>เบอร์โทรศัพท์ : </b> {{item.tel}}</div>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>อีเมลล์ :</b> {{item.Email}}</div>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>เบอร์โทร :</b> 0916984687</div>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>Car :</b> {{item.car_brand+' '+item.car_model}}</div>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>Year :</b> {{item.car_year}}</div>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12 pt-3>
+                                            <div><b>อาการเบื้องต้น :</b> {{item.broken_desc}}</div>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card>
+
+                            </v-layout>
+                        </v-container>
+                        <!-- <small>*indicates required field</small> -->
+
                         <v-card-actions>
                             <v-flex>
                                 <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png" width="170" height="50">
@@ -193,7 +221,7 @@
                                 <v-btn color="red" class="white--text" @click="dialog_confrim = false,insert = true">Cancel</v-btn>
                                 <v-btn color="red" class="white--text" @click="dialog_confrim = false,alert = !alert">OK</v-btn>
                         </v-card-actions>
-                    </v-flex>
+                    </v-card-text>
                 </v-card>
             </v-dialog>
 
@@ -232,7 +260,7 @@
                                         <v-flex xs12 sm6 pr-2>
                                             <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
                                                 <template v-slot:activator="{ on }">
-                                                    <v-text-field v-model="dateFormatted" label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
+                                                    <v-text-field v-model="dateFormatted" label="กำหนดวันรับรถเข้ารับบริการ" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
                                                     </v-text-field>
                                                 </template>
                                                 <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
@@ -240,7 +268,7 @@
                                         </v-flex>
 
                                         <v-flex xs12 sm6>
-                                            <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                            <v-select :items="Mac_for_newQ" value="Emp_ID" hint="กำหนดช่างผู้รับผิดชอบงาน" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
                                         </v-flex>
                                     </v-layout>
                                 </v-card>

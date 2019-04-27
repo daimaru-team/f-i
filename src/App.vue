@@ -113,7 +113,7 @@ export default {
 
   created() {
     if (this.$session.get('usersloggedin')) {
-      alert(this.$session.get('userType'))
+      // alert(this.$session.get('userType'))
       if (this.$session.get('userType') === 'Admin') {
         this.Store.display_page = 'AdminPage'
       } else if (this.$session.get('userType') === 'Customer') {
@@ -123,7 +123,7 @@ export default {
       }
       this.Store.IDforSELECT = this.$session.get('usersloggedin')
     } else {
-      alert('not found user')
+      // alert('not found user')
     }
   },
   destroyed() {
@@ -194,7 +194,7 @@ export default {
       console.log('in methods')
       const api = 'https://testtingfuck.000webhostapp.com/Booking.php';
       console.log(this.booking)
-      alert('asdsadsaads')
+      // alert('asdsadsaads')
       const booking_params = new URLSearchParams();
 
       booking_params.append('name', this.booking.name)
