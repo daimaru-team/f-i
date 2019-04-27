@@ -130,36 +130,36 @@ import moment from 'moment'
 import Clock from 'vue-clock2'
 
 export default {
-    components: {
-        // eslint-disable-next-line vue/no-unused-components
-        Clock,
-    },
-    data() {
-        return {
-            dialog_delete: false,
-            dialog_Timeline: false,
-            dialog_confrim: false,
-            search: '',
-            pagination: {},
-            selected: [],
-        }
-    },
-    computed: {
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    Clock,
+  },
+  data() {
+    return {
+      dialog_delete: false,
+      dialog_Timeline: false,
+      dialog_confrim: false,
+      search: '',
+      pagination: {},
+      selected: [],
+    }
+  },
+  computed: {
 
-        pages() {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.pagination.rowsPerPage = 12
-            console.log(this.pagination.rowsPerPage)
-            if (this.pagination.rowsPerPage == null ||
-                this.pagination.totalItems == null
-            ) return 0
-            return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
-        },
+    pages() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.pagination.rowsPerPage = 12
+      console.log(this.pagination.rowsPerPage)
+      if (this.pagination.rowsPerPage == null
+                || this.pagination.totalItems == null
+      ) return 0
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
-    methods: {
-        moment() {
-            return moment();
-        },
+  },
+  methods: {
+    moment() {
+      return moment();
     },
+  },
 }
 </script>

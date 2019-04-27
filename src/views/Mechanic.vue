@@ -256,141 +256,141 @@ import moment from 'moment'
 import Clock from 'vue-clock2'
 
 export default {
-    components: {
-        // eslint-disable-next-line vue/no-unused-components
-        Clock,
-    },
-    created() {
-        const api = 'https://testtingfuck.000webhostapp.com/read_Mechanic_load.php';
-        const Emp_params = new URLSearchParams();
-        let readData = new Array();
-        Emp_params.append('Table', 'Employee')
-        // eslint-disable-next-line global-require
-        Axios.post(api, Emp_params)
-            .then((response) => {
-                readData = response.data
-                console.log('loooooop =', readData.length)
-                // eslint-disable-next-line eqeqeq
-                if (readData.length == 0) {
-                    console.log('wrong pass or username')
-                    alert('table is null or error')
-                    // eslint-disable-next-line eqeqeq
-                } else if (readData != 0) {
-                    console.log('reading')
-                    this.GetData_Emp = readData
-                    console.log('tst')
-                    console.log(this.GetData_Emp.data)
-                    const aaa = this.calculate_age(this.GetData_Emp[0].Birthday)
-                }
-            })
-        const WID_params = new URLSearchParams();
-        let readData2 = new Array();
-        WID_params.append('Table', 'WorkInProcess')
-        // eslint-disable-next-line global-require
-        Axios.post(api, WID_params)
-            .then((response) => {
-                readData2 = response.data
-                console.log('loooooop =', readData2.length)
-                if (readData2.length === 0) {
-                    alert('มีบางอย่างผิดพลาด โปรด reload ใหม่อีกครั้ง')
-                } else if (readData2 !== 0) {
-                    this.GetData_Work_in = readData2
-                    console.log(this.GetData_Work_in)
-                }
-            })
-        // this.read_table('Employee')
-        // this.read_Table2()
-    },
-    data() {
-        return {
-            isEditing: null,
-            dialog_Edit: false,
-            dialog_delete: false,
-            search: '',
-            GetData_Emp: [],
-            GetData_Work_in: [],
-            alert: false,
-            dialogInsert: false,
-            insert: true,
-            insertCheck: false,
-            pagination: {},
-            EmpID: '21454',
-            Name: 'Phonpisud',
-            LastName: 'Sumangsa',
-            selected: [],
-            headers: [{
-                    text: 'Mechanic ID',
-                    align: '',
-                    sortable: false,
-                    value: 'Emp_ID',
-                },
-                {
-                    text: 'Name',
-                    value: 'Emp_name',
-                },
-                {
-                    text: 'Last Name',
-                    value: 'Emp_name',
-                },
-                {
-                    text: 'Position',
-                    value: 'Pos_ID',
-                },
-                {
-                    text: 'Address',
-                    value: 'Position',
-                },
-                {
-                    text: 'Date OB',
-                    value: 'Date OB',
-                },
-                {
-                    text: 'Join date',
-                    value: 'Join date',
-                },
-                {
-                    text: 'Salary',
-                    value: 'Salary',
-                },
-                {
-                    text: 'Phone number',
-                    value: 'Phone number',
-                },
-                {
-                    text: 'Email',
-                    value: 'Email',
-                },
-                {
-                    text: 'Line ID',
-                    value: 'Line ID',
-                },
-            ],
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    Clock,
+  },
+  created() {
+    const api = 'https://testtingfuck.000webhostapp.com/read_Mechanic_load.php';
+    const Emp_params = new URLSearchParams();
+    let readData = new Array();
+    Emp_params.append('Table', 'Employee')
+    // eslint-disable-next-line global-require
+    Axios.post(api, Emp_params)
+      .then((response) => {
+        readData = response.data
+        console.log('loooooop =', readData.length)
+        // eslint-disable-next-line eqeqeq
+        if (readData.length == 0) {
+          console.log('wrong pass or username')
+          alert('table is null or error')
+          // eslint-disable-next-line eqeqeq
+        } else if (readData != 0) {
+          console.log('reading')
+          this.GetData_Emp = readData
+          console.log('tst')
+          console.log(this.GetData_Emp.data)
+          const aaa = this.calculate_age(this.GetData_Emp[0].Birthday)
         }
-    },
-    computed: {
+      })
+    const WID_params = new URLSearchParams();
+    let readData2 = new Array();
+    WID_params.append('Table', 'WorkInProcess')
+    // eslint-disable-next-line global-require
+    Axios.post(api, WID_params)
+      .then((response) => {
+        readData2 = response.data
+        console.log('loooooop =', readData2.length)
+        if (readData2.length === 0) {
+          alert('มีบางอย่างผิดพลาด โปรด reload ใหม่อีกครั้ง')
+        } else if (readData2 !== 0) {
+          this.GetData_Work_in = readData2
+          console.log(this.GetData_Work_in)
+        }
+      })
+    // this.read_table('Employee')
+    // this.read_Table2()
+  },
+  data() {
+    return {
+      isEditing: null,
+      dialog_Edit: false,
+      dialog_delete: false,
+      search: '',
+      GetData_Emp: [],
+      GetData_Work_in: [],
+      alert: false,
+      dialogInsert: false,
+      insert: true,
+      insertCheck: false,
+      pagination: {},
+      EmpID: '21454',
+      Name: 'Phonpisud',
+      LastName: 'Sumangsa',
+      selected: [],
+      headers: [{
+        text: 'Mechanic ID',
+        align: '',
+        sortable: false,
+        value: 'Emp_ID',
+      },
+      {
+        text: 'Name',
+        value: 'Emp_name',
+      },
+      {
+        text: 'Last Name',
+        value: 'Emp_name',
+      },
+      {
+        text: 'Position',
+        value: 'Pos_ID',
+      },
+      {
+        text: 'Address',
+        value: 'Position',
+      },
+      {
+        text: 'Date OB',
+        value: 'Date OB',
+      },
+      {
+        text: 'Join date',
+        value: 'Join date',
+      },
+      {
+        text: 'Salary',
+        value: 'Salary',
+      },
+      {
+        text: 'Phone number',
+        value: 'Phone number',
+      },
+      {
+        text: 'Email',
+        value: 'Email',
+      },
+      {
+        text: 'Line ID',
+        value: 'Line ID',
+      },
+      ],
+    }
+  },
+  computed: {
 
-        pages() {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.pagination.rowsPerPage = 12
-            console.log(this.pagination.rowsPerPage)
-            if (this.pagination.rowsPerPage == null ||
-                this.pagination.totalItems == null
-            ) return 0
-            return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
-        },
+    pages() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.pagination.rowsPerPage = 12
+      console.log(this.pagination.rowsPerPage)
+      if (this.pagination.rowsPerPage == null
+                || this.pagination.totalItems == null
+      ) return 0
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
-    methods: {
-        moment() {
-            return moment();
-        },
-        calculate_age(birthday) {
-            const birthdate = new Date(birthday);
-            const cur = new Date();
-            const diff = cur - birthdate; // This is the difference in milliseconds
-            const age = Math.floor(diff / 31557600000);
+  },
+  methods: {
+    moment() {
+      return moment();
+    },
+    calculate_age(birthday) {
+      const birthdate = new Date(birthday);
+      const cur = new Date();
+      const diff = cur - birthdate; // This is the difference in milliseconds
+      const age = Math.floor(diff / 31557600000);
 
-            return age
-        },
+      return age
     },
+  },
 }
 </script>
