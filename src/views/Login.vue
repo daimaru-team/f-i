@@ -1,181 +1,195 @@
 <template>
-        <div class="grey darken-4">
-          <v-parallax width="230" height="900" dark src="https://petrolblog.com/wp-content/uploads/2016/01/Skoda-garage-door.jpg">
+<v-app>
+    <div class="grey darken-4">
+        <v-parallax width="230" height="900" dark src="https://petrolblog.com/wp-content/uploads/2016/01/Skoda-garage-door.jpg">
             <v-alert :value="alertInsert" type="success" transition="scale-transition" dismissible>
-              ทำการจองคิวสำเร็จ! โปรดรอเจ้าหน้าที่ติดต่อกลับ เพื่อยืนยันคิวในการเข้าซ่อมอีกครั้ง</v-alert>
+                ทำการจองคิวสำเร็จ! โปรดรอเจ้าหน้าที่ติดต่อกลับ เพื่อยืนยันคิวในการเข้าซ่อมอีกครั้ง</v-alert>
             <v-alert :value="ErrorInsert" type="error" transition="scale-transition" dismissible>
-              ระบบไม่สามารถทำการจองคิวให้ท่านได้.. โปรดตรวจสอบข้อมูลหรือการเชื่อมต่อ และลองใหม่อีกครั้ง! </v-alert>
-              <v-container fill-height wrap xs12>
+                ระบบไม่สามารถทำการจองคิวให้ท่านได้.. โปรดตรวจสอบข้อมูลหรือการเชื่อมต่อ และลองใหม่อีกครั้ง! </v-alert>
 
-                    <v-layout md12 sm12 xs12 wrap>
-                      <v-flex md2 sm2 xs0 >
-                      </v-flex>
+            <v-container fill-height wrap xs12>
 
-                      <v-flex md8 sm8 xs12>
+                <v-layout md12 sm12 xs12 wrap>
+                    <v-flex md2 sm2 xs0>
+                    </v-flex>
+
+                    <v-flex md8 sm8 xs12>
                         <v-layout justify-end mb-3>
-                          <v-btn-toggle v-model="toggle_exclusive" dark>
-                            <v-btn small  color="green"  @click="fromLogin = false">จองคิว</v-btn>
-                            <v-btn small color="green" @click="fromLogin = true">Login</v-btn>
-                          </v-btn-toggle>
+                            <v-btn-toggle v-model="toggle_exclusive" dark>
+                                <v-btn small color="red" @click="fromLogin = false">
+                                    <h3>จองคิว</h3>
+                                </v-btn>
+                                <v-btn small color="red" @click="fromLogin = true">
+                                    <h3>Login</h3>
+                                </v-btn>
+                            </v-btn-toggle>
                         </v-layout>
                         <!-- แสดงหน้าจองคิวล่วงหน้า -->
                         <!-- {{this.Store.Queue_page}} -->
                         <!-- {{this.Store.Mechanicle_page}} -->
                         <!-- {{this.Store.CustomerUse_page}} -->
                         <v-flex v-if="fromLogin == false">
-                          <v-layout wrap justify-center>
-                            <v-card class="elevation-22 " light color="grey lighten-2">
-                              <v-layout mt-2 justify-center>
-                                <v-card-title display-2 ml-5 pl-5>
-                                  <v-layout wrap>
-                                    <v-flex display-1>
-                                      <h4>จองคิวซ่อม</h4>
-                                    </v-flex>
-                                  </v-layout>
-                                </v-card-title>
-                              </v-layout>
+                            <v-layout wrap justify-center>
+                                <v-card class="elevation-22 " light color="">
+                                    <v-layout mt-2 justify-center>
 
-                                <v-form
-                                  ref="form"
-                                  v-model="valid"
-                                  lazy-validation
-                                >
-                                <v-layout ml-5 mr-5 wrap>
-                                <v-flex xs12 sm6 md6 pr-3>
-                                  <v-text-field label="ชื่อ*" v-model="booking.name" :rules="nullRules"  required/>
-                                </v-flex>
-                                <v-flex xs12 sm6 md6>
-                                  <v-text-field label="นามสกุล*" v-model="booking.lastname" :rules="nullRules"  persistent-hint required/>
-                                </v-flex>
-                                <v-flex xs12 sm6 md6 pr-3>
-                                  <v-text-field label="Line ID" v-model="booking.lineID" :rules="nullRules" required/>
-                                </v-flex>
-                                <v-flex xs12 sm6 md6>
-                                  <v-text-field label="เบอร์โทรติดต่อกลับ" mask="##-####-####" :rules="nullRules" v-model="booking.tel" required/>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12>
-                                  <v-text-field label="E-mail" v-model="booking.Email" :rules="nullRules" required/>
-                                </v-flex>
-                              <v-flex xs12 sm3 md3 mr-3>
-                                  <v-autocomplete
-                                    :items="['TOYOTA', 'HONDA' ,'NISSAN','ISUZU','SUZUKI','LEXUS','VOLVO','MERCEDES-BENS','MAZDA','FORD','CHEVLOLET','PROTON','MG(moris garage)','THAIRUNG','SUBARU','HYUNDAI','JEEP','CITROEN','DODGE','FIAT','HUMMER','GMC','TATA','JEEP','JEEP',]"
-                                    label='ยี่ห้อรถ'
-                                  ></v-autocomplete>
-                                </v-flex>
-                                <v-flex xs12 sm5 md5 mr-3>
-                                  <v-text-field label="รุ่น(Model)" required></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm3 md3>
-                                  <v-text-field label="ปีผลิต" required></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12>
-                                  <v-text-field label="อาการเบื้องต้น" v-model="booking.broken_desc" :rules="nullRules"  required/>
-                                </v-flex>
-                                <!-- เหลือ วันที่ และ Email ที่ยังไม่มี input -->
-                                </v-layout>
-                                </v-form>
-                              <v-layout justify-center>
+                                            <v-layout justify-center wrap>
+                                                <v-flex mt-3 display-1 md12 xs12 sm12 lg12 xl12>
+                                                  <v-layout justify-center>
+
+                                                    <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="200" height="65">
+                                                  </v-layout>
+                                                </v-flex>
+
+                                                <v-flex md12 xs12 sm12 lg12 xl12>
+                                                  <v-layout justify-center>
+                                                    <h3>จองคิวซ่อม</h3>
+                                                  </v-layout>
+
+                                                </v-flex>
+
+                                            </v-layout>
+
+                                    </v-layout>
+
+                                    <v-form ref="form" v-model="valid" lazy-validation>
+                                        <v-layout ml-5 mr-5 wrap>
+                                            <v-flex xs12 sm6 md6 pr-3>
+                                                <v-text-field label="ชื่อ*" v-model="booking.name" :rules="nullRules" required />
+                                            </v-flex>
+                                            <v-flex xs12 sm6 md6>
+                                                <v-text-field label="นามสกุล*" v-model="booking.lastname" :rules="nullRules" persistent-hint required />
+                                            </v-flex>
+                                            <v-flex xs12 sm6 md6 pr-3>
+                                                <v-text-field label="Line ID" v-model="booking.lineID" :rules="nullRules" required />
+                                            </v-flex>
+                                            <v-flex xs12 sm6 md6>
+                                                <v-text-field label="เบอร์โทรติดต่อกลับ" mask="##-####-####" :rules="nullRules" v-model="booking.tel" required />
+                                            </v-flex>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-text-field label="E-mail" v-model="booking.Email" :rules="nullRules" required />
+                                            </v-flex>
+                                            <v-flex xs12 sm4 md4 mr-4>
+                                                <v-autocomplete :items="['TOYOTA', 'HONDA' ,'NISSAN','ISUZU','SUZUKI','LEXUS','VOLVO','MERCEDES-BENS','MAZDA','FORD','CHEVLOLET','PROTON','MG(moris garage)','THAIRUNG','SUBARU','HYUNDAI','JEEP','CITROEN','DODGE','FIAT','HUMMER','GMC','TATA','JEEP','JEEP',]" label='ยี่ห้อรถ'></v-autocomplete>
+                                            </v-flex>
+                                            <v-flex xs12 sm3 md3 mr-4>
+                                                <v-text-field label="รุ่น(Model)" required></v-text-field>
+                                            </v-flex>
+                                            <v-flex xs12 sm4 md4>
+                                                <v-text-field label="ปีผลิต" required></v-text-field>
+                                            </v-flex>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-text-field label="อาการเบื้องต้น" v-model="booking.broken_desc" :rules="nullRules" required />
+                                            </v-flex>
+                                            <!-- เหลือ วันที่ และ Email ที่ยังไม่มี input -->
+                                        </v-layout>
+                                    </v-form>
+                                    <v-layout justify-center>
                                         <v-card-title>
                                             <v-icon color="black" medium>assignment_turned_in</v-icon>
                                             <v-tooltip top open-delay>
-                                              <template v-slot:activator="{ on }">
-                                                <v-btn :loading="booking_loading" class="white--text" color="green darken-1" :disabled="!valid"  @click="insert_booking()">ยืนยัน</v-btn>
-                                              </template>
-                                              <span>ส่งเรื่องของคุณไปยังเจ้าหน้าที่</span>
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn :loading="booking_loading" class="white--text" color="light-green darken-2" :disabled="!valid" @click="insert_booking()">ยืนยัน</v-btn>
+                                                </template>
+                                                <span>ส่งเรื่องของคุณไปยังเจ้าหน้าที่</span>
                                             </v-tooltip>
                                             <v-icon color="black" medium>assignment_turned_in</v-icon>
                                         </v-card-title>
                                     </v-layout>
-                            </v-card>
-                          </v-layout>
+                                </v-card>
+                            </v-layout>
                         </v-flex>
                         <!-- แสดงหน้า Login -->
                         <v-flex v-if="fromLogin == true">
-                          <v-card class="elevation-10 " hover height="320" light color="grey lighten-2">
-                            <v-layout mt-4 justify-center>
-                              <v-card-title display-2>
-                                <v-flex display-1 mt-3>F & I GARAGE</v-flex>
-                              </v-card-title><br/>
+                            <v-card class="elevation-10 " hover height="320" light color="">
+                                <v-layout justify-center>
+                                  <v-flex display-1 mt-3>
+                                    <v-layout justify-center>
+                                      <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="270" height="85">
+                                    </v-layout>
+                                  </v-flex>
 
-                            </v-layout>
-                            <v-layout ml-5 mr-5>
-                              <v-flex display-3>
-                                <v-text-field label="user" v-model="login_data.username"></v-text-field>
-                                <v-text-field label="password" type="password" v-model="login_data.password"></v-text-field>
-                              </v-flex>
-                            </v-layout>
-                            <v-layout justify-center>
-                              <v-card-title>
-                                  <!-- <v-btn class="white--text" color="green darken-1" @click="Queue = true,login = false">login</v-btn> -->
-                                  <!-- <v-progress-circular
+
+                                </v-layout>
+                                    <v-layout ml-5 mr-5>
+                                        <v-flex display-3>
+                                            <v-text-field label="user" v-model="login_data.username"></v-text-field>
+                                            <v-text-field label="password" type="password" v-model="login_data.password"></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout justify-center>
+                                        <v-card-title>
+                                            <!-- <v-btn class="white--text" color="green darken-1" @click="Queue = true,login = false">login</v-btn> -->
+                                            <!-- <v-progress-circular
                                     :indeterminate="loading"
                                     :color="loading_color"
                                     :aria-hidden="loading"
                                   ></v-progress-circular> -->
-                                  <v-btn :loading="loading" class="white--text" color="green darken-1" @click="checkUser">login</v-btn>
-                                    <v-tooltip top open-delay>
-                                      <template v-slot:activator="{ on }">
-                                        <v-btn  class="white--text" color="blue-grey darken-3"  @click = "dialogQrcode= true,paused=false">QR Code</v-btn>
-                                      </template>
-                                        <span>เข้าสู่ระยยโดยใช้ Qrcode ที่ได้จากเจ้าหน้าที่</span>
-                                    </v-tooltip>
-                              </v-card-title>
-                            </v-layout>
-                          </v-card>
+                                            <v-btn :loading="loading" class="white--text" color="light-green darken-2" @click="checkUser">login</v-btn>
+                                            <!-- <v-tooltip top open-delay>
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn class="white--text" color="blue-grey darken-3" @click="dialogQrcode= true,paused=false">QR Code</v-btn>
+                                                </template>
+                                                <span>เข้าสู่ระยยโดยใช้ Qrcode ที่ได้จากเจ้าหน้าที่</span>
+                                            </v-tooltip> -->
+                                        </v-card-title>
+                                    </v-layout>
+                            </v-card>
                         </v-flex>
 
                         <v-flex class="text-xs-center" v-if="window.width >700">
-                          <v-card-text>
-                            <v-btn
-                              v-for="icon in icons"
-                              :key="icon"
-                              class="mx-3 white--text"
-                              icon
-                            >
-                              <v-icon size="24px">{{ icon }}</v-icon>
-                            </v-btn>
-                          </v-card-text>
+                            <v-card-text>
+                                <v-btn v-for="icon in icons" :key="icon" class="mx-3 white--text" icon>
+                                    <v-icon size="24px">{{ icon }}</v-icon>
+                                </v-btn>
+                            </v-card-text>
 
-                          <v-card-text class="white--text pt-0">
-                              Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                          </v-card-text>
+                            <v-card-text class="white--text pt-0">
+                                F&I Garage Management System provides services for managing internal work and services for customers' convenience and internal staff. Can use effectively.
+                            </v-card-text>
 
-                          <v-divider></v-divider>
-                          <v-card-text class="white--text">
-                            &copy;2019 — <strong>F & I Garage</strong>
-                          </v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-text class="white--text">
+                                &copy;2019 — <strong>F & I Garage</strong>
+                            </v-card-text>
                         </v-flex>
 
-                      </v-flex>
+                    </v-flex>
 
-                      <v-flex md2 sm2 xs0 >
-                      </v-flex>
+                    <v-flex md2 sm2 xs0>
+                    </v-flex>
 
-                    </v-layout>
+                </v-layout>
 
-              </v-container>
-          </v-parallax>
-          <v-footer color="black" app >
+            </v-container>
+        </v-parallax>
+        <v-footer color="black" app>
             <v-spacer></v-spacer>
             <!-- <v-flex-text  class="white--text">&copy; F&I Garage 2019 </v-flex-text> -->
             <v-spacer></v-spacer>
-          </v-footer>
-    <v-dialog v-model="dialogQrcode"  max-width="700px" >
-        <v-card>
-          <v-card-text>
-            <h3 class="text-xs-center">F&I GARAGE</h3>
-            <!-- <qrcode-stream :paused="paused" :enable="fasle"></qrcode-stream> -->
-          </v-card-text>
-        </v-card>
-    </v-dialog>
-       </div>
+        </v-footer>
+        <v-dialog v-model="dialogQrcode" max-width="700px">
+            <v-card>
+                <v-card-text>
+                    <h3 class="text-xs-center">F&I GARAGE</h3>
+                    <!-- <qrcode-stream :paused="paused" :enable="fasle"></qrcode-stream> -->
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+    </div>
+</v-app>
 </template>
 
 <script>
 import Vue from 'vue'
 import Axios from 'axios'
 import VueSession from 'vue-session'
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
+import {
+  QrcodeStream,
+  QrcodeDropZone,
+  QrcodeCapture,
+} from 'vue-qrcode-reader'
 
 Vue.use(VueSession)
 
@@ -192,6 +206,7 @@ export default {
 
   data() {
     return {
+      toggle_exclusive: 0,
       Store: this.$store.state,
       valid: true,
       booking_loading: false,
@@ -236,16 +251,14 @@ export default {
       // alert(this.$session.get('userType'))
       if (this.$session.get('userType') === 'Admin') {
         this.Store.IDforSELECT = this.$session.get('usersloggedin')
-
       } else if (this.$session.get('userType') === 'Customer') {
         this.Store.IDforSELECT = this.$session.get('usersloggedin')
-
       } else if (this.$session.get('userType') === 'Employee') {
         this.Store.IDforSELECT = this.$session.get('usersloggedin')
       }
       this.login = false
     } else {
-      alert('not found user')
+      console.log('not found user')
     }
 
     this.get_maker_list()

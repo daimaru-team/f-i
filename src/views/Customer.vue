@@ -1,110 +1,125 @@
 <template>
 <v-card width="100%">
-      <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
-      <v-expansion-panel-content v-for="(item,i) in 1" :key="i" >
-        <template v-slot:header>
-          <div><h3>283746 | K.sombut methanee.
-            <v-badge right overlap v-if="1==1">
-                <template v-slot:badge>
-                  <span>1</span>
-                </template>
-                  <v-icon medium color="grey lighten-1">notifications_active</v-icon>
-              </v-badge>
-            </h3></div>
-        </template>
+    <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
+        <v-expansion-panel-content v-for="(item,i) in 1" :key="i">
+            <template v-slot:header>
+                <div>
+                    <h3>283746 | K.sombut methanee.
+                        <v-badge right overlap v-if="1==1">
+                            <template v-slot:badge>
+                                <span>1</span>
+                            </template>
+                            <v-icon medium color="grey lighten-1">notifications_active</v-icon>
+                        </v-badge>
+                    </h3>
+                </div>
+            </template>
 
-        <v-card color="grey darken-3">
-           <v-flex>
-            <v-card-text class="grey lighten-3">
-              <p><b> ID :</b> 23423 </p>
-              <p><b> Car :</b> ISUZU D-max </p>
-              <p><b> Year :</b> 2005</p>
-              <p><b> Color :</b> Blue</p>
-              <p><b> Licens plate :</b> ghfy-29384 bkk</p>
-              <p><b> Customer :</b> Paul walker</p>
-              <p><b> อาการเบื้องต้น :</b> สตาร์ทไม่ติด อาการคล้ายแบตเตอรี่หมด</p>
-              <p><b> ช่างผู้รับผิดชอบ :</b> M.phonpisud</p>
-              <p><b> Status :</b> อยู่ระหว่างดำเนินการ
-                <!-- สถานะเสร็จ -->
-                <v-icon v-if="1==1" color="amber accent-4" >error</v-icon>
-                <!-- สถานะยังไม่เสร็จ -->
-                <v-icon v-if="0==1" color="green">offline_pin</v-icon>
-              </p>
-            </v-card-text>
-          </v-flex>
-          <v-flex class="grey darken-3 text-xs-center white--text " headline pt-3 pb-3>Timeline</v-flex>
-          <v-container class="grey darken-4 white--text black--text">
-              <v-timeline dense clipped>
-                  <v-slide-x-transition group>
-                    <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="pink" small>
-                      <v-layout justify-space-between>
-                        <v-flex xs7 v-text="event.text"></v-flex>
-                        <v-flex xs5 text-xs-right v-text="event.time"></v-flex>
-                      </v-layout>
-                    </v-timeline-item>
-                  </v-slide-x-transition>
+            <v-card color="grey darken-3">
+                <v-flex>
+                    <v-layout>
+                        <v-flex md11 xl11 sm11 lg11 xs11>
+                            <v-card-text class="grey lighten-3">
+                                <v-flex mb-2>
+                                    <h2><b> Customer ID :</b> 11224352 </h2>
+                                </v-flex>
+                                <v-divider></v-divider>
+                                <v-divider></v-divider>
+                                <v-divider></v-divider>
+                                <v-divider></v-divider>
+                                <v-flex mt-2>
+                                    <h3>ข้อมูลเจ้าของรถ</h3><br/>
+                                    <v-flex ml-3>
+                                        <p><b> เลขที่บัตรประชาชน :</b> 1100293845656482</p>
+                                        <p><b> ชื่อ-สกุล :</b> อิง</p>
+                                        <p><b> ที่อยู่ :</b> dfsa sv ไำเำพเ ำพเ ะั่่าะ ำไถีีาสัราทด </p>
+                                        <p><b> วันเกิด:</b> 21/21/21</p>
+                                        <p><b> line ID :</b> 34fd3</p>
+                                        <p><b> เบอร์โทรศัพท์ :</b> 0912456 5775</p>
+                                        <p><b> E-mail :</b> Ing@gmmail.com</p>
+                                        <p><b> ครอบครองรถจำนวน :</b> 2 </p>
+                                    </v-flex>
+                                </v-flex>
 
-                  <v-timeline-item class="mb-4" hide-dot>
-                    <span>TODAY</span>
-                  </v-timeline-item>
+                                <v-flex v-for="(item,i) in 2">
+                                    <v-divider></v-divider>
+                                    <v-flex mb-2 mt-2>
+                                        <h3><v-icon color="red">time_to_leave</v-icon><b> Car Number :</b> {{i+1}} </h3>
+                                    </v-flex>
+                                    <v-flex ml-5>
+                                        <p><b> Car ID :</b> 23423 </p>
+                                        <p><b> รถ :</b> ISUZU D-max </p>
+                                        <p><b> ปี :</b> 2005</p>
+                                        <p><b> สี :</b> Blue</p>
+                                        <p><b> ทะเบียน :</b> ghfy-29384 bkk</p>
+                                        <p><b> อาการเบื้องต้น :</b> สตาร์ทไม่ติด อาการคล้ายแบตเตอรี่หมด</p>
+                                        <p><b> ช่างผู้รับผิดชอบ :</b> M.phonpisud</p>
+                                        <p><b> สถานะ :</b> อยู่ระหว่างดำเนินการ
+                                            <!-- สถานะเสร็จ -->
+                                            <v-icon v-if="1==1" color="amber accent-4">error</v-icon>
+                                            <!-- สถานะยังไม่เสร็จ -->
+                                            <v-icon v-if="0==1" color="green">offline_pin</v-icon>
+                                        </p>
+                                    </v-flex>
+                                </v-flex>
+                            </v-card-text>
+                        </v-flex>
+                        <v-flex md1 xl1 sm1 lg1 xs1 class="grey lighten-3">
+                            <v-layout justify-end wrap>
 
-                  <v-timeline-item class="mb-3" color="grey" icon-color="grey lighten-2" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>This order was archived.</v-flex>
-                      <v-flex xs5 text-xs-right>15:26 EDT</v-flex>
+                                <v-tooltip left>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                            <v-icon dark>delete_forever</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>ลบรายการนี้</span>
+                                </v-tooltip>
+
+                            </v-layout>
+                        </v-flex>
+
                     </v-layout>
-                  </v-timeline-item>
+                </v-flex>
 
-                  <v-timeline-item class="mb-3" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        <v-chip class="white--text ml-0" color="purple" label small>
-                          APP
-                        </v-chip>
-                        Digital Downloads fulfilled 1 item.
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
+                <v-dialog v-model="dialog_delete" max-width="300">
+                    <v-card>
+                        <v-card-title class="headline grey darken-4 white--text" primary-title>F&I Garage -
+                            <v-icon large color="red"> delete_forever</v-icon>-
+                        </v-card-title>
 
-                  <v-timeline-item class="mb-3" color="grey" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        Order confirmation email was sent to John Leider (john@vuetifyjs.com).
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
+                        <v-card-text>
+                            <h4>Work ID : {{item.W_ID}} คุณต้องลบรายการนี้หรือไม่ ?</h4>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
+                            <v-btn color="red white--text" @click="dialog_delete = false">Yes</v-btn>
+                            <v-spacer></v-spacer>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-card>
 
-                  <v-timeline-item class="mb-3" hide-dot>
-                    <v-btn class="mx-0" color="white">
-                      Resend Email
-                    </v-btn>
-                  </v-timeline-item>
+            <v-dialog v-model="dialog_delete" max-width="300">
+                <v-card>
+                    <v-card-title class="headline grey darken-4 white--text" primary-title>F&I Garage -
+                        <v-icon large color="red"> delete_forever</v-icon>-
+                    </v-card-title>
 
-                  <v-timeline-item class="mb-3" color="grey" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        A $15.00 USD payment was processed on PayPal Express Checkout
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
+                    <v-card-text>
+                        <h4>Customer ID : {{item.Cus_ID}} คุณต้องลบรายการนี้หรือไม่ ?</h4>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
+                        <v-btn color="red white--text" @click="dialog_delete = false">Yes</v-btn>
+                        <v-spacer></v-spacer>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
 
-                  <v-timeline-item color="grey" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        John Leider placed this order on Online Store (checkout #1937432132572).
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
-                </v-timeline>
-          </v-container>
-          <v-flex class="grey darken-3 text-xs-center white--text" headline pt-3 pb-3>M.Phonpisud</v-flex>
-
-        </v-card>
-      </v-expansion-panel-content>
+        </v-expansion-panel-content>
     </v-expansion-panel>
 
 </v-card>
@@ -115,33 +130,36 @@ import moment from 'moment'
 import Clock from 'vue-clock2'
 
 export default {
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    Clock,
-  },
-  data() {
-    return {
-      search: '',
-      pagination: {},
-      selected: [],
-    }
-  },
-  computed: {
+    components: {
+        // eslint-disable-next-line vue/no-unused-components
+        Clock,
+    },
+    data() {
+        return {
+            dialog_delete: false,
+            dialog_Timeline: false,
+            dialog_confrim: false,
+            search: '',
+            pagination: {},
+            selected: [],
+        }
+    },
+    computed: {
 
-    pages() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.pagination.rowsPerPage = 12
-      console.log(this.pagination.rowsPerPage)
-      if (this.pagination.rowsPerPage == null
-          || this.pagination.totalItems == null
-      ) return 0
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+        pages() {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.pagination.rowsPerPage = 12
+            console.log(this.pagination.rowsPerPage)
+            if (this.pagination.rowsPerPage == null ||
+                this.pagination.totalItems == null
+            ) return 0
+            return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+        },
     },
-  },
-  methods: {
-    moment() {
-      return moment();
+    methods: {
+        moment() {
+            return moment();
+        },
     },
-  },
 }
 </script>

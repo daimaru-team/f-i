@@ -1,252 +1,260 @@
 <template>
-    <v-layout>
-    
-        <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px); overflow-y: scroll;">
-            <v-flex title>
-                Mechanic
-            </v-flex>
-            <v-flex>
-                <v-flex title justify-center>{{moment().format('DD/MM/YYYY')}}</v-flex>
-            </v-flex>
+<v-layout>
 
-            <!-- รูปโปรไฟล์ของช่าง -->
-            <v-avatar>
-               <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-btn icon v-on="on" @click.stop = "dialog_Morword = true">
-                      <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20">
+    <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px); overflow-y: scroll;">
+        <v-flex title>
+            Mechanic
+        </v-flex>
+        <v-flex>
+            <v-flex title justify-center>{{moment().format('DD/MM/YYYY')}}</v-flex>
+        </v-flex>
+
+        <!-- รูปโปรไฟล์ของช่าง -->
+        <v-avatar>
+            <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                    <v-btn icon v-on="on" @click.stop="dialog_Morword = true">
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20">
                     </v-btn>
-                  </template>
-                  <span>User & Logout</span>
-                </v-tooltip>
-            </v-avatar>
+                </template>
+                <span>User & Logout</span>
+            </v-tooltip>
+        </v-avatar>
 
-        </v-toolbar>
+    </v-toolbar>
 
-        <main class="v-content__wrap" full-hight>
-            <v-card v-if="window.width < 600" height="55" color="black"></v-card>
-            <v-card v-if="window.width > 600" height="64" color="black"></v-card>
-            <v-card height="700" color="">
-                <v-expansion-panel focusable pt-3 mt-4>
+    <main class="v-content__wrap" full-hight>
+        <v-card v-if="window.width < 600" height="55" color="black"></v-card>
+        <v-card v-if="window.width > 600" height="64" color="black"></v-card>
+        <v-card height="700" color="">
+            <v-expansion-panel focusable pt-3 mt-4>
                 <v-expansion-panel-content v-for="item in display_wip">
-                        <template v-slot:header>
-                          <div><h3>{{item.W_ID}} - {{item.License_plate}}    {{item.CM_Name}} {{item.Model}}</h3></div>
-                        </template>
+                    <template v-slot:header>
+                        <div>
+                            <h3>{{item.W_ID}} - {{item.License_plate}} {{item.CM_Name}} {{item.Model}}</h3>
+                        </div>
+                    </template>
 
-                        <v-card color="grey lighten-3">
-                          <v-flex ml-2>
+                    <v-card color="grey lighten-3">
+                        <v-flex ml-2>
                             <v-card-text>
-                            <p><b> ID : {{item.W_ID}} </b></p>
-                            <p><b> Car :</b> {{item.CM_Name}} {{item.Model}} </p>
-                            <p><b> Year :</b>{{item.Car_Year}}</p>
-                            <!-- <p><b> Color :</b> {{item.Color}}</p> -->
-                            <p><b> Licens plate :</b>{{item.License_plate}}</p>
-                            <p><b> Customer :</b> {{item.cus_name}}</p>
-                            <p><b> อาการเบื้องต้น :</b> {{item.W_Desc}}</p>
-                            <p><b> ช่างผู้รับผิดชอบ :</b>{{item.emp_name}}</p>
-                            <!-- <p><b> Status :</b>{{item.Status}} -->
+                                <p><b> ID : {{item.W_ID}} </b></p>
+                                <p><b> Car :</b> {{item.CM_Name}} {{item.Model}} </p>
+                                <p><b> Year :</b>{{item.Car_Year}}</p>
+                                <!-- <p><b> Color :</b> {{item.Color}}</p> -->
+                                <p><b> Licens plate :</b>{{item.License_plate}}</p>
+                                <p><b> Customer :</b> {{item.cus_name}}</p>
+                                <p><b> อาการเบื้องต้น :</b> {{item.W_Desc}}</p>
+                                <p><b> ช่างผู้รับผิดชอบ :</b>{{item.emp_name}}</p>
+                                <!-- <p><b> Status :</b>{{item.Status}} -->
                             </v-card-text>
-                          </v-flex>
-                          <v-flex>
-                            <v-flex >
-                              <v-layout justify-center wrap>
-                                <v-btn color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon></v-btn>
-                              </v-layout>
+                        </v-flex>
+                        <v-flex>
+                            <v-flex>
+                                <v-layout justify-center wrap>
+                                    <v-btn color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon>
+                                    </v-btn>
+                                </v-layout>
                             </v-flex>
-                            <v-flex >
-                              <v-layout justify-center wrap v-for="day in dayleft" v-if="day.W_ID===item.W_ID">
-                                <b class="red--text">เหลือเวลาอีก {{day.day_left}} วัน จะถึงกำหนด</b>
-                              </v-layout>
+                            <v-flex>
+                                <v-layout justify-center wrap v-for="day in dayleft" v-if="day.W_ID===item.W_ID">
+                                    <b class="red--text">เหลือเวลาอีก {{day.day_left}} วัน จะถึงกำหนด</b>
+                                </v-layout>
                             </v-flex>
-                          </v-flex>
-                        </v-card>
+                        </v-flex>
+                    </v-card>
 
-                        <!-- Dialog update timline -->
-                        <v-dialog v-model="dialogFI" fullscreen hide-overlay persistent>
-                          <v-card>
+                    <!-- Dialog update timline -->
+                    <v-dialog v-model="dialogFI" fullscreen hide-overlay persistent>
+                        <v-card>
 
                             <v-toolbar card dark color="red lighten-1">
-                              <v-btn icon dark @click="dialogFI = false">
-                                <v-icon>close</v-icon>
-                              </v-btn>
-                              <v-toolbar-title>Timeline & Update</v-toolbar-title>
-                              <v-spacer></v-spacer>
-                              <v-toolbar-items>
-                                <v-btn dark flat @click="dialogFI = false">OK</v-btn>
-                              </v-toolbar-items>
+                                <v-btn icon dark @click="dialogFI = false">
+                                    <v-icon>close</v-icon>
+                                </v-btn>
+                                <v-toolbar-title>Timeline & Update</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-toolbar-items>
+                                    <v-btn dark flat @click="dialogFI = false">OK</v-btn>
+                                </v-toolbar-items>
                             </v-toolbar>
 
-                              <v-alert :value="alertInsert" type="success" transition="scale-transition" dismissible Color="red">
-                              update งานสำเร็จ</v-alert>
-                              <v-alert :value="ErrorInsert" type="error" transition="scale-transition" dismissible>
-                              ระบบไม่สามารถทำการให้ท่านได้.. โปรดตรวจสอบข้อมูลหรือการเชื่อมต่อ และลองใหม่อีกครั้งภายหลัง!</v-alert>
+                            <v-alert :value="alertInsert" type="success" transition="scale-transition" dismissible Color="red">
+                                update งานสำเร็จ</v-alert>
+                            <v-alert :value="ErrorInsert" type="error" transition="scale-transition" dismissible>
+                                ระบบไม่สามารถทำการให้ท่านได้.. โปรดตรวจสอบข้อมูลหรือการเชื่อมต่อ และลองใหม่อีกครั้งภายหลัง!</v-alert>
                             <v-container style="max-width: 600px;">
-                              <v-timeline dense align-top clipped>
-                                <v-timeline-item fill-dot class="white--text" color="orange" large>
-                                  <template v-slot:icon><span>JL</span></template>
-                                  <v-text-field outline v-model="input_header" hide-details flat label="กรอกรายละเอียด คลิกที่นี่.. " solo @click.stop="Post= true" @keydown.enter="comment">
-                                    <template v-slot:append>
+                                <v-timeline dense align-top clipped>
+                                    <v-timeline-item fill-dot class="white--text" color="orange" large>
+                                        <template v-slot:icon><span>JL</span></template>
+                                        <v-text-field outline v-model="input_header" hide-details flat label="กรอกรายละเอียด คลิกที่นี่.. " solo @click.stop="Post= true" @keydown.enter="comment">
+                                            <template v-slot:append>
 
-                                      <v-flex>
-                                        <v-layout justify-centee>
-                                      <upload-btn icon ripple :fileChangedCallback="onChangeFileUpload">
-                                        <template slot="icon-left">
-                                          <v-icon color="white">add_photo_alternate</v-icon>
-                                        </template>
-                                      </upload-btn>
-                                      <v-btn class="mx-0" icon @click="comment()"><v-icon large color="blue">send</v-icon></v-btn>
-                                        </v-layout>
-                                      </v-flex>
-                                    </template>
-                                  </v-text-field>
+                                                <v-flex>
+                                                    <v-layout justify-centee>
+                                                        <upload-btn icon ripple :fileChangedCallback="onChangeFileUpload">
+                                                            <template slot="icon-left">
+                                                                <v-icon color="white">add_photo_alternate</v-icon>
+                                                            </template>
+                                                        </upload-btn>
+                                                        <v-btn class="mx-0" icon @click="comment()">
+                                                            <v-icon large color="blue">send</v-icon>
+                                                        </v-btn>
+                                                    </v-layout>
+                                                </v-flex>
+                                            </template>
+                                        </v-text-field>
 
-                                  <v-flex>
-                                    <v-layout justify-start>
-                                      <v-flex>
-                                        <v-chip small close v-for="(item,i) in 3" v-model="chip1">
-                                              <v-avatar class="elevation-5">
-                                                <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="trevor" width="15" height="20" @click.stop = "dialog_picture= true">
-                                              </v-avatar>
-                                            </v-chip>
-                                      </v-flex>
-                                    </v-layout>
-                                  </v-flex>
-
-                                  <v-dialog v-model="Post" max-width="700px" persistent>
-                                    <v-card color="grey lighten-3">
-                                      <v-layout wrap>
                                         <v-flex>
-                                          <v-flex ml-3 mt-1>
-                                            <v-layout>
-                                              <v-flex>
-                                              <v-card-title><h2>Post it</h2></v-card-title>
-                                              </v-flex>
-                                              <v-flex mt-1 mr-1>
-                                                <v-layout justify-end>
-                                              <v-btn dark :disabled="!valid" color="blue darken-3" @click.stop="Post = false"> OK <v-icon color="white">exit_to_app</v-icon></v-btn>
-                                                </v-layout>
-                                              </v-flex>
+                                            <v-layout justify-start>
+                                                <v-flex>
+                                                    <v-chip small close v-for="(item,i) in 3" v-model="chip1">
+                                                        <v-avatar class="elevation-5">
+                                                            <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="trevor" width="15" height="20" @click.stop = "dialog_picture= true">
+                                              </v-avatar>
+                                                    </v-chip>
+                                                </v-flex>
                                             </v-layout>
-                                          </v-flex>
-                                          <v-form
-                                          ref="form"
-                                          v-model="valid"
-                                          lazy-validation
-                                        >
-                                          <v-flex ml-4 mr-4>
-                                            <v-flex><v-text-field :rules="nullRules" v-model="input_header" label="หัวข้อ" outline></v-text-field></v-flex>
-                                            <v-flex><v-textarea :rules="nullRules" label="รายละเอียด" v-model="input_desc" box>oik</v-textarea></v-flex>
-                                          </v-flex>
-                                          </v-form>
-                                          <!-- <v-flex mb-3 mr-3>
+                                        </v-flex>
+
+                                        <v-dialog v-model="Post" max-width="700px" persistent>
+                                            <v-card color="grey lighten-3">
+                                                <v-layout wrap>
+                                                    <v-flex>
+                                                        <v-flex ml-3 mt-1>
+                                                            <v-layout>
+                                                                <v-flex>
+                                                                    <v-card-title>
+                                                                        <h2>Post it</h2>
+                                                                    </v-card-title>
+                                                                </v-flex>
+                                                                <v-flex mt-1 mr-1>
+                                                                    <v-layout justify-end>
+                                                                        <v-btn dark :disabled="!valid" color="blue darken-3" @click.stop="Post = false"> OK <v-icon color="white">exit_to_app</v-icon>
+                                                                        </v-btn>
+                                                                    </v-layout>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </v-flex>
+                                                        <v-form ref="form" v-model="valid" lazy-validation>
+                                                            <v-flex ml-4 mr-4>
+                                                                <v-flex>
+                                                                    <v-text-field :rules="nullRules" v-model="input_header" label="หัวข้อ" outline></v-text-field>
+                                                                </v-flex>
+                                                                <v-flex>
+                                                                    <v-textarea :rules="nullRules" label="รายละเอียด" v-model="input_desc" box>oik</v-textarea>
+                                                                </v-flex>
+                                                            </v-flex>
+                                                        </v-form>
+                                                        <!-- <v-flex mb-3 mr-3>
                                             <v-layout justify-end>
                                           <v-btn dark color="blue darken-3" @click.stop="input,Post = false"> OK <v-icon color="white">exit_to_app</v-icon></v-btn>
                                             </v-layout>
                                         </v-flex> -->
-                                        </v-flex>
+                                                    </v-flex>
 
-                                      </v-layout>
-                                    </v-card>
-                                  </v-dialog>
-                                </v-timeline-item>
+                                                </v-layout>
+                                            </v-card>
+                                        </v-dialog>
+                                    </v-timeline-item>
 
-
-                                <!-- <v-timeline-item class="mb-4" hide-dot>
+                                    <!-- <v-timeline-item class="mb-4" hide-dot>
                                   <span>TODAY {{key_timeline}}</span>
                                 </v-timeline-item> -->
-                    <v-slide-x-transition group>
-                    <v-timeline-item class="mb-3" small color="pink" v-for="timelineR in display_timeline"
-                    :key="timelineR.Report_ID" v-if="timelineR.W_ID===key_timeline">
-                    <v-card class="elevation-15">
-                    <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3 >
-                      <v-flex xs7>
-                        <v-chip class="white--text ml-0" color="purple" label small>
-                          รายงานผลปกติ
-                        </v-chip>
-                        &nbsp;
-                        <b>{{timelineR.Report_Name}}</b><br/>
-                        <p><br/>&nbsp;&nbsp;&nbsp;{{timelineR.Description}}</p>
-                      </v-flex>
-                      <v-flex xs7></v-flex>
-                      <v-flex xs5 text-xs-right>{{timelineR.DateTime_Created}}</v-flex>
-                    </v-layout>
-                    </v-card>
-                  </v-timeline-item>
-                  </v-slide-x-transition>
-                              </v-timeline>
+                                    <v-slide-x-transition group>
+                                        <v-timeline-item class="mb-3" small color="pink" v-for="timelineR in display_timeline" :key="timelineR.Report_ID" v-if="timelineR.W_ID === key_timeline">
+                                            <v-card class="elevation-15">
+                                                <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
+                                                    <v-flex xs7>
+                                                        <v-chip class="white--text ml-0" color="purple" label small>
+                                                            รายงานผลปกติ
+                                                        </v-chip>
+                                                        &nbsp;
+                                                        <b>{{timelineR.Report_Name}}</b><br/>
+                                                        <p><br/>&nbsp;&nbsp;&nbsp;{{timelineR.Description}}</p>
+                                                    </v-flex>
+                                                    <v-flex xs7></v-flex>
+                                                    <v-flex xs5 text-xs-right>{{timelineR.DateTime_Created}}</v-flex>
+                                                </v-layout>
+                                            </v-card>
+                                        </v-timeline-item>
+                                    </v-slide-x-transition>
+                                </v-timeline>
                             </v-container>
-                          </v-card>
-                        </v-dialog>
+                        </v-card>
+                    </v-dialog>
 
-                    </v-expansion-panel-content>
-                </v-expansion-panel>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
 
             <!-- Dailog User detail กดรูป -->
             <v-dialog v-model="dialog_Morword" max-width="350">
-              <v-card>
-                          <v-list>
-                            <v-list-tile avatar>
-                              <v-list-tile-avatar>
+                <v-card>
+                    <v-list>
+                        <v-list-tile avatar>
+                            <v-list-tile-avatar>
                                 <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
                               </v-list-tile-avatar>
 
-                              <v-list-tile-content>
-                                <v-list-tile-title>{{this.UserData[0].Emp_Name}} {{this.UserData[0].Emp_Lname}}</v-list-tile-title>
-                                <v-list-tile-sub-title>ตำแหน่ง: Mechanicle</v-list-tile-sub-title>
-                              </v-list-tile-content>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{this.UserData[0].Emp_Name}} {{this.UserData[0].Emp_Lname}}</v-list-tile-title>
+                                    <v-list-tile-sub-title>ตำแหน่ง: Mechanicle</v-list-tile-sub-title>
+                                </v-list-tile-content>
 
-                              <v-list-tile-action>
-                                ;;;;;;
-                                <v-tooltip left>
-                                  <template v-slot:activator="{ on }">
-                                    <v-btn color="blue" v-on="on"  icon flat @click="log_out()"><v-icon>logout</v-icon></v-btn>
-                                  </template>
-                                  <span>Logout</span>
-                                </v-tooltip>
-                              </v-list-tile-action>
-                            </v-list-tile>
-                    <!-- logoutdialog (key for search)-->
-                          </v-list>
-                          <v-divider></v-divider>
-                            <v-card-text>
-                            <v-list-tile-title>รหัสพนักงาน : {{this.UserData[0].Emp_ID}} </v-list-tile-title>
-                            </v-card-text>
-                          <v-divider></v-divider>
+                                <v-list-tile-action>
+                                    ;;;;;;
+                                    <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn color="blue" v-on="on" icon flat @click="log_out()">
+                                                <v-icon>logout</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Logout</span>
+                                    </v-tooltip>
+                                </v-list-tile-action>
+                        </v-list-tile>
+                        <!-- logoutdialog (key for search)-->
+                    </v-list>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <v-list-tile-title>รหัสพนักงาน : {{this.UserData[0].Emp_ID}} </v-list-tile-title>
+                    </v-card-text>
+                    <v-divider></v-divider>
 
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
 
-                            <v-btn color="primary" flat @click="dialog_Morword = false">OK</v-btn>
-                          </v-card-actions>
+                        <v-btn color="primary" flat @click="dialog_Morword = false">OK</v-btn>
+                    </v-card-actions>
 
                 </v-card>
-              </v-dialog>
-            </v-card>
+            </v-dialog>
+            
+        </v-card>
 
-            <!-- Dailog logout กดออกจากระบบ -->
-            <v-dialog v-model="dialog_logout" max-width="290">
-              <v-card>
+        <!-- Dailog logout กดออกจากระบบ -->
+        <v-dialog v-model="dialog_logout" max-width="290">
+            <v-card>
                 <v-card-title class="headline grey lighten-2" primary-title>F&I Garage</v-card-title>
-                  <v-card-text>Do you want to logout?</v-card-text>
-                  <v-card-actions><v-spacer></v-spacer>
+                <v-card-text>Do you want to logout?</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
                     <v-btn color="blue white--text" @click="dialog_logout = false">No</v-btn>
                     <v-btn color="blue white--text" @click="dialog_logout = false,login = true">Yes</v-btn>
                     <v-spacer></v-spacer>
-                  </v-card-actions>
-              </v-card>
-            </v-dialog>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
-        </main>
+    </main>
 
-        <v-footer color="black" app>
-          <v-spacer></v-spacer>
-          <v-flex-text class="white--text">&copy; F&I Garage 2019 Mechanic</v-flex-text>
-          <v-spacer></v-spacer>
-        </v-footer>
+    <v-footer color="black" app>
+        <v-spacer></v-spacer>
+        <v-flex-text class="white--text">&copy; F&I Garage 2019 Mechanic</v-flex-text>
+        <v-spacer></v-spacer>
+    </v-footer>
 
-    </v-layout>
-
-
+</v-layout>
 </template>
 
 <script>
@@ -308,13 +316,12 @@ export default {
       dayleft: null,
       Mechanicle: true,
       display_wip: [],
-      data_to_insert: [
-        {
-          W_ID: null,
-          Report_ID: null,
-          img_name: null,
-          img_data: null,
-        }],
+      data_to_insert: [{
+        W_ID: null,
+        Report_ID: null,
+        img_name: null,
+        img_data: null,
+      }],
       display_timeline: [],
       moment,
       window: {
@@ -556,10 +563,11 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 /* move scrollbar out of page*/
 #content browser {
-  margin-right: -14px !important;
-  overflow-y: scroll;
+    margin-right: -14px !important;
+    overflow-y: scroll;
 }
 </style>
