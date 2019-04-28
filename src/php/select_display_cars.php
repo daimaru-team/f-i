@@ -23,23 +23,24 @@ $response = array();
 }
 
 for($i=0;$i<count($response);$i++){
-
-	echo $response[$i]['W_ID']."\r\n";
 	$query="SELECT * FROM `Timeline_Report` WHERE W_ID='".$response[$i]['W_ID']."' ORDER BY DateTime_Created DESC";
 	$result = $con->query($query);
 	$responseTimeline = array();
-	while($row = $result->fetch_assoc()){
+	while($row = $result->fetch_assoc())
 		$responseTimeline[] = $row;
-	}
 
-	$response[$i]['timeline']=$responseTimeline;
-	$array=$response[$i];
-	echo "\r\n".json_encode($array)."\r\n";
+	if(count($responseTimeline)!=0){
+		$response[$i]['timeline']=$responseTimeline;
+	}else{
+		$response[$i]['timeline']="null";
+	} 
+
+
 
 }
 
 
-
+echo json_encode($response);
 
 // echo json_encode($response);
 exit();

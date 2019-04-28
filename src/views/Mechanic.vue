@@ -253,53 +253,7 @@ export default {
       Name: 'Phonpisud',
       LastName: 'Sumangsa',
       selected: [],
-      headers: [{
-        text: 'Mechanic ID',
-        align: '',
-        sortable: false,
-        value: 'Emp_ID',
-      },
-      {
-        text: 'Name',
-        value: 'Emp_name',
-      },
-      {
-        text: 'Last Name',
-        value: 'Emp_name',
-      },
-      {
-        text: 'Position',
-        value: 'Pos_ID',
-      },
-      {
-        text: 'Address',
-        value: 'Position',
-      },
-      {
-        text: 'Date OB',
-        value: 'Date OB',
-      },
-      {
-        text: 'Join date',
-        value: 'Join date',
-      },
-      {
-        text: 'Salary',
-        value: 'Salary',
-      },
-      {
-        text: 'Phone number',
-        value: 'Phone number',
-      },
-      {
-        text: 'Email',
-        value: 'Email',
-      },
-      {
-        text: 'Line ID',
-        value: 'Line ID',
-      },
-      ],
+     
     }
   },
   computed: {

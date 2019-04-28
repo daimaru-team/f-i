@@ -5,7 +5,7 @@ header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json; charset=utf-8');
 
 include "Config.php";
-$query="SELECT emp.Emp_ID,CONCAT(emp.Emp_Name,' ',emp.Emp_Lname) AS Mac_Name,emp.Emp_Name,emp.Emp_Lname,emp.Nickname,COUNT(wip.Emp_ID) AS Total_Work FROM Employee AS emp LEFT JOIN WorkInProcess AS wip ON wip.Emp_ID=emp.Emp_ID GROUP BY emp.Emp_ID HAVING COUNT(wip.Emp_ID)<2";
+$query="SELECT emp.Emp_ID,CONCAT(emp.Emp_Name,' ',emp.Emp_Lname) AS Mac_Name,emp.Emp_Name,emp.Emp_Lname,emp.Salary,emp.Birthday,emp.Nickname,IFNULL(emp.speciality,'ไม่มี') AS 'speciality',COUNT(wip.Emp_ID) AS Total_Work FROM Employee AS emp LEFT JOIN WorkInProcess AS wip ON wip.Emp_ID=emp.Emp_ID GROUP BY emp.Emp_ID HAVING COUNT(wip.Emp_ID)<2";
 
 $result = $con->query($query);
 
