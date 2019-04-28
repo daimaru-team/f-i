@@ -3,7 +3,6 @@
 <v-card width="100%">
     <v-alert fixed :value="alert" type="success" transition="scale-transition" dismissible>Insert queue successfully!</v-alert>
 
-
     <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
         <v-expansion-panel-content v-for="item in display_booking">
             <template v-slot:header>
@@ -29,8 +28,10 @@
                                 </v-flex>
                                 <v-divider></v-divider>
                                 <v-flex mt-2>
-                                    <h3>ข้อมูลเจ้าของรถ</h3><br/>
-                                    <v-flex ml-3>
+                                    <v-flex mt-2 headline font-weight-bold>
+                                        <v-icon>person</v-icon> ข้อมูลลูกค้า
+                                    </v-flex>
+                                    <v-flex mt-3 ml-3>
                                         <p><b> เลขที่บัตรประชาชน : </b> {{item.name}}</p>
                                         <p><b> ชื่อ-สกุล :</b> {{item.name}}</p>
                                         <p><b> line ID :</b> {{item.lineID}}</p>
@@ -40,8 +41,10 @@
                                 </v-flex>
                                 <v-divider></v-divider>
                                 <v-flex mt-2>
-                                    <h3>ข้อมูลรถ</h3><br/>
-                                    <v-flex ml-3>
+                                    <v-flex mt-2 headline font-weight-bold>
+                                        <v-icon>directions_car</v-icon> ข้อมูลรถ
+                                    </v-flex>
+                                    <v-flex mt-3 ml-3>
                                         <p><b> Car :</b> {{item.car_brand+' '+item.car_model}} </p>
                                         <p><b> Year :</b> {{item.car_year}}</p>
                                         <!-- <p><b> Color :</b> {{item.}} </p> -->
@@ -51,61 +54,64 @@
                                 </v-flex>
                                 <v-divider></v-divider>
                                 <v-flex mt-2>
-                                    <p><b> Status :</b>
+                                    <h3>
+                                    <p v-if="item.confirm_status==='0'"><b> Status :</b> รอยืนยัน
                                         <!-- สถานะเสร็จ -->
-                                        <v-icon v-if="item.confirm_status==='0'" color="amber accent-4">error<p> รอยืนยัน</p>
-                                        </v-icon>
-                                        <!-- สถานะยังไม่เสร็จ -->
-                                        <v-icon v-if="item.confirm_status==='1'" color="green">offline_pin<p>ยืนยันการจอง</p>
-                                        </v-icon>
+                                        <v-icon color="amber accent-4">error</v-icon>
                                     </p>
+                                    <p v-if="item.confirm_status==='1'"><b> Status :</b> ยืนยันการจอง
+                                        <!-- สถานะยังไม่เสร็จ -->
+                                        <v-icon color="green">offline_pin</v-icon>
+                                    </p>
+                                    </h3>
+                                    
                                 </v-flex>
                             </v-card-text>
 
                         </v-flex>
 
                         <v-flex md1 xl1 sm1 lg1 xs1>
-                            
+
                             <v-layout justify-end wrap>
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
-                                <v-tooltip left>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn large fab dark color="light-blue darken-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
-                                            <v-icon dark>keyboard_tab</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>รับรถเข้าอู่</span>
-                                </v-tooltip>
+                                    <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn large fab dark color="light-blue darken-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
+                                                <v-icon dark>keyboard_tab</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>รับรถเข้าอู่</span>
+                                    </v-tooltip>
                                 </v-flex>
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
-                                <v-tooltip left>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn fab small dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,alert = false">
-                                            <v-icon dark>edit</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>แก้ไขวันรับรถ</span>
-                                </v-tooltip>
+                                    <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn fab small dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,alert = false">
+                                                <v-icon dark>edit</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>แก้ไขวันรับรถ</span>
+                                    </v-tooltip>
                                 </v-flex>
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
-                                <v-tooltip left>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn  small fab dark right color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
-                                            <v-icon dark>check_circle</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>ยืนยันรับงาน</span>
-                                </v-tooltip>
+                                    <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn small fab dark right color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_confrim= true,alert = false">
+                                                <v-icon dark>check_circle</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>ยืนยันรับงาน</span>
+                                    </v-tooltip>
                                 </v-flex>
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
-                                <v-tooltip left>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
-                                            <v-icon dark>delete_forever</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>ลบคิว</span>
-                                </v-tooltip>
+                                    <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                                <v-icon dark>delete_forever</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>ลบคิว</span>
+                                    </v-tooltip>
                                 </v-flex>
                             </v-layout>
                         </v-flex>
@@ -339,8 +345,8 @@
             <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
                 <v-layout wrap>
                     <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-card-text>ข้อมูลส่วนตัว</v-card-text>
-                    <v-card elevation="0" color="grey lighten-3" width="100%">
+                        <v-card-text>ข้อมูลส่วนตัว</v-card-text>
+                        <v-card elevation="0" color="grey lighten-3" width="100%">
 
                             <v-layout wrap pl-4 pr-4 pb-3>
                                 <v-flex xs12 sm12 md12 mt-2>
@@ -379,56 +385,56 @@
                                 </v-flex>
                             </v-layout>
 
-                    </v-card>
-                    <v-card-text>ข้อมูลรถ</v-card-text>
-                    <v-card elevation="0" color="grey lighten-3" width="100%">
+                        </v-card>
+                        <v-card-text>ข้อมูลรถ</v-card-text>
+                        <v-card elevation="0" color="grey lighten-3" width="100%">
 
-                        <v-layout wrap pl-4 pr-4 pb-3 pt-2>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name" v-on:change="Gen_ID_Car()" single-line return-object></v-autocomplete>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="รุ่น" v-model="model" :rules="modelRules" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="สี" v-model="color" :rules="colorRules" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="ทะเบียน" v-model="licensPlate" :rules="licensPlateRules" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="ปีผลิต" v-model="year" :rules="yearRules" mask="####" :counter="4" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="เลขตัวถัง" v-model="BodyID" :rules="BodyIDRules" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-text-field label="สาเหตุ/อาการเบื้องต้น" v-model="Desc" :rules="DescRules" required></v-text-field>
-                            </v-flex>
-                        </v-layout>
+                            <v-layout wrap pl-4 pr-4 pb-3 pt-2>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name" v-on:change="Gen_ID_Car()" single-line return-object></v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="รุ่น" v-model="model" :rules="modelRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="สี" v-model="color" :rules="colorRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="ทะเบียน" v-model="licensPlate" :rules="licensPlateRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="ปีผลิต" v-model="year" :rules="yearRules" mask="####" :counter="4" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="เลขตัวถัง" v-model="BodyID" :rules="BodyIDRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-text-field label="สาเหตุ/อาการเบื้องต้น" v-model="Desc" :rules="DescRules" required></v-text-field>
+                                </v-flex>
+                            </v-layout>
 
-                    </v-card>
-                    <v-card-text>แผนงาน</v-card-text>
+                        </v-card>
+                        <v-card-text>แผนงาน</v-card-text>
 
-                    <v-card elevation="0" color="grey lighten-3" width="100%">
-                        <v-layout wrap pl-4 pr-4 pb-3>
+                        <v-card elevation="0" color="grey lighten-3" width="100%">
+                            <v-layout wrap pl-4 pr-4 pb-3>
 
-                            <v-flex xs12 sm6 pr-2>
-                                <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-                                    <template v-slot:activator="{ on }">
-                                        <v-text-field v-model="dateFormatted"  label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
-                                        </v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                                </v-menu>
-                            </v-flex>
+                                <v-flex xs12 sm6 pr-2>
+                                    <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field v-model="dateFormatted" label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
+                                            </v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                                    </v-menu>
+                                </v-flex>
 
-                            <v-flex xs12 sm6>
-                                <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" :rules="selectedItem_OwnerRules" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
-                </v-form>
+                                <v-flex xs12 sm6>
+                                    <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" :rules="selectedItem_OwnerRules" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </v-form>
                 </v-layout>
             </v-container>
             <!-- <small>*indicates required field</small> -->
@@ -484,259 +490,258 @@ import Clock from 'vue-clock2'
 import Datepicker from 'vuejs-datepicker'
 import Axios from 'axios';
 import {
-  Store,
+    Store,
 } from 'vuex';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import {
-  faBeer,
+    faBeer,
 } from '@fortawesome/free-solid-svg-icons';
 // eslint-disable-next-line no-unused-vars
 const state = {
-  date: new Date(2016, 9, 16),
+    date: new Date(2016, 9, 16),
 }
 export default {
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    Clock,
-    // eslint-disable-next-line vue/no-unused-components
-    Datepicker,
-  },
-  beforeCreate() {
-    const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
-    const Emp_params = new URLSearchParams();
-    let readData = new Array();
-    Emp_params.append('Table', 'WorkInProcess')
-    // eslint-disable-next-line global-require
-    Axios.post(api, Emp_params)
-      .then((response) => {
-        readData = response.data
-        console.log('loooooop =', readData.length)
-        // eslint-disable-next-line eqeqeq
-        if (readData.length == 0) {
-          alert('table is null or error')
-          // eslint-disable-next-line eqeqeq
-        } else if (readData != 0) {
-          console.log(readData)
-          this.Mac_for_newQ = readData
+    components: {
+        // eslint-disable-next-line vue/no-unused-components
+        Clock,
+        // eslint-disable-next-line vue/no-unused-components
+        Datepicker,
+    },
+    beforeCreate() {
+        const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
+        const Emp_params = new URLSearchParams();
+        let readData = new Array();
+        Emp_params.append('Table', 'WorkInProcess')
+        // eslint-disable-next-line global-require
+        Axios.post(api, Emp_params)
+            .then((response) => {
+                readData = response.data
+                console.log('loooooop =', readData.length)
+                // eslint-disable-next-line eqeqeq
+                if (readData.length == 0) {
+                    alert('table is null or error')
+                    // eslint-disable-next-line eqeqeq
+                } else if (readData != 0) {
+                    console.log(readData)
+                    this.Mac_for_newQ = readData
+                }
+            })
+        const api_car_list = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
+        const CMread = new Array();
+        const car_read_params = new URLSearchParams();
+        car_read_params.append('Table', 'Car_Maker')
+        // eslint-disable-next-line global-require
+        Axios.post(api_car_list, car_read_params)
+            .then((response) => {
+                this.Car_list_forAdd = response.data
+                if (this.Car_list_forAdd.length === 0) {
+                    alert('table is null or error')
+                } else if (this.Car_list_forAdd.length !== 0) {
+                    console.log()
+                }
+            })
+    },
+    mounted() {
+        console.log('test storqqqq')
+        this.display_booking = this.Store.data_dis_booking
+        console.log(this.display_booking)
+    },
+    data() {
+        return {
+            pId: '',
+            pIdRules: [
+                v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
+                v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
+            ],
+
+            fName: '',
+            fNameRules: [
+                v => !!v || 'กรุณากรอกชื่อ',
+            ],
+
+            lName: '',
+            lNameRules: [
+                v => !!v || 'กรุณากรอกนามสกุล',
+
+            ],
+
+            address: '',
+            addressRules: [
+                v => !!v || 'กรุณากรอกที่อยู่',
+
+            ],
+
+            birthday: '',
+            birthdayRules: [
+                v => !!v || 'กรุณากรอกวันเกิด',
+                v => (v && v.length >= 8) || 'di6',
+            ],
+
+            email: '',
+            emailRules: [
+                v => !!v || 'กรุณากรอกอีเมลล์',
+                v => /.+@.+/.test(v) || 'กรุณากรอกอีเมลล์ให้ถูกต้อง',
+            ],
+
+            lineID: '',
+            lineIDRules: [
+                v => !!v || 'กรุณากรอกไลน์ไอดี',
+
+            ],
+
+            tel: '',
+            telRules: [
+                v => !!v || 'กรุณากรอกเบอร์โทรศัพท์',
+                v => (v && v.length >= 10) || 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
+            ],
+
+            selectedItem_CM: '',
+            selectedItem_CMRules: [
+                v => !!v || 'กรุณาเลือกยี่ห้อรถ',
+            ],
+
+            model: '',
+            modelRules: [
+                v => !!v || 'กรุณาเลือกรุ่นรถ',
+
+            ],
+
+            color: '',
+            colorRules: [
+                v => !!v || 'กรุณากรอกข้อมูลสีรถ',
+
+            ],
+
+            licensPlate: '',
+            licensPlateRules: [
+                v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
+
+            ],
+
+            year: '',
+            yearRules: [
+                v => !!v || 'กรุณากรอกข้อมูลปีรถ',
+                v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
+            ],
+
+            BodyID: '',
+            BodyIDRules: [
+                v => !!v || 'กรุณากรอกเลขตัวถัง',
+
+            ],
+
+            Desc: '',
+            DescRules: [
+                v => !!v || 'กรุณากรอกข้อมูล',
+
+            ],
+
+            selectedItem_Owner: '',
+            selectedItem_OwnerRules: [
+                v => !!v || 'กรุณาเลือกรายการนี้',
+            ],
+
+            valid: false,
+            dialog_confrim: false,
+            dialog_delete: false,
+            Store: this.$store.state,
+            alert: false,
+            dialog_Insert: null,
+            dialog_Edit: null,
+            menu1: false,
+            menu2: false,
+            search: '',
+
+            date: new Date().toISOString().substr(0, 10),
+            dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
+            Mac_for_newQ: [],
+            Car_list_forAdd: [],
+            pagination: {},
+            selected: [],
+            insert_newQ: [{
+                Cus_ID: '',
+                Cus_name: '',
+                Cus_Lname: '',
+                Cus_Address: '',
+                Cus_Email: '',
+                Cus_LindID: '',
+                Cus_Tel: '',
+                Birthday: '',
+                Car_ID: '',
+                Brand: '',
+                model: '',
+                Color: '',
+                year: '',
+                W_ID: '',
+                Broken_List: '',
+                Finish_date: '',
+                Work_Owner_Emp: '',
+            }],
+            dialogAddSucess: false,
+            QrPic: false,
+            display_booking: [],
         }
-      })
-    const api_car_list = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
-    const CMread = new Array();
-    const car_read_params = new URLSearchParams();
-    car_read_params.append('Table', 'Car_Maker')
-    // eslint-disable-next-line global-require
-    Axios.post(api_car_list, car_read_params)
-      .then((response) => {
-        this.Car_list_forAdd = response.data
-        if (this.Car_list_forAdd.length === 0) {
-          alert('table is null or error')
-        } else if (this.Car_list_forAdd.length !== 0) {
-          console.log()
+    },
+    computed: {
+        pages() {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.pagination.rowsPerPage = 12
+            console.log(this.pagination.rowsPerPage)
+            if (this.pagination.rowsPerPage == null ||
+                this.pagination.totalItems == null
+            ) return 0
+            return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+        },
+        computedDateFormatted() {
+            return this.formatDate(this.date)
+        },
+    },
+    watch: {
+        date(val) {
+            this.dateFormatted = this.formatDate(this.date)
+            // eslint-disable-next-line comma-dangle
         }
-      })
-  },
-  mounted() {
-    console.log('test storqqqq')
-    this.display_booking = this.Store.data_dis_booking
-    console.log(this.display_booking)
-  },
-  data() {
-    return {
-      pId: '',
-      pIdRules: [
-        v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
-        v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
-      ],
-
-      fName: '',
-      fNameRules: [
-        v => !!v || 'กรุณากรอกชื่อ',
-      ],
-
-      lName: '',
-      lNameRules: [
-        v => !!v || 'กรุณากรอกนามสกุล',
-
-      ],
-
-      address: '',
-      addressRules: [
-        v => !!v || 'กรุณากรอกที่อยู่',
-
-      ],
-
-      birthday: '',
-      birthdayRules: [
-        v => !!v || 'กรุณากรอกวันเกิด',
-        v => (v && v.length >= 8) || 'di6',
-      ],
-
-      email: '',
-      emailRules: [
-        v => !!v || 'กรุณากรอกอีเมลล์',
-        v => /.+@.+/.test(v) || 'กรุณากรอกอีเมลล์ให้ถูกต้อง',
-      ],
-
-      lineID: '',
-      lineIDRules: [
-        v => !!v || 'กรุณากรอกไลน์ไอดี',
-
-      ],
-
-      tel: '',
-      telRules: [
-        v => !!v || 'กรุณากรอกเบอร์โทรศัพท์',
-        v => (v && v.length >= 10) || 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
-      ],
-
-      selectedItem_CM: '',
-      selectedItem_CMRules: [
-        v => !!v || 'กรุณาเลือกยี่ห้อรถ',
-      ],
-
-      model: '',
-      modelRules: [
-        v => !!v || 'กรุณาเลือกรุ่นรถ',
-
-      ],
-
-      color: '',
-      colorRules: [
-        v => !!v || 'กรุณากรอกข้อมูลสีรถ',
-
-      ],
-
-      licensPlate: '',
-      licensPlateRules: [
-        v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
-
-      ],
-
-      year: '',
-      yearRules: [
-        v => !!v || 'กรุณากรอกข้อมูลปีรถ',
-        v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
-      ],
-
-      BodyID: '',
-      BodyIDRules: [
-        v => !!v || 'กรุณากรอกเลขตัวถัง',
-
-      ],
-
-      Desc: '',
-      DescRules: [
-        v => !!v || 'กรุณากรอกข้อมูล',
-
-      ],
-
-      selectedItem_Owner: '',
-      selectedItem_OwnerRules: [
-        v => !!v || 'กรุณาเลือกรายการนี้',
-      ],
-
-      valid: false,
-      dialog_confrim: false,
-      dialog_delete: false,
-      Store: this.$store.state,
-      alert: false,
-      dialog_Insert: null,
-      dialog_Edit: null,
-      menu1: false,
-      menu2: false,
-      search: '',
-      selectedItem_Owner: '',
-      selectedItem_CM: '',
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
-      Mac_for_newQ: [],
-      Car_list_forAdd: [],
-      pagination: {},
-      selected: [],
-      insert_newQ: [{
-        Cus_ID: '',
-        Cus_name: '',
-        Cus_Lname: '',
-        Cus_Address: '',
-        Cus_Email: '',
-        Cus_LindID: '',
-        Cus_Tel: '',
-        Birthday: '',
-        Car_ID: '',
-        Brand: '',
-        model: '',
-        Color: '',
-        year: '',
-        W_ID: '',
-        Broken_List: '',
-        Finish_date: '',
-        Work_Owner_Emp: '',
-      }],
-      dialogAddSucess: false,
-      QrPic: false,
-      display_booking: [],
-    }
-  },
-  computed: {
-    pages() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.pagination.rowsPerPage = 12
-      console.log(this.pagination.rowsPerPage)
-      if (this.pagination.rowsPerPage == null
-                || this.pagination.totalItems == null
-      ) return 0
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
-    computedDateFormatted() {
-      return this.formatDate(this.date)
+    methods: {
+        testo() {
+            this.dialogAddSucess = false
+            this.dialog_Insert = false
+            this.alert = !this.alert
+            this.QrPic = true
+        },
+        validate() {
+            console.log('TESt');
+            if (this.$refs.form.validate()) {
+                console.log('TES1');
+                this.snackbar = true
+                this.dialogAddSucess = true
+            }
+            console.log('TES2');
+        },
+        moment() {
+            return moment();
+        },
+        formatDate(date) {
+            if (!date) return null
+            const [year, month, day] = date.split('-')
+            return `${month}/${day}/${year}`
+        },
+        parseDate(date) {
+            if (!date) return null
+            const [month, day, year] = date.split('/')
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+        },
+        getJSON() {
+            return new Promise(((resolve) => {
+                Axios.get('https://tutorialzine.com/misc/files/example.json')
+                    .then((json) => {
+                        // The data from the request is available in a .then block
+                        // We return the result using resolve.
+                        console.log(json)
+                        resolve(json);
+                    });
+            }));
+        },
     },
-  },
-  watch: {
-    date(val) {
-      this.dateFormatted = this.formatDate(this.date)
-      // eslint-disable-next-line comma-dangle
-    }
-  },
-  methods: {
-    testo() {
-      this.dialogAddSucess = false
-      this.dialog_Insert = false
-      this.alert = !this.alert
-      this.QrPic = true
-    },
-    validate() {
-      console.log('TESt');
-      if (this.$refs.form.validate()) {
-        console.log('TES1');
-        this.snackbar = true
-        this.dialogAddSucess = true
-      }
-      console.log('TES2');
-    },
-    moment() {
-      return moment();
-    },
-    formatDate(date) {
-      if (!date) return null
-      const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
-    },
-    parseDate(date) {
-      if (!date) return null
-      const [month, day, year] = date.split('/')
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-    },
-    getJSON() {
-      return new Promise(((resolve) => {
-        Axios.get('https://tutorialzine.com/misc/files/example.json')
-          .then((json) => {
-            // The data from the request is available in a .then block
-            // We return the result using resolve.
-            console.log(json)
-            resolve(json);
-          });
-      }));
-    },
-  },
 }
 </script>

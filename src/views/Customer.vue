@@ -25,11 +25,12 @@
                                 </v-flex>
                                 <v-divider></v-divider>
                                 <v-divider></v-divider>
-                                <v-divider></v-divider>
-                                <v-divider></v-divider>
+
                                 <v-flex mt-2>
-                                    <h3>ข้อมูลเจ้าของรถ</h3><br/>
-                                    <v-flex ml-3>
+                                    <v-flex mt-3 headline font-weight-bold>
+                                    <v-icon>person</v-icon> ข้อมูลลูกค้า
+                                    </v-flex>
+                                    <v-flex mt-3 ml-3>
                                         <p><b> เลขที่บัตรประชาชน :</b> 1100293845656482</p>
                                         <p><b> ชื่อ-สกุล :</b> อิง</p>
                                         <p><b> ที่อยู่ :</b> dfsa sv ไำเำพเ ำพเ ะั่่าะ ำไถีีาสัราทด </p>
@@ -44,7 +45,7 @@
                                 <v-flex v-for="(item,i) in 2">
                                     <v-divider></v-divider>
                                     <v-flex mb-2 mt-2>
-                                        <h3><v-icon color="red">time_to_leave</v-icon><b> Car Number :</b> {{i+1}} </h3>
+                                        <h3><v-icon>time_to_leave</v-icon><b> Car Number :</b> {{i+1}} </h3>
                                     </v-flex>
                                     <v-flex ml-5>
                                         <p><b> Car ID :</b> 23423 </p>
