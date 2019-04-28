@@ -4,22 +4,6 @@ header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json; charset=utf-8');
 include "Config.php";
 
-$query="SELECT * FROM `Timeline_Report` ORDER BY DateTime_Created DESC";
-
-mysqli_set_charset($con,"utf8");
-$result = $con->query($query);
-
-
-
-$response = array();
-
- while($row = $result->fetch_assoc()){
-
-   $response[] = $row;
-
-      
-
-}
 
 
 

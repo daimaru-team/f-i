@@ -22,7 +22,26 @@ $response = array();
       
 }
 
-echo json_encode($response);
+for($i=0;$i<count($response);$i++){
+
+	echo $response[$i]['W_ID']."\r\n";
+	$query="SELECT * FROM `Timeline_Report` WHERE W_ID='".$response[$i]['W_ID']."' ORDER BY DateTime_Created DESC";
+	$result = $con->query($query);
+	$responseTimeline = array();
+	while($row = $result->fetch_assoc()){
+		$responseTimeline[] = $row;
+	}
+
+	$response[$i]['timeline']=$responseTimeline;
+	$array=$response[$i];
+	echo "\r\n".json_encode($array)."\r\n";
+
+}
+
+
+
+
+// echo json_encode($response);
 exit();
 // $stmt = $con->prepare("select * from users");
 // $stmt->bind_param("ss");
