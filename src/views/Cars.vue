@@ -264,7 +264,7 @@
                         <v-flex pr-2 pl-2>
                             <v-layout justify-center>
                                 <v-timeline dense clipped>
-                            
+
                                     <v-timeline-item class="mb-3" small v-for="timelineItem in timelineWID.timeline">
                                         <v-card class="elevation-15">
                                             <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
