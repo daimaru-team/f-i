@@ -277,7 +277,6 @@ export default {
       const cur = new Date();
       const diff = cur - birthdate; // This is the difference in milliseconds
       const age = Math.floor(diff / 31557600000);
-
       return age
     },
   },
