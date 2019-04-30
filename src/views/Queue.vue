@@ -7,7 +7,7 @@
         <v-expansion-panel-content v-for="item in display_booking">
             <template v-slot:header>
                 <div>
-                    <h3>{{item.come_in_date}} | {{item.car_brand}} |{{' '+item.name}}&nbsp;{{item.last_name}}
+                    <h3>{{item.come_in_date}} | {{item.car_brand}} {{item.car_model}} | {{item.name}}&nbsp;{{item.last_name}}
                         <v-badge right color="pink" overlap v-if="1==1">
                             <template v-slot:badge>
                                 <span>1</span>
@@ -32,7 +32,7 @@
                                         <v-icon>person</v-icon> ข้อมูลลูกค้า
                                     </v-flex>
                                     <v-flex mt-3 ml-3>
-                                        <p><b> เลขที่บัตรประชาชน : </b> {{item.name}}</p>
+                                        <p><b> เลขที่บัตรประชาชน : </b> {{item.Emp_ID}}</p>
                                         <p><b> ชื่อ-สกุล :</b> {{item.name}}</p>
                                         <p><b> line ID :</b> {{item.lineID}}</p>
                                         <p><b> เบอร์โทรศัพท์ :</b> {{item.tel}}</p>

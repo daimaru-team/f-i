@@ -16,11 +16,11 @@
                     <v-flex md8 sm8 xs12>
                         <v-layout justify-end mb-3>
                             <v-btn-toggle v-model="toggle_exclusive" dark>
-                                <v-btn small color="red" @click="fromLogin = false">
-                                    <h3>จองคิว</h3>
+                                <v-btn color="green" @click="fromLogin = false">
+                                    <h4>จองคิว</h4>
                                 </v-btn>
-                                <v-btn small color="red" @click="fromLogin = true">
-                                    <h3>Login</h3>
+                                <v-btn color="green" @click="fromLogin = true">
+                                    <h4>Login</h4>
                                 </v-btn>
                             </v-btn-toggle>
                         </v-layout>
@@ -30,25 +30,31 @@
                         <!-- {{this.Store.CustomerUse_page}} -->
                         <v-flex v-if="fromLogin == false">
                             <v-layout wrap justify-center>
-                                <v-card class="elevation-22 " light color="">
+                                <v-card class="elevation-22 " light color="grey lighten-3">
                                     <v-layout mt-2 justify-center>
 
-                                            <v-layout justify-center wrap>
-                                                <v-flex mt-3 display-1 md12 xs12 sm12 lg12 xl12>
-                                                  <v-layout justify-center>
-
-                                                    <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="200" height="65">
+                                        <v-layout wrap>
+                                            <v-flex mt-3 md3 xs3 sm3 lg3 xl3>
+                                                <v-layout justify-center>
+                                                    <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="150" height="47">
                                                   </v-layout>
-                                                </v-flex>
+                                            </v-flex>
 
-                                                <v-flex md12 xs12 sm12 lg12 xl12>
-                                                  <v-layout justify-center>
-                                                    <h3>จองคิวซ่อม</h3>
-                                                  </v-layout>
+                                            <v-flex md6 xs6 sm6 lg6 xl6 mt-3>
+                                                <v-layout display-1 justify-center>
+                                                    จองคิวซ่อม
+                                                </v-layout>
 
-                                                </v-flex>
+                                            </v-flex>
 
-                                            </v-layout>
+                                            <v-flex mr-4 md3 xs3 sm3 lg3 xl3>
+                                                <v-layout justify-center>
+
+                                                </v-layout>
+
+                                            </v-flex>
+
+                                        </v-layout>
 
                                     </v-layout>
 
@@ -99,41 +105,57 @@
                                 </v-card>
                             </v-layout>
                         </v-flex>
+                        
                         <!-- แสดงหน้า Login -->
                         <v-flex v-if="fromLogin == true">
-                            <v-card class="elevation-10 " hover height="320" light color="">
-                                <v-layout justify-center>
-                                  <v-flex display-1 mt-3>
-                                    <v-layout justify-center>
-                                      <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="270" height="85">
-                                    </v-layout>
-                                  </v-flex>
+                            <v-card class="elevation-10 " hover height="320" light color="grey lighten-3">
 
+                                <v-layout wrap>
+                                    <v-flex mt-3 md3 xs3 sm3 lg3 xl3>
+                                        <v-layout justify-center>
+                                            <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="150" height="47">
+                                                  </v-layout>
+                                    </v-flex>
+
+                                    <v-flex md6 xs6 sm6 lg6 xl6 mt-3>
+                                        <v-layout display-1 justify-center>
+                                            จองคิวซ่อม
+                                        </v-layout>
+
+                                    </v-flex>
+
+                                    <v-flex mr-4 md3 xs3 sm3 lg3 xl3>
+                                        <v-layout justify-center>
+
+                                        </v-layout>
+
+                                    </v-flex>
 
                                 </v-layout>
-                                    <v-layout ml-5 mr-5>
-                                        <v-flex display-3>
-                                            <v-text-field label="user" v-model="login_data.username"></v-text-field>
-                                            <v-text-field label="password" type="password" v-model="login_data.password"></v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout justify-center>
-                                        <v-card-title>
-                                            <!-- <v-btn class="white--text" color="green darken-1" @click="Queue = true,login = false">login</v-btn> -->
-                                            <!-- <v-progress-circular
+
+                                <v-layout ml-5 mr-5>
+                                    <v-flex display-3>
+                                        <v-text-field label="user" v-model="login_data.username"></v-text-field>
+                                        <v-text-field label="password" type="password" v-model="login_data.password"></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout justify-center>
+                                    <v-card-title>
+                                        <!-- <v-btn class="white--text" color="green darken-1" @click="Queue = true,login = false">login</v-btn> -->
+                                        <!-- <v-progress-circular
                                     :indeterminate="loading"
                                     :color="loading_color"
                                     :aria-hidden="loading"
                                   ></v-progress-circular> -->
-                                            <v-btn :loading="loading" class="white--text" color="light-green darken-2" @click="checkUser">login</v-btn>
-                                            <!-- <v-tooltip top open-delay>
+                                        <v-btn :loading="loading" class="white--text" color="light-green darken-2" @click="checkUser">login</v-btn>
+                                        <!-- <v-tooltip top open-delay>
                                                 <template v-slot:activator="{ on }">
                                                     <v-btn class="white--text" color="blue-grey darken-3" @click="dialogQrcode= true,paused=false">QR Code</v-btn>
                                                 </template>
                                                 <span>เข้าสู่ระยยโดยใช้ Qrcode ที่ได้จากเจ้าหน้าที่</span>
                                             </v-tooltip> -->
-                                        </v-card-title>
-                                    </v-layout>
+                                    </v-card-title>
+                                </v-layout>
                             </v-card>
                         </v-flex>
 
@@ -186,188 +208,188 @@ import Vue from 'vue'
 import Axios from 'axios'
 import VueSession from 'vue-session'
 import {
-  QrcodeStream,
-  QrcodeDropZone,
-  QrcodeCapture,
+    QrcodeStream,
+    QrcodeDropZone,
+    QrcodeCapture,
 } from 'vue-qrcode-reader'
 
 Vue.use(VueSession)
 
 export default {
-  name: 'login',
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    QrcodeStream,
-    // eslint-disable-next-line vue/no-unused-components
-    QrcodeDropZone,
-    // eslint-disable-next-line vue/no-unused-components
-    QrcodeCapture,
-  },
-
-  data() {
-    return {
-      toggle_exclusive: 0,
-      Store: this.$store.state,
-      valid: true,
-      booking_loading: false,
-      fromLogin: false,
-      alertInsert: false,
-      ErrorInsert: false,
-      dialogQrcode: '',
-      dialog_Morword: false,
-      dialog_Adminlogout: false,
-      loading: false,
-      Car_list_forAdd: [],
-      loading_color: 'success',
-      login_data: [{
-        username: '',
-        password: '',
-      }],
-      booking: [{
-        name: null,
-        lastname: null,
-        lineID: null,
-        tel: null,
-        Email: null,
-        car_brand: null,
-        car_model: null,
-        car_year: null,
-        broken_desc: null,
-        come_in_date: null,
-      }],
-      window: {
-        width: 0,
-        height: 0,
-      },
-      nullRules: [
-        v => (v && v.length <= 0) || 'กรุณากรอกข้อมูลให้ครบถ้วน',
-      ],
-    }
-  },
-  created() {
-    window.addEventListener('resize', this.handleResize)
-    this.handleResize();
-    if (this.$session.get('usersloggedin')) {
-      // alert(this.$session.get('userType'))
-      if (this.$session.get('userType') === 'Admin') {
-        this.Store.IDforSELECT = this.$session.get('usersloggedin')
-      } else if (this.$session.get('userType') === 'Customer') {
-        this.Store.IDforSELECT = this.$session.get('usersloggedin')
-      } else if (this.$session.get('userType') === 'Employee') {
-        this.Store.IDforSELECT = this.$session.get('usersloggedin')
-      }
-      this.login = false
-    } else {
-      console.log('not found user')
-    }
-
-    this.get_maker_list()
-  },
-
-  destroyed() {
-    window.removeEventListener('resize', this.handleResize)
-  },
-
-  methods: {
-    fullname() {
-      this.dialog = true
+    name: 'login',
+    components: {
+        // eslint-disable-next-line vue/no-unused-components
+        QrcodeStream,
+        // eslint-disable-next-line vue/no-unused-components
+        QrcodeDropZone,
+        // eslint-disable-next-line vue/no-unused-components
+        QrcodeCapture,
     },
 
-    insert_booking() {
-      this.booking_loading = true
-      const api = 'https://testtingfuck.000webhostapp.com/Booking.php';
-      console.log(this.booking)
-      alert('asdsadsaads')
-      const booking_params = new URLSearchParams();
-
-      booking_params.append('name', this.booking.name)
-      booking_params.append('lastname', this.booking.lastname)
-      booking_params.append('lineID', this.booking.lineID)
-      booking_params.append('tel', this.booking.tel)
-      booking_params.append('Email', this.booking.Email)
-      booking_params.append('car_brand', this.booking.car_brand)
-      booking_params.append('car_model', this.booking.car_model)
-      booking_params.append('car_year', this.booking.car_year)
-      booking_params.append('come_in_date', '20190416')
-      booking_params.append('broken_desc', this.booking.broken_desc)
-
-      Axios.post(api, booking_params)
-        .then((response) => {
-          const readData = response.data
-          console.log(response.data)
-          if (response.data === 1) {
-            this.alertInsert = true
-          } else {
-            this.ErrorInsert = true
-          }
-
-          this.booking_loading = false
-        })
+    data() {
+        return {
+            toggle_exclusive: 0,
+            Store: this.$store.state,
+            valid: true,
+            booking_loading: false,
+            fromLogin: false,
+            alertInsert: false,
+            ErrorInsert: false,
+            dialogQrcode: '',
+            dialog_Morword: false,
+            dialog_Adminlogout: false,
+            loading: false,
+            Car_list_forAdd: [],
+            loading_color: 'success',
+            login_data: [{
+                username: '',
+                password: '',
+            }],
+            booking: [{
+                name: null,
+                lastname: null,
+                lineID: null,
+                tel: null,
+                Email: null,
+                car_brand: null,
+                car_model: null,
+                car_year: null,
+                broken_desc: null,
+                come_in_date: null,
+            }],
+            window: {
+                width: 0,
+                height: 0,
+            },
+            nullRules: [
+                v => (v && v.length <= 0) || 'กรุณากรอกข้อมูลให้ครบถ้วน',
+            ],
+        }
     },
-
-    checkUser() {
-      this.loading = true
-      this.loading_color = 'red'
-      console.log('in methods')
-      const api = 'https://testtingfuck.000webhostapp.com/checklogin.php';
-      const LoginParams = new URLSearchParams();
-
-      LoginParams.append('username', this.login_data.username)
-      LoginParams.append('password', this.login_data.password)
-
-      Axios.post(api, LoginParams)
-        .then((response) => {
-          const readData = response.data
-          console.log('loooooop =', readData.length)
-          console.log(response.data[0].User_Type)
-          // eslint-disable-next-line eqeqeq
-          if (readData.length === 0) {
-            console.log('wrong pass or username')
-            alert('Wrong pass or username,Please try again')
-          } else if (readData !== 0) {
-            // router.push('/about');
-            this.$session.start()
-            const Utype = response.data[0].User_Type
-            this.Store.User_type_store = Utype
-            console.log(response.data[0].User_Type)
-            if (Utype === 'Admin') {
-              this.Store.display_page = 'AdminPage'
-            } else if (Utype === 'Customer') {
-              this.Store.display_page = 'CustomerUse'
-            } else if (Utype === 'Employee') {
-              this.Store.display_page = 'MechanicUse'
+    created() {
+        window.addEventListener('resize', this.handleResize)
+        this.handleResize();
+        if (this.$session.get('usersloggedin')) {
+            // alert(this.$session.get('userType'))
+            if (this.$session.get('userType') === 'Admin') {
+                this.Store.IDforSELECT = this.$session.get('usersloggedin')
+            } else if (this.$session.get('userType') === 'Customer') {
+                this.Store.IDforSELECT = this.$session.get('usersloggedin')
+            } else if (this.$session.get('userType') === 'Employee') {
+                this.Store.IDforSELECT = this.$session.get('usersloggedin')
             }
-            // alert(this.Store.display_page)
-            this.$session.set('usersloggedin', response.data[0].Owner_ID)
-            this.$session.set('userType', Utype)
-            this.Store.IDforSELECT = response.data[0].Owner_ID
-            console.log(`store id=${this.Store.IDforSELECT}`)
-            this.Store.login_page = false
-          }
-          this.loading = false
-          this.loading_color = 'success'
-        })
+            this.login = false
+        } else {
+            console.log('not found user')
+        }
+
+        this.get_maker_list()
     },
 
-    async get_maker_list() {
-      const api = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
-      const params = new URLSearchParams();
-
-      params.append('Table', 'Car_Maker')
-      const response = await Axios.post(api, params)
-
-      if (response.data.length === 0) {
-        console.log('Table: Car_Maker Error')
-      } else if (response.data.length !== 0) {
-        this.Car_list_forAdd = response.data
-      }
+    destroyed() {
+        window.removeEventListener('resize', this.handleResize)
     },
 
-    handleResize() {
-      this.window.width = window.innerWidth;
-      this.window.height = window.innerHeight;
-    },
+    methods: {
+        fullname() {
+            this.dialog = true
+        },
 
-  },
+        insert_booking() {
+            this.booking_loading = true
+            const api = 'https://testtingfuck.000webhostapp.com/Booking.php';
+            console.log(this.booking)
+            alert('asdsadsaads')
+            const booking_params = new URLSearchParams();
+
+            booking_params.append('name', this.booking.name)
+            booking_params.append('lastname', this.booking.lastname)
+            booking_params.append('lineID', this.booking.lineID)
+            booking_params.append('tel', this.booking.tel)
+            booking_params.append('Email', this.booking.Email)
+            booking_params.append('car_brand', this.booking.car_brand)
+            booking_params.append('car_model', this.booking.car_model)
+            booking_params.append('car_year', this.booking.car_year)
+            booking_params.append('come_in_date', '20190416')
+            booking_params.append('broken_desc', this.booking.broken_desc)
+
+            Axios.post(api, booking_params)
+                .then((response) => {
+                    const readData = response.data
+                    console.log(response.data)
+                    if (response.data === 1) {
+                        this.alertInsert = true
+                    } else {
+                        this.ErrorInsert = true
+                    }
+
+                    this.booking_loading = false
+                })
+        },
+
+        checkUser() {
+            this.loading = true
+            this.loading_color = 'red'
+            console.log('in methods')
+            const api = 'https://testtingfuck.000webhostapp.com/checklogin.php';
+            const LoginParams = new URLSearchParams();
+
+            LoginParams.append('username', this.login_data.username)
+            LoginParams.append('password', this.login_data.password)
+
+            Axios.post(api, LoginParams)
+                .then((response) => {
+                    const readData = response.data
+                    console.log('loooooop =', readData.length)
+                    console.log(response.data[0].User_Type)
+                    // eslint-disable-next-line eqeqeq
+                    if (readData.length === 0) {
+                        console.log('wrong pass or username')
+                        alert('Wrong pass or username,Please try again')
+                    } else if (readData !== 0) {
+                        // router.push('/about');
+                        this.$session.start()
+                        const Utype = response.data[0].User_Type
+                        this.Store.User_type_store = Utype
+                        console.log(response.data[0].User_Type)
+                        if (Utype === 'Admin') {
+                            this.Store.display_page = 'AdminPage'
+                        } else if (Utype === 'Customer') {
+                            this.Store.display_page = 'CustomerUse'
+                        } else if (Utype === 'Employee') {
+                            this.Store.display_page = 'MechanicUse'
+                        }
+                        // alert(this.Store.display_page)
+                        this.$session.set('usersloggedin', response.data[0].Owner_ID)
+                        this.$session.set('userType', Utype)
+                        this.Store.IDforSELECT = response.data[0].Owner_ID
+                        console.log(`store id=${this.Store.IDforSELECT}`)
+                        this.Store.login_page = false
+                    }
+                    this.loading = false
+                    this.loading_color = 'success'
+                })
+        },
+
+        async get_maker_list() {
+            const api = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
+            const params = new URLSearchParams();
+
+            params.append('Table', 'Car_Maker')
+            const response = await Axios.post(api, params)
+
+            if (response.data.length === 0) {
+                console.log('Table: Car_Maker Error')
+            } else if (response.data.length !== 0) {
+                this.Car_list_forAdd = response.data
+            }
+        },
+
+        handleResize() {
+            this.window.width = window.innerWidth;
+            this.window.height = window.innerHeight;
+        },
+
+    },
 }
 </script>
