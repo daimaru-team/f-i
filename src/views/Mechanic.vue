@@ -14,8 +14,9 @@
         <v-expansion-panel-content :key="item.Emp_ID" v-for="item in GetData_Emp">
             <template v-slot:header>
                 <div>
-                    <h3><b>{{item.Emp_ID}}::</b> {{item.Emp_Name}} {{item.Emp_Lname}}
-                        <v-icon color="amber accent-4">build</v-icon>
+                    <h3><v-icon color="amber accent-4">build</v-icon> <b> {{item.Emp_ID}} | </b> {{item.Mac_Name}} - {{item.Pos_Name}}
+                        
+
                     </h3>
                 </div>
             </template>
@@ -34,9 +35,9 @@
                                 </v-flex>
                                 <v-flex mt-3 ml-3>
                                     <p><b> เลขที่บัตรประชาชน :</b> 232301040-1-301-3132 </p>
-                                    <p><b> ชื่อ-สกุล :</b> {{item.Emp_Name}} {{item.Emp_Lname}} </p>
+                                    <p><b> ชื่อ-สกุล :</b> {{item.Mac_Name}}</p>
                                     <p><b> ชื่อเล่น :</b> {{item.Nickname}} </p>
-                                    <p><b> ตำแหน่ง :</b> {{item.Pos_ID}} </p>
+                                    <p><b> ตำแหน่ง :</b> {{item.os_Name}} </p>
                                     <p><b> อายุ :</b> {{calculate_age(item.Birthday)}}</p>
                                     <!-- {{calculate_age(item.Birthday)}} -->
                                     <p><b> วันเกิด :</b> {{item.Birthday}}</p>
@@ -46,7 +47,7 @@
                                     <p><b> Line ID :</b> {{item.LineID}}</p>
                                     <p><b> Email :</b> {{item.Email}}</p>
                                     <p><b> เงินเดือน :</b> {{item.Salary}}</p>
-                                    <p><b> ความถนัด :</b> {{item.speciality}} </p>
+                                    <p><b> ความถนัด :</b> {{item.Speciality}} </p>
                                 </v-flex>
 
                                 <v-divider></v-divider>
@@ -379,7 +380,7 @@ export default {
   created() {
     window.addEventListener('resize', this.handleResize)
     this.handleResize();
-    const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
+    const api = 'https://testtingfuck.000webhostapp.com/select_display_emp.php';
     // eslint-disable-next-line camelcase
     const Emp_params = new URLSearchParams();
     let readData = new Array();

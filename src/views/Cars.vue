@@ -13,7 +13,7 @@
 
             <template v-slot:header>
                 <div>
-                    <h3>{{item.W_ID}} - {{item.License_plate}}
+                    <h3>{{item.W_ID}} | {{item.CM_Name}} {{item.Model}} - {{item.License_plate}}
                         <v-icon color="amber accent-4">mail</v-icon>
                     </h3>
                 </div>
@@ -30,7 +30,9 @@
                                 <v-divider></v-divider>
                                 <v-divider></v-divider>
                                 <v-flex mt-2>
-                                    <h2><v-icon> fiber_manual_record</v-icon> รายระเอียดงาน</h2><br/>
+                                    <h2>
+                                        <v-icon> list_alt</v-icon> รายระเอียดงาน
+                                    </h2><br/>
                                     <v-flex ml-3>
                                         <p><b> Car :</b> {{item.CM_Name}} {{item.Model}} </p>
                                         <p><b> Year :</b> {{item.Car_Year}}</p>
@@ -67,7 +69,7 @@
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
-                                            <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                            <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,getDataDeletegetDataDelete(item.W_ID),alert = false">
                                                 <v-icon dark>delete_forever</v-icon>
                                             </v-btn>
                                         </template>
@@ -152,7 +154,7 @@
                         </v-card-title>
 
                         <v-card-text>
-                            <h4>Work ID : {{item.W_ID}} <br/> คุณต้องลบรายการนี้หรือไม่ ?</h4>
+                            <h4>Work ID : {{WidForDeleteBT}} <br/> คุณต้องลบรายการนี้หรือไม่ ?</h4>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -255,17 +257,21 @@
                                 </v-flex>
                                 <v-flex xs1 md1 xl1 lg1 sm1 mr-2>
                                     <v-btn fab small color="red" class="white--text" @click="dialog_Timeline = false,alert = !alert">
-                                        <v-icon>chevron_right</v-icon>
+                                        <v-icon>logout</v-icon>
                                     </v-btn>
                                 </v-flex>
 
                             </v-layout>
                         </v-flex>
-                        <v-flex pr-2 pl-2>
-                            <v-layout justify-center>
-                                <v-timeline dense clipped>
+                        <v-flex pr-3 pl-3>
+                            <v-layout justify-space-around>
+                                <v-timeline dense clipped class="">
 
-                                    <v-timeline-item class="mb-3" small v-for="timelineItem in timelineWID.timeline">
+                                    <v-timeline-item color="grey darken-3" class="mb-4">
+                                        <h3>{{item.W_ID}}</h3>
+                                    </v-timeline-item>
+
+                                    <v-timeline-item color="red" class="mb-3" small v-for="timelineItem in timelineWID.timeline">
                                         <v-card class="elevation-15">
                                             <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
                                                 <v-flex xs7>
@@ -326,7 +332,7 @@
 
                             <v-layout wrap pl-4 pr-4 pb-3>
                                 <v-flex xs12 sm12 md12 mt-2>
-                                    <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#"></v-text-field>
+                                    <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#" append-icon="search"></v-text-field>
                                 </v-flex>
 
                                 <v-flex xs12 sm6 md6 pr-3>
@@ -491,6 +497,7 @@ export default {
   },
   data() {
     return {
+      WidForDeleteBT: '',
       pId: '',
       pIdRules: [
         v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
@@ -609,9 +616,49 @@ export default {
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
   },
+  beforeCreate() {
+    const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
+    const Emp_params = new URLSearchParams();
+    let readData = new Array();
+    Emp_params.append('Table', 'WorkInProcess')
+    // eslint-disable-next-line global-require
+    Axios.post(api, Emp_params)
+      .then((response) => {
+        readData = response.data
+        console.log('loooooop =', readData.length)
+        // eslint-disable-next-line eqeqeq
+        if (readData.length == 0) {
+          alert('table is null or error')
+          // eslint-disable-next-line eqeqeq
+        } else if (readData != 0) {
+          console.log(readData)
+          this.Mac_for_newQ = readData
+        }
+      })
+    const api_car_list = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
+    const CMread = new Array();
+    const car_read_params = new URLSearchParams();
+    car_read_params.append('Table', 'Car_Maker')
+    // eslint-disable-next-line global-require
+    Axios.post(api_car_list, car_read_params)
+      .then((response) => {
+        this.Car_list_forAdd = response.data
+        if (this.Car_list_forAdd.length === 0) {
+          alert('table is null or error')
+        } else if (this.Car_list_forAdd.length !== 0) {
+          console.log()
+        }
+      })
+  },
   methods: {
     getDataExpans(data) {
       this.timelineWID = data
+      //   console.log('kkkkkkkk',this.timelineWID)
+    },
+    getDataDelete(data) {
+      console.log('data delete=', data)
+      this.WidForDeleteBT = data
+      // this.Get_Data_WID.W_ID = data
       //   console.log('kkkkkkkk',this.timelineWID)
     },
     moment() {

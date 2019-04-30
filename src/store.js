@@ -17,6 +17,7 @@ const staticState = {
   CustomerUse_page: false,
   login_page: true,
   display_page: 'Login',
+  item_wid_delete: '',
 
 
 };

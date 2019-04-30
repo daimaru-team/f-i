@@ -3,21 +3,16 @@
 <v-app>
   <v-toolbar class="v-toolbar v-toolbar--clipped v-toolbar--fixed theme--dark red elevation-6" height="50" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
     <v-layout>
-            <v-flex v-if="window.width > 1300" headline xs12 sm2 md2 ml-3></v-flex>
-            <v-flex v-if="window.width > 1000 && window.width < 1300" headline xs12 sm3 md3 mr-2></v-flex>
-
-            <v-flex headline xs3 sm1 md3>{{this.HeaderTxt}}</v-flex>
-          <v-flex v-if="window.width < 600" subheading xs5 sm1 md3 mt-2 mr-3 class="text-xs-center">{{moment(myDate).format('DD / MM / YYYY')}}</v-flex>
+            <v-flex v-if="window.width > 1200" style="padding: 0px 10px 0px 0px;"></v-flex>
+            <v-flex headline xs3 sm1 md3 ml-5>{{this.HeaderTxt}} {{window.width}}</v-flex>
+          <v-flex v-if="window.width < 600" subheading xs5 sm1 md3 mt-2 mr-3 class="text-xs-center">มากกว่า 600 {{moment(myDate).format('DD / MM / YYYY')}}</v-flex>
           <v-flex v-if="window.width > 600" xs5 sm1 md4 mr-3 class="text-xs-center"><h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1></v-flex>
-          <v-flex v-if="window.width > 600" xs3 sm1 md3 headline mr-3 class="text-xs-right"><span><digital-clock :blink="true"/></span></v-flex>
-                <v-flex xs3 sm1 md1>
-                  <v-btn-toggle v-model="toggle_exclusive">
-                    <v-btn small  color="blue">Pending</v-btn>
-                    <v-btn small color="blue">Ago</v-btn>
-                  </v-btn-toggle>
-                </v-flex>
-    </v-layout>
+          <v-flex v-if="window.width > 600" headline mr-3 class="text-xs-right"><span><digital-clock :blink="true"/></span></v-flex>
 
+    </v-layout>
+<v-btn dark icon @click.stop="dialog_Morword= true">
+              <v-icon>more_vert</v-icon>
+            </v-btn>
   </v-toolbar>
 
   <v-navigation-drawer v-model="drawer" class="grey darken-4" app dark fixed hide-overlay width="250">
@@ -54,18 +49,29 @@
           </v-list-tile>
       </v-list>
   </v-navigation-drawer>
+<v-flex>
+  <v-layout justify-start>
 
   <main v-if="window.width < 600" class="v-content" style="padding: 47px 0px 0px 0px;">
-
+  
     <router-view/>
    <v-btn small fab bottom dark fixed left color="black" v-on="on" style="margin-top:0px;"  @click.stop="drawer = !drawer">
        >>
     </v-btn>
 
   </main>
-  <main v-if="window.width > 600" class="v-content" style="padding: 47px 0px 0px 250px;">
+  <main v-if="window.width > 1200" class="v-content" style="padding: 47px 0px 0px 251px;">
     <router-view/>
   </main>
+  <main v-else-if="window.width < 1200"   class="v-content" style="padding: 47px 0px 0px 0px;">
+    <router-view/>
+       <v-btn small fab bottom dark fixed left color="black" v-on="on" style="margin-top:0px;"  @click.stop="drawer = !drawer">
+       >>
+    </v-btn>
+  </main>
+  </v-layout>
+
+</v-flex>
 
     <v-dialog v-model="dialog_Morword" max-width="350">
       <v-card>
