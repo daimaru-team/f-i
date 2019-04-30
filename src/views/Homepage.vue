@@ -2,13 +2,38 @@
 <div>
 <v-app>
   <v-toolbar class="v-toolbar v-toolbar--clipped v-toolbar--fixed theme--dark red elevation-6" height="50" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
-    <v-layout>
-          <v-flex v-if="window.width > 1200" style="padding: 0px 35px 0px 0px;"></v-flex>
-          <v-flex ml-5> <h3>{{this.HeaderTxt}} {{window.width}} </</v-flex>
-          <v-flex v-if="window.width < 600" subheading xs5 sm1 md3 mt-2 mr-3 class="text-xs-center">มากกว่า 600 {{moment(myDate).format('DD / MM / YYYY')}}</v-flex>
-          <v-flex v-if="window.width > 600" xs5 sm1 md4 mr-3 class="text-xs-center"><h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1></v-flex>
-          <v-flex v-if="window.width > 600" headline mr-3 class="text-xs-right"><span><digital-clock :blink="true"/></span></v-flex>
+    <v-layout v-if="window.width > 1200">
+    
+          <v-flex style="padding: 0px 0px 0px 0px;"></v-flex>
+          <v-flex xs3 sm3 md3 ml-4> <h1>{{this.HeaderTxt}}  </h1> </v-flex>
 
+          <v-flex xs3 sm3 md3 font-weight-black font-italic class="text-xs-center"><h1><span><digital-clock :blink="true"/></span></h1></v-flex>
+          <v-flex  class="text-xs-right"><h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1></v-flex>
+
+    </v-layout>
+    <v-layout v-else-if="window.width < 1200 && window.width > 500"  >
+    
+                    
+          <v-flex xs4 sm4 md4> <h1>{{this.HeaderTxt}}  </h1> </v-flex>
+
+          <v-flex xs4 sm4 md4 class="text-xs-center">
+            <v-layout justify-center>
+            <h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1>
+            </v-layout>
+          </v-flex>
+          <v-flex xs4 sm4 md4 headline font-weight-black font-italic class="text-xs-right"><span><digital-clock :blink="true"/></span></v-flex>
+    </v-layout>
+    <v-layout v-else-if="window.width < 500"  >
+    
+                    
+          <v-flex xs5 sm5 md5> <h2>{{this.HeaderTxt}} </h2> </v-flex>
+
+
+          <v-flex xs3 sm3 md3 headline class="text-xs-right">
+            <v-layout justify-center>
+            <span><digital-clock :blink="true"/></span>
+            </v-layout>
+          </v-flex>
     </v-layout>
 <v-btn dark icon @click.stop="dialog_Morword= true">
               <v-icon>more_vert</v-icon>
@@ -28,7 +53,7 @@
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>{{this.UserData[0].Emp_Name}} {{this.UserData[0].Emp_Lname}}</v-list-tile-title>
-              <h6># Online</h6>
+              <h6># {{window.width}}</h6>
             </v-list-tile-content>
             <v-btn dark icon @click.stop="dialog_Morword= true">
               <v-icon>more_vert</v-icon>
@@ -49,6 +74,7 @@
           </v-list-tile>
       </v-list>
   </v-navigation-drawer>
+
 <v-flex>
   <v-layout justify-start>
 
