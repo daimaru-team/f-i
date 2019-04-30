@@ -169,7 +169,7 @@ export default {
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
   },
-  
+
   methods: {
     moment() {
       return moment();

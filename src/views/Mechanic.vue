@@ -15,7 +15,7 @@
             <template v-slot:header>
                 <div>
                     <h3><v-icon color="amber accent-4">build</v-icon> <b> {{item.Emp_ID}} | </b> {{item.Mac_Name}} - {{item.Pos_Name}}
-                        
+
 
                     </h3>
                 </div>

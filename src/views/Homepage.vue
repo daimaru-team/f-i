@@ -3,8 +3,8 @@
 <v-app>
   <v-toolbar class="v-toolbar v-toolbar--clipped v-toolbar--fixed theme--dark red elevation-6" height="50" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
     <v-layout>
-            <v-flex v-if="window.width > 1200" style="padding: 0px 10px 0px 0px;"></v-flex>
-            <v-flex headline xs3 sm1 md3 ml-5>{{this.HeaderTxt}} {{window.width}}</v-flex>
+          <v-flex v-if="window.width > 1200" style="padding: 0px 35px 0px 0px;"></v-flex>
+          <v-flex ml-5> <h3>{{this.HeaderTxt}} {{window.width}} </</v-flex>
           <v-flex v-if="window.width < 600" subheading xs5 sm1 md3 mt-2 mr-3 class="text-xs-center">มากกว่า 600 {{moment(myDate).format('DD / MM / YYYY')}}</v-flex>
           <v-flex v-if="window.width > 600" xs5 sm1 md4 mr-3 class="text-xs-center"><h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1></v-flex>
           <v-flex v-if="window.width > 600" headline mr-3 class="text-xs-right"><span><digital-clock :blink="true"/></span></v-flex>
@@ -53,7 +53,7 @@
   <v-layout justify-start>
 
   <main v-if="window.width < 600" class="v-content" style="padding: 47px 0px 0px 0px;">
-  
+
     <router-view/>
    <v-btn small fab bottom dark fixed left color="black" v-on="on" style="margin-top:0px;"  @click.stop="drawer = !drawer">
        >>
