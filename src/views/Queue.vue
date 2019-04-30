@@ -391,7 +391,7 @@
 
                             <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                                 <v-flex xs12 sm6 md6 pr-3>
-                                    <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name" v-on:change="Gen_ID_Car()" single-line return-object></v-autocomplete>
+                                    <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' required value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name" v-on:change="Gen_ID_Car()" single-line return-object></v-autocomplete>
                                 </v-flex>
                                 <v-flex xs12 sm6 md6>
                                     <v-text-field label="รุ่น" v-model="model" :rules="modelRules" required></v-text-field>
@@ -651,7 +651,8 @@ export default {
       menu1: false,
       menu2: false,
       search: '',
-
+      dataCustomer: '',
+      dataWorkInProcess: '',
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
       Mac_for_newQ: [],
@@ -708,6 +709,28 @@ export default {
       this.dialog_Insert = false
       this.alert = !this.alert
       this.QrPic = true
+    },
+    async getDataDisplay() {
+      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
+      const paramKey = new URLSearchParams();
+      paramKey.append('key', this.Store.IDforSELECT)
+      const responseCus = await Axios.post(apiCus, paramKey)
+      this.dataCustomer = responseCus.data
+
+      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
+      const responseWip = await Axios.post(apiWIP, paramKey)
+      this.dataWorkInProcess = responseWip.data
+
+      if (this.dataWorkInProcess.length === 0) {
+        alert('Work in process is null')
+      } else {
+        console.log(this.dataWorkInProcess)
+      }
+      if (this.dataCustodataWorkInProcessmer.length === 0) {
+        alert('Customer table is null')
+      } else {
+        console.log(this.dataCustomer)
+      }
     },
     validate() {
       console.log('TESt');

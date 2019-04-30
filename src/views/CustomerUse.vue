@@ -1,225 +1,256 @@
 <template>
-  <v-app>
+<v-app>
     <div>
-      <v-toolbar class="v-toolbar--fixed theme--dark red elevation-6">
-        <v-flex title>
-          F&I Garage
-        </v-flex>
-        <h3>Username</h3>
-        <v-avatar>
-          <v-btn icon @click.stop="dialog_Detail= true">
-            <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20">
-          </v-btn>
-        </v-avatar>
-        <v-btn dark icon @click.stop="dialog_Detail= true">
-          <v-icon>more_vert</v-icon>
-        </v-btn>
-      </v-toolbar>
+        <v-toolbar class="v-toolbar--fixed theme--dark red elevation-6" height="50">
 
-      <v-card height="60"></v-card>
-      <main class="v-content__wrap" full-hight>
-        <v-expansion-panel focusable>
-          <v-expansion-panel-content v-for="(item,i) in 3" :key="i">
-            <template v-slot:header>
-              <div><h3>Toyota Revo 2.4J<v-icon color="amber accent-4">mail</v-icon></h3></div>
-            </template>
-        <v-card color="grey lighten-3">
-          <v-tooltip left color="blue">
-            <template v-slot:activator="{ on }">
-                <v-btn fab dark fixed right color="blue" v-on="on" style="margin-top:10px;" @click.stop = "dialog_Chat= true">
-                      <v-icon dark>chat</v-icon>
-                </v-btn>
-            </template>
-            <span>ส่งข้อความเพื่อสื่อสารกับช่าง</span>
-           </v-tooltip>
-            <v-card-text class="grey lighten-3">
-              <p><b> Car :</b> Toyota  </p>
-              <p><b> รุ่น :</b> Revo 2.4L </p>
-              <p><b> ปี :</b> 2014</p>
-              <p><b> ทะเบียน :</b> 61160 </p>
-              <p><b> อาการ/สาเหตุ :</b> สตาร์ทไม่ติด คล้ายไฟไม่ชาจต์</p>
-              <p><b> ช่างผู้รับผิดชอบ :</b> M.Phonpisud Sumangsa</p>
-              <p><b> วันเริ่มงาน :</b> 13/12/2561</p>
-              <p><b> วันส่งงาน :</b> 13/12/2561</p>
-               <p><b> Status :</b> อยู่ระหว่างดำเนินการ
-                <!-- สถานะเสร็จ -->
-                <v-icon v-if="1==1" color="amber accent-4" >error</v-icon>
-                <!-- สถานะยังไม่เสร็จ -->
-                <v-icon v-if="0==1" color="green">offline_pin</v-icon>
-              </p>
-            </v-card-text>
-                  <v-flex xs12 class="text-xs-center">
-                    <v-card dark color="blue darken-3">
-                      <v-card-text class="px-0"><h2>Timeline</h2> </v-card-text>
-                    </v-card>
-                  </v-flex>
-          <v-flex mt-1>
-            <v-layout justify-center>
-            <v-card max-width="1000px">
-              <v-flex ml-3 mr-3>
-                <v-timeline dense clipped>
-                  <v-slide-x-transition group>
-                    <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="pink" small>
-                      <v-layout justify-space-between>
-                        <v-flex xs7 v-text="event.text"></v-flex>
-                        <v-flex xs5 text-xs-right v-text="event.time"></v-flex>
-                      </v-layout>
-                    </v-timeline-item>
-                  </v-slide-x-transition>
-
-                  <v-timeline-item class="mb-4" hide-dot>
-                    <span>TODAY</span>
-                  </v-timeline-item>
-
-                  <v-timeline-item class="mb-3" color="grey" icon-color="grey lighten-2" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>This order was archived.</v-flex>
-                      <v-flex xs5 text-xs-right>15:26 EDT</v-flex>
+            <v-layout md12 wrap>
+                <v-flex style="padding: 10px 0px 0px 0px;">
+                    <h1>F&I Garage</h1>
+                </v-flex>
+                <v-flex md6>
+                    <v-layout justify-end>
+                        <v-avatar>
+                            <v-btn small icon @click.stop="dialog_Detail= true">
+                                <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20">
+                        </v-btn>
+                        </v-avatar>
+                        <v-btn dark icon @click.stop="dialog_Detail= true">
+                            <v-icon>more_vert</v-icon>
+                        </v-btn>
                     </v-layout>
-                  </v-timeline-item>
+                </v-flex>
 
-                  <v-timeline-item class="mb-3" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        <v-chip class="white--text ml-0" color="purple" label small>
-                          APP
-                        </v-chip>
-                        Digital Downloads fulfilled 1 item.
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
-
-                  <v-timeline-item class="mb-3" color="grey" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        Order confirmation email was sent to John Leider (john@vuetifyjs.com).
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
-
-                  <v-timeline-item class="mb-3" hide-dot>
-                    <v-btn class="mx-0" color="white">
-                      Resend Email
-                    </v-btn>
-                  </v-timeline-item>
-
-                  <v-timeline-item class="mb-3" color="grey" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        A $15.00 USD payment was processed on PayPal Express Checkout
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
-
-                  <v-timeline-item color="grey" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        John Leider placed this order on Online Store (checkout #1937432132572).
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
-                </v-timeline>
-              </v-flex>
-            </v-card>
             </v-layout>
-          </v-flex>
 
-        </v-card>
-         <v-divider class="grey darken-4"></v-divider>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
+        </v-toolbar>
+
+        <main class="v-content__wrap" full-hight style="padding: 50px 0px 0px 0px;">
+            <v-expansion-panel focusable>
+                <v-expansion-panel-content v-for="(item,i) in 3" :key="i">
+                    <template v-slot:header>
+                        <div>
+                            <h3>Toyota Revo 2.4J<v-icon color="amber accent-4">mail</v-icon>
+                            </h3>
+                        </div>
+                    </template>
+                    <v-card color="grey lighten-3">
+                        <v-flex>
+                            <v-layout>
+                                <v-flex md11 xl11 sm11 lg11 xs11>
+                                    <v-card-text class="grey lighten-3">
+                                        <v-flex mb-2 ml-1>
+                                            <h2><b> Booking ID :</b> {{item.book_ID}} </h2>
+                                        </v-flex>
+                                        <v-divider></v-divider>
+                                        <v-divider></v-divider>
+                                        <v-flex mt-2>
+                                            <v-flex mt-2 headline font-weight-bold>
+                                                <v-icon>person</v-icon> รายระเอียดงาน
+                                            </v-flex>
+                                            <v-flex mt-3 ml-3>
+                                                <p><b> Car :</b> Toyota </p>
+                                                <p><b> รุ่น :</b> Revo 2.4L </p>
+                                                <p><b> ปี :</b> 2014</p>
+                                                <p><b> ทะเบียน :</b> 61160 </p>
+                                                <p><b> อาการ/สาเหตุ :</b> สตาร์ทไม่ติด คล้ายไฟไม่ชาจต์</p>
+                                                <p><b> ช่างผู้รับผิดชอบ :</b> M.Phonpisud Sumangsa</p>
+                                                <p><b> วันเริ่มงาน :</b> 13/12/2561</p>
+                                                <p><b> วันส่งงาน :</b> 13/12/2561</p>
+                                                <p><b> Status :</b> อยู่ระหว่างดำเนินการ</p>
+                                            </v-flex>
+                                        </v-flex>
+                                        <v-flex mt-2>
+                                            <h3>
+                                                <p v-if="item.confirm_status==='0'"><b> Status :</b> รอยืนยัน
+                                                    <!-- สถานะเสร็จ -->
+                                                    <v-icon color="amber accent-4">error</v-icon>
+                                                </p>
+                                                <p v-if="item.confirm_status==='1'"><b> Status :</b> ยืนยันการจอง
+                                                    <!-- สถานะยังไม่เสร็จ -->
+                                                    <v-icon color="green">offline_pin</v-icon>
+                                                </p>
+                                            </h3>
+
+                                        </v-flex>
+                                    </v-card-text>
+                                </v-flex>
+                                <v-flex md1 xl1 sm1 lg1 xs1 mr-1 class="grey lighten-3">
+                                    <v-layout justify-end wrap>
+
+                                        <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+                                            <v-tooltip left>
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_About = true,getDataDeletegetDataDelete(item.W_ID),alert = false">
+                                                        <v-icon dark>contact_phone</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <span>เกี่ยวกับ</span>
+                                            </v-tooltip>
+                                        </v-flex>
+                                        <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+                                            <v-tooltip left>
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn small fab dark right color="blue" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Timeline = true,getDataExpans(item)">
+                                                        <v-icon dark>storage</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <span>ไทม์ไลน์</span>
+                                            </v-tooltip>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+
+                    </v-card>
+                    <v-divider class="grey darken-4"></v-divider>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
         </main>
 
-
-      <v-dialog v-model="dialog_Detail" max-width="350">
-              <v-card>
-                          <v-list>
-                            <v-list-tile avatar>
-                              <v-list-tile-avatar>
-                                <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+        <v-dialog v-model="dialog_Detail" max-width="350">
+            <v-card>
+                <v-list>
+                    <v-list-tile avatar>
+                        <v-list-tile-avatar>
+                            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
                               </v-list-tile-avatar>
 
-                              <v-list-tile-content>
+                            <v-list-tile-content>
                                 <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
                                 <v-list-tile-sub-title>Customer</v-list-tile-sub-title>
-                              </v-list-tile-content>
+                            </v-list-tile-content>
 
-                              <v-list-tile-action>
-                                <v-btn color="blue" icon flat @click= "dialog_logout = true"><v-icon>logout</v-icon></v-btn>
-                              </v-list-tile-action>
-                            </v-list-tile>
+                            <v-list-tile-action>
+                                <v-btn color="blue" icon flat @click="dialog_logout = true">
+                                    <v-icon>logout</v-icon>
+                                </v-btn>
+                            </v-list-tile-action>
+                    </v-list-tile>
 
-                          </v-list>
-                          <v-divider></v-divider>
-                            <v-card-text>
-                            <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
-                            <v-list-tile-title  v-for="(item,i) in items_Cars" :key="i">Car {{i+1}}:{{items_Cars}}</v-list-tile-title>
+                </v-list>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
+                    <v-list-tile-title v-for="(item,i) in items_Cars" :key="i">Car {{i+1}}:{{items_Cars}}</v-list-tile-title>
 
-                            </v-card-text>
-                          <v-divider></v-divider>
+                </v-card-text>
+                <v-divider></v-divider>
 
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
 
-                            <v-btn color="primary" flat @click="dialog_Detail = false">OK</v-btn>
-                          </v-card-actions>
+                    <v-btn color="primary" flat @click="dialog_Detail = false">OK</v-btn>
+                </v-card-actions>
 
-                </v-card>
-              </v-dialog>
+            </v-card>
+        </v-dialog>
 
-              <v-dialog v-model="dialog_Chat" max-width="700">
-                <v-app>
-                  <v-card height="500" width="700" flat>
-                    <v-layout row wrap>
-                      <v-flex>
-                        <v-card height="50" color="blue">
-                          <v-card-text class="px-2"><h3>Chat room</h3> </v-card-text>
-                        </v-card>
-                      </v-flex>
+        <v-dialog v-model="dialog_About" max-height="900">
+
+            <v-card height="100%" style="border-radius:60px 0px 60px 0px">
+                <v-flex>
+                    <v-layout justify-center style="padding: 25px 0px 0px 0px;">
+                        <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="240" height="80">
                     </v-layout>
-                    <div class="headline text-xs-center pa-5">
-                      This Chat ...
-                      dsdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                      asdggggggggggggggggggggggggggggggggggggggggggggggggggggasdgasd
-                    </div>
+                        <v-btn fab small color="red" class="white--text" @click="dialog_About = false,alert = !alert">
+                            <v-icon>logout</v-icon>
+                        </v-btn>
+                        <v-flex ml-4 mr-4>
+                            <v-flex ml-1 mb-2 font-italic class="text-xs-center">
+                                <h2>F&I Garage customer service</h2>
 
-      <v-dialog v-model="dialog_logout" max-width="300">
-        <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>F&I Garage</v-card-title>
-            <v-card-text>Do you want to logout?</v-card-text>
-              <v-card-actions><v-spacer></v-spacer>
-                <v-btn color="blue white--text" @click="dialog_logout = false">No</v-btn>
-                <v-btn color="blue white--text" @click="dialog_logout = false">Yes</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-bottom-nav :active.sync="bottomNav" :value="true" absolute color="transparent" >
-        <v-layout>
-          <v-text-field solo></v-text-field>
-            <v-btn><v-icon>send</v-icon></v-btn>
-        </v-layout>
-      </v-bottom-nav>
-    </v-card>
-  </v-app>
-  </v-dialog>
+                            </v-flex>
+                            <v-divider></v-divider>
+                            <v-divider></v-divider>
+                            <v-divider></v-divider>
+                            <v-divider></v-divider>
+                            <v-flex ml-2>
+                                <v-flex>
+                                    <v-layout justify-center mt-4>
+                                        <img src="https://image.flaticon.com/icons/svg/81/81070.svg" width="200" height="200">
+                          </v-layout>
+                                </v-flex>
+                                <v-flex mt-3>
+                                    <v-card color="grey darken-4" class="white--text" style="border-radius:70px 0px 70px 0px">
+                                        <v-card-text>
+                                            <v-layout wrap>
 
+                                                <v-flex>
+                                                    <h1 class="text-xs-center red--text">ข้อมูลช่าง</h1>
+                                                    <h3 class="text-xs-center">F&I GARAGE</h3>
+                                                </v-flex>
 
-</div>
-   </v-app>
+                                            </v-layout>
+                                        </v-card-text>
+
+                                        <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
+                                            <v-layout wrap>
+
+                                                <v-card-text>ข้อมูลส่วนตัว</v-card-text>
+                                                <v-flex mb-5>
+                                                    <v-card elevation="0" color="grey lighten-3" width="100%" style="border-radius:40px 0px 40px 0px">
+
+                                                        <v-layout wrap pl-4 pr-4 pb-3>
+
+                                                            <v-flex xs12 sm6 md6 pr-3>
+                                                                <v-text-field label="ชื่อ" readonly :value="window.width"></v-text-field>
+
+                                                            </v-flex>
+
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-text-field label="นามสกุล"></v-text-field>
+                                                            </v-flex>
+
+                                                            <v-flex xs12 sm12 md12>
+                                                                <v-text-field label="ที่อยู่ปัจจุบัน"></v-text-field>
+                                                            </v-flex>
+
+                                                            <v-flex xs12 sm6 md6 pr-3>
+                                                                <v-text-field label="วันเกิด"></v-text-field>
+                                                            </v-flex>
+
+                                                            <v-flex xs12 sm6 md6>
+
+                                                                <v-text-field label="อีเมล์*"></v-text-field>
+
+                                                            </v-flex>
+
+                                                            <v-flex xs12 sm6 md6 pr-3>
+                                                                <v-text-field label="Line ID"></v-text-field>
+                                                            </v-flex>
+
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-text-field label="เบอร์โทร"></v-text-field>
+                                                            </v-flex>
+                                                        </v-layout>
+
+                                                    </v-card>
+                                                </v-flex>
+
+                                            </v-layout>
+                                        </v-container>
+                                        <!-- <small>*indicates required field</small> -->
+
+                                    </v-card>
+                                </v-flex>
+                            </v-flex>
+                        </v-flex>
+                </v-flex>
+            </v-card>
+
+        </v-dialog>
+
+    </div>
+</v-app>
 </template>
-
 
 <script>
 // eslint-disable-next-line no-unused-vars
 import {
   fas,
 } from '@fortawesome/free-solid-svg-icons'
-  // eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
 import {
   FontAwesomeIcon,
 } from '@fortawesome/vue-fontawesome'
@@ -252,9 +283,14 @@ export default {
   },
   data() {
     return {
+      window: {
+        width: 0,
+        height: 0,
+      },
       dialog_Detail: false,
       dialog_logout: false,
       dialog_Chat: false,
+      dialog_About: false,
       events: [],
       input: null,
       nonce: 0,
@@ -281,52 +317,54 @@ export default {
       items_More: [{
         title: 'Logout',
       }],
-      items: [{
-        key: 'Queue',
-        title: 'Qeue Management',
-        // icon: 'dashboard'
-        link: '/Queue',
-        name: 'Queue',
-      },
-      {
-        key: 'Customer',
-        title: 'Customer Ser',
-        // icon: 'question_answer'<v-icon>home</v-icon>
-        link: '/Customer',
-        name: 'Customer',
-      },
-      {
-        key: 'Mechanic',
-        title: 'Mechanic',
-        // icon: 'question_answer'
-        link: '/Mechanic',
-        name: 'Mechanic',
-      },
-      {
-        key: 'Cars',
-        title: 'Cars in stock',
-        // icon: 'question_answer'
-        link: '/Cars',
-        name: 'Cars',
-      },
-      {
-        key: 'Celender',
-        title: 'Celenders work',
-        // icon: 'question_answer'
-        link: '/Celenders',
-        name: 'Celenders',
-      },
-      {
-        key: 'History',
-        title: 'History',
-        // icon: 'question_answer'
-        link: '/History',
-        name: 'History',
-      },
-      ],
-      items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+    
       right: null,
     }
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize();
+    const api = 'https://testtingfuck.000webhostapp.com/select_display_emp.php';
+    // eslint-disable-next-line camelcase
+    const Emp_params = new URLSearchParams();
+    let readData = new Array();
+    Emp_params.append('Table', 'Employee')
+    // eslint-disable-next-line global-require
+    Axios.post(api, Emp_params)
+      .then((response) => {
+        readData = response.data
+        console.log('loooooop =', readData.length)
+        // eslint-disable-next-line eqeqeq
+        if (readData.length == 0) {
+          console.log('wrong pass or username')
+          alert('table is null or error')
+          // eslint-disable-next-line eqeqeq
+        } else if (readData != 0) {
+          console.log('reading')
+          this.GetData_Emp = readData
+          console.log('tst')
+          console.log(this.GetData_Emp.data)
+          // eslint-disable-next-line no-unused-vars
+          const aaa = this.calculate_age(this.GetData_Emp[0].Birthday)
+        }
+      })
+    const WID_params = new URLSearchParams();
+    let readData2 = new Array();
+    WID_params.append('Table', 'WorkInProcess')
+    // eslint-disable-next-line global-require
+    Axios.post(api, WID_params)
+      .then((response) => {
+        readData2 = response.data
+        console.log('loooooop =', readData2.length)
+        if (readData2.length === 0) {
+          alert('มีบางอย่างผิดพลาด โปรด reload ใหม่อีกครั้ง')
+        } else if (readData2 !== 0) {
+          this.GetData_Work_in = readData2
+          console.log('ING', this.GetData_Work_in)
+        }
+      })
+    // this.read_table('Employee')
+    // this.read_Table2()
   },
   methods: {
     comment() {
@@ -351,11 +389,34 @@ export default {
       this.HeaderTxt = null
       this.HeaderTxt = name
     },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+    },
+    async dayleft() { // นับจำนวนวันที่เหลือ
+      const api3 = '_';
+      const dayParam = new URLSearchParams();
+      dayParam.append('Emp_ID', this.Store.IDforSELECT)
+      dayParam.append('date', moment().format('YYYY-MM-DD'))
+
+      const response = await Axios.post(api3, day_param)
+
+      this.dayleft = response.data
+      if (this.display_timeline.length === 0) {
+        this.alertNotfound = true
+      } else if (this.display_timeline.length !== 0) {
+        console.log('dayyyy')
+        // alert(this.dayleft.length)
+        // alert(typeof (Number(this.dayleft[0].day_left)))
+        console.log(this.dayleft)
+      }
+    },
   },
   computed: {
     timeline() {
       return this.events.slice().reverse()
     },
   },
+
 }
 </script>

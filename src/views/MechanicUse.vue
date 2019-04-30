@@ -2,7 +2,7 @@
 <v-app>
     <v-layout>
 
-        <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px); overflow-y: scroll;">
+        <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px); overflow-y:">
             <v-flex title>
                 Mechanic
             </v-flex>
@@ -345,9 +345,13 @@ export default {
   beforeCreate() {
 
   },
+  watch: {
+    display_timeline() {
+      return this.display_timeline.slice().reverse()
+    },
+  },
   mounted() {
     const a = this.Store.IDforSELECT;
-
     const api = 'https://testtingfuck.000webhostapp.com/data_user_select.php';
     const user_data_params = new URLSearchParams();
     user_data_params.append('Table', 'Employee')
@@ -491,9 +495,10 @@ export default {
     async insert_timeline(dataToInsert) {
       const api2 = 'https://testtingfuck.000webhostapp.com/insert_timeline.php';
       const dataJson = JSON.stringify(dataToInsert)
+      console.log('json to insert= ', dataJson)
       const paramInsert = new URLSearchParams();
       paramInsert.append('data_insert', dataJson)
-      const check = false
+      // const check = false
       // Axios.post(api2, paramInsert)
       //   .then((response) => {
       const response = await Axios.post(api2, paramInsert)

@@ -336,7 +336,7 @@
                                 <v-flex xs12 sm12 md12 mt-2>
                                     <v-layout wrap>
                                     <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#"></v-text-field>
-                                    
+
                                     <v-btn icon large color="red"><v-icon>search</v-icon></v-btn>
                                     </v-layout>
                                 </v-flex>
@@ -667,6 +667,15 @@ export default {
       this.WidForDeleteBT = data
       // this.Get_Data_WID.W_ID = data
       //   console.log('kkkkkkkk',this.timelineWID)
+    },
+    validate() {
+      console.log('TESt');
+      if (this.$refs.form.validate()) {
+        console.log('TES1');
+        this.snackbar = true
+        this.dialogAddSucess = true
+      }
+      console.log('TES2');
     },
     moment() {
       return moment();

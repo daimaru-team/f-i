@@ -340,13 +340,17 @@ export default {
       this.HeaderTxt = null
       this.HeaderTxt = name
     },
+    log_out() {
+      console.log('11111')
+      this.$session.clear()
+      this.$session.destroy()
+      this.Store.display_page = 'Login'
+      this.dialog_Adminlogout = false
+      this.dialog_Morword = false
+      alert('dddfff')
+    },
   },
-  log_out() {
-    this.$session.clear()
-    this.$session.destroy()
-    this.Store.display_page = 'Login'
-    this.dialog_Morword = false
-  },
+
   onChangeFileUpload(fileInput) {
     this.file = fileInput
     this.addDataImg(this.Store.IDforSELECT)

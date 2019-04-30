@@ -533,6 +533,29 @@ export default {
 
       return age
     },
+    async getDataDisplay() {
+      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
+      const paramKey = new URLSearchParams();
+      paramKey.append('key', this.Store.IDforSELECT)
+      const responseCus = await Axios.post(apiCus, paramKey)
+      this.dataCustomer = responseCus.data
+
+      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
+      const responseWip = await Axios.post(apiWIP, paramKey)
+      this.dataWorkInProcess = responseWip.data
+
+      if (this.dataWorkInProcess.length === 0) {
+        alert('Work in process is null')
+      } else {
+        console.log(this.dataWorkInProcess)
+      }
+        
+      if (this.dataCustodataWorkInProcessmer.length === 0) {
+        alert('Customer table is null')
+      } else {
+        console.log(this.dataCustomer)
+      }
+    },
   },
 }
 </script>
