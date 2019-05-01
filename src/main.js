@@ -5,6 +5,9 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
+import GlobalDate from './views/date.vue'
+
+Vue.component(GlobalDate.name, GlobalDate);
 
 Vue.config.productionTip = false;
 

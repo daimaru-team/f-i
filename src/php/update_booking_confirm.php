@@ -15,7 +15,10 @@ $bookingQuery=$con->query($query);
 if($bookingQuery){
     echo "1";
 }    
+<<<<<<< HEAD
 
+=======
+>>>>>>> 02e29ac2b153fab90fc349d108f981b458ab1e9f
 else{
     echo "0";
 }

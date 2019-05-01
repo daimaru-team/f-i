@@ -11,12 +11,10 @@
                     <v-layout justify-end>
                         <v-avatar>
                             <v-btn small icon @click.stop="dialog_Detail= true">
-                                <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20">
+                                <!-- <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20"> -->
+                                <v-icon size="30" color="white">account_circle</v-icon>
                         </v-btn>
                         </v-avatar>
-                        <v-btn dark icon @click.stop="dialog_Detail= true">
-                            <v-icon>more_vert</v-icon>
-                        </v-btn>
                     </v-layout>
                 </v-flex>
 
@@ -122,7 +120,7 @@
                             </v-list-tile-content>
 
                             <v-list-tile-action>
-                                <v-btn color="blue" icon flat @click="dialog_logout = true">
+                                <v-btn color="blue"  icon flat @click="log_out()">
                                     <v-icon>logout</v-icon>
                                 </v-btn>
                             </v-list-tile-action>
@@ -149,14 +147,24 @@
         <v-dialog v-model="dialog_About" max-height="900">
 
             <v-card height="100%" style="border-radius:60px 0px 60px 0px">
+<<<<<<< HEAD
 
                <v-btn style="padding: 15px 0px 0px 0px;" fab right fixed small color="red" class="white--text" @click="dialog_About = false,alert = !alert">
                   <v-icon>logout</v-icon>
+=======
+              
+               <v-btn style="padding: 0px 14px 0px 0px;" fab flat right fixed small class="white--text" @click="dialog_About = false,alert = !alert">
+                  <v-icon color="black" medium>logout</v-icon>
+>>>>>>> 02e29ac2b153fab90fc349d108f981b458ab1e9f
                 </v-btn>
 
                 <v-flex>
                     <v-layout justify-center style="padding: 20px 0px 0px 0px;">
+<<<<<<< HEAD
                         <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="240" height="80">
+=======
+                        <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="220" height="80">
+>>>>>>> 02e29ac2b153fab90fc349d108f981b458ab1e9f
                     </v-layout>
 
                         <v-flex ml-4 mr-4>
@@ -171,7 +179,7 @@
                             <v-flex ml-2>
                                 <v-flex>
                                     <v-layout justify-center mt-4>
-                                        <img src="https://image.flaticon.com/icons/svg/81/81070.svg" width="200" height="200">
+                                        <img src="https://testtingfuck.000webhostapp.com/imageLogo/IconMechanic.png" width="170" height="170">
                           </v-layout>
                                 </v-flex>
                                 <v-flex mt-3>
@@ -362,12 +370,27 @@ export default {
     //       console.log(this.GetData_Work_in)
     //     }
     //   })
+<<<<<<< HEAD
 
+=======
+    this.getDataDisplay()
+>>>>>>> 02e29ac2b153fab90fc349d108f981b458ab1e9f
     // this.read_table('Employee')
     // this.read_Table2()
   },
   methods: {
+<<<<<<< HEAD
 
+=======
+    log_out() {
+      console.log('11111')
+      this.$session.clear()
+      this.$session.destroy()
+      this.Store.display_page = 'Login'
+      this.dialog_Adminlogout = false
+      this.dialog_Morword = false
+    },
+>>>>>>> 02e29ac2b153fab90fc349d108f981b458ab1e9f
     comment() {
       const time = (new Date()).toTimeString()
       this.events.push({

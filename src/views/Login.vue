@@ -33,13 +33,14 @@
 
                         <v-flex v-if="fromLogin == false">
                             <v-layout wrap justify-center>
-                                <v-card class="elevation-22 " style="border-radius:30px" light color="grey lighten-3">
+                                <v-card class="elevation-22 " style="border-radius: 60px 0px 60px 0px" light color="grey lighten-3">
                                     <v-layout mt-2 justify-center>
 
                                         <v-layout wrap>
                                             <v-flex mt-3 md3 xs3 sm3 lg3 xl3>
-                                                <v-layout justify-center v-if="window.width > 900">
-                                                    <img src="https://testtingfuck.000webhostapp.com/imageLogo/LogoForBgGrey.png" width="180" height="47">
+                                                <v-layout ml-4 justify-center v-if="window.width > 900">
+                                                  
+                                                    <img src="https://testtingfuck.000webhostapp.com/imageLogo/newForGray.png" width="130" height="47">
                                                   </v-layout>
                                             </v-flex>
 
@@ -101,7 +102,7 @@
 
                                             <v-tooltip top open-delay>
                                                 <template v-slot:activator="{ on }">
-                                                    <v-btn :loading="booking_loading" style="border-radius:40px" class="white--text" color="light-green darken-2" :disabled="!valid" @click="insert_booking()">ยืนยัน</v-btn>
+                                                    <v-btn :loading="booking_loading" large style="border-radius:40px" class="white--text" color="light-green darken-2" :disabled="!valid" @click="insert_booking()">ยืนยัน</v-btn>
                                                 </template>
                                                 <span>ส่งเรื่องของคุณไปยังเจ้าหน้าที่</span>
                                             </v-tooltip>
@@ -114,12 +115,12 @@
 
                         <!-- แสดงหน้า Login -->
                         <v-flex v-if="fromLogin == true">
-                            <v-card class="elevation-10 " hover max-height="700" style="border-radius:30px" light color="grey lighten-3">
+                            <v-card class="elevation-10 " hover max-height="700" style="border-radius: 60px 0px 60px 0px" light color="grey lighten-3">
                                 <v-flex pt-2>
                                     <v-layout wrap>
                                         <v-flex mt-3 md3 xs3 sm3 lg3 xl3>
-                                            <v-layout justify-center  v-if="window.width > 900">
-                                                <img src="https://testtingfuck.000webhostapp.com/imageLogo/LogoForBgGrey.png" width="180" height="47">
+                                            <v-layout justify-center ml-4 v-if="window.width > 900">
+                                                <img src="https://testtingfuck.000webhostapp.com/imageLogo/newForGray.png" width="130" height="47">
                                                   </v-layout>
                                         </v-flex>
 
@@ -157,7 +158,7 @@
                                     :color="loading_color"
                                     :aria-hidden="loading"
                                   ></v-progress-circular> -->
-                                        <v-btn :loading="loading" class="white--text elevation-10" style="border-radius:40px" color="light-green darken-2" @click="checkUser">login</v-btn>
+                                        <v-btn :loading="loading" class="white--text elevation-10" style="border-radius:40px" large color="light-green darken-2" @click="checkUser">login</v-btn>
                                         <!-- <v-tooltip top open-delay>
                                                 <template v-slot:activator="{ on }">
                                                     <v-btn class="white--text" color="blue-grey darken-3" @click="dialogQrcode= true,paused=false">QR Code</v-btn>

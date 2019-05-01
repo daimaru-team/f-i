@@ -5,7 +5,7 @@
     <v-layout v-if="window.width > 1200">
 
           <v-flex style="padding: 0px 0px 0px 0px;"></v-flex>
-          <v-flex xs3 sm3 md3 ml-4> <h1>{{this.HeaderTxt}}  </h1> </v-flex>
+          <v-flex xs3 sm3 md3 > <h1>{{this.HeaderTxt}}  </h1> </v-flex>
 
           <v-flex xs3 sm3 md3 font-weight-black font-italic class="text-xs-center"><h1><span><digital-clock :blink="true"/></span></h1></v-flex>
           <v-flex  class="text-xs-right"><h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1></v-flex>
@@ -327,6 +327,12 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    log_out() {
+      this.$session.clear()
+      this.$session.destroy()
+      this.Store.display_page = 'Login'
+      this.dialog_Morword = false
+    },
     moment() {
       return moment();
     },
@@ -339,15 +345,6 @@ export default {
       console.log(`before update=${this.HeaderTxt}`)
       this.HeaderTxt = null
       this.HeaderTxt = name
-    },
-    log_out() {
-      console.log('11111')
-      this.$session.clear()
-      this.$session.destroy()
-      this.Store.display_page = 'Login'
-      this.dialog_Adminlogout = false
-      this.dialog_Morword = false
-      alert('dddfff')
     },
   },
 
