@@ -648,9 +648,8 @@ export default {
       //   console.log('kkkkkkkk',this.timelineWID)
     },
     validate() {
-      console.log('TESt');
       if (this.$refs.form.validate()) {
-        console.log('TES1');
+
         this.snackbar = true
         this.dialogAddSucess = true
       }

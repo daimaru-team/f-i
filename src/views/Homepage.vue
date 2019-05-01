@@ -5,7 +5,7 @@
     <v-layout v-if="window.width > 1200">
 
           <v-flex style="padding: 0px 0px 0px 0px;"></v-flex>
-          <v-flex xs3 sm3 md3 ml-4> <h1>{{this.HeaderTxt}}  </h1> </v-flex>
+          <v-flex xs3 sm3 md3 > <h1>{{this.HeaderTxt}}  </h1> </v-flex>
 
           <v-flex xs3 sm3 md3 font-weight-black font-italic class="text-xs-center"><h1><span><digital-clock :blink="true"/></span></h1></v-flex>
           <v-flex  class="text-xs-right"><h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1></v-flex>
