@@ -222,14 +222,14 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                             <v-flex xs12 sm12 md12>
-                                <v-text-field label="เลขประจำตัวประชาชน*" :rules="pIdRules" required></v-text-field>
+                                <v-text-field label="เลขประจำตัวประชาชน*"  v-model="pId" mask="#-####-#####-##-#" :rules="pIdRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="ชื่อ*" :rules="fNameRules" required></v-text-field>
+                                <v-text-field label="ชื่อ*" v-model="fName" :rules="fNameRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field v- label="นามสกุล*" :rules="lNameRules" persistent-hint required></v-text-field>
+                                <v-text-field v- label="นามสกุล*" v-model="lName" :rules="lNameRules" persistent-hint required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm12 md12>
@@ -237,7 +237,7 @@
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="วันเกิด*" v-model="birthday" :rules="birthdayRules" required></v-text-field>
+                                <v-text-field label="วันเกิด*" v-model="birthday" :rules="birthdayRules" mask="##/##/####" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
@@ -249,7 +249,7 @@
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="เบอร์โทร*" :rules="telRules" required></v-text-field>
+                                <v-text-field label="เบอร์โทร*" :rules="telRules" mask="##-####-####" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
                                 <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" label="ตำแหน่ง*" persistent-hint v-model="position" :rules="positionRules">
@@ -267,10 +267,10 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-2 pt-2>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" v-model="password" :rules="passwordRules" required></v-text-field>
+                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" :counter="10" mask="##########" v-model="password" :rules="passwordRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ยืนยันอีกครั้ง*" v-model="passwordConfirm" :rules="passwordConfirmRules"  required></v-text-field>
+                                <v-text-field label="ยืนยันอีกครั้ง*" :counter="10" mask="##########" type="password" v-model="passwordConfirm" :rules="passwordConfirmRules"  required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -349,6 +349,7 @@
                 </v-flex>
             </v-card>
         </v-dialog>
+
     </v-dialog>
 
     <v-dialog v-model="dialog_delete" max-width="300">
@@ -456,7 +457,7 @@ export default {
         value: 'Emp_ID',
       },
       ],
-       pId: '',
+      pId: '',
       pIdRules: [
         v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
         v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
@@ -595,12 +596,14 @@ export default {
       return age
     },
     validate() {
-
       if (this.$refs.form.validate()) {
-        this.snackbar = true
-        this.insertCheck = true
+        if (this.password === this.passwordConfirm) {
+          this.snackbar = true
+          this.insertCheck = true
+        } else {
+          alert('กรุณากรอกรหัสผ่านให้ตรงกัน')
+        }
       }
-
     },
     async getDataDisplay() {
       const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
@@ -618,7 +621,7 @@ export default {
       } else {
         console.log(this.dataWorkInProcess)
       }
-        
+
       if (this.dataCustodataWorkInProcessmer.length === 0) {
         alert('Customer table is null')
       } else {
