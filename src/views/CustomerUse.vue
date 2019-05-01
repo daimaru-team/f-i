@@ -231,6 +231,7 @@ import Vuetify from 'vuetify'
 // eslint-disable-next-line no-unused-vars
 import moment from 'moment'
 import DigitalClock from 'vue-digital-clock';
+import Axios from 'axios';
 import Clock from 'vue-clock2'
 // eslint-disable-next-line no-unused-vars
 export default {
@@ -241,17 +242,13 @@ export default {
     DigitalClock,
     // eslint-disable-next-line vue/no-unused-components
   },
-  data2: () => ({
-    items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-    cruds: [
-      ['Create', 'add'],
-    ],
-  }),
   mounted() {
     console.log(this.$vuetify.breakpoint)
   },
   data() {
     return {
+      dataCustomer: '',
+      dataWorkInProcess: '',
       dialog_Detail: false,
       dialog_logout: false,
       dialog_Chat: false,
@@ -281,49 +278,7 @@ export default {
       items_More: [{
         title: 'Logout',
       }],
-      items: [{
-        key: 'Queue',
-        title: 'Qeue Management',
-        // icon: 'dashboard'
-        link: '/Queue',
-        name: 'Queue',
-      },
-      {
-        key: 'Customer',
-        title: 'Customer Ser',
-        // icon: 'question_answer'<v-icon>home</v-icon>
-        link: '/Customer',
-        name: 'Customer',
-      },
-      {
-        key: 'Mechanic',
-        title: 'Mechanic',
-        // icon: 'question_answer'
-        link: '/Mechanic',
-        name: 'Mechanic',
-      },
-      {
-        key: 'Cars',
-        title: 'Cars in stock',
-        // icon: 'question_answer'
-        link: '/Cars',
-        name: 'Cars',
-      },
-      {
-        key: 'Celender',
-        title: 'Celenders work',
-        // icon: 'question_answer'
-        link: '/Celenders',
-        name: 'Celenders',
-      },
-      {
-        key: 'History',
-        title: 'History',
-        // icon: 'question_answer'
-        link: '/History',
-        name: 'History',
-      },
-      ],
+
       items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       right: null,
     }
@@ -342,14 +297,40 @@ export default {
       })
       this.input = null
     },
+
     moment() {
       return moment();
     },
+
     changeName(name) {
       console.log(`name=${name}`)
       console.log(`before update=${this.HeaderTxt}`)
       this.HeaderTxt = null
       this.HeaderTxt = name
+    },
+
+    async getDataDisplay() {
+      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
+      const paramKey = new URLSearchParams();
+      paramKey.append('key', this.Store.IDforSELECT)
+      const responseCus = await Axios.post(apiCus, paramKey)
+      this.dataCustomer = responseCus.data
+
+      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
+      const responseWip = await Axios.post(apiWIP, paramKey)
+      this.dataWorkInProcess = responseWip.data
+
+      if (this.dataWorkInProcess.length === 0) {
+        alert('Work in process is null')
+      } else {
+        console.log(this.dataWorkInProcess)
+      }
+
+      if (this.dataCustomer.length === 0) {
+        alert('Customer table is null')
+      } else {
+        console.log(this.dataCustomer)
+      }
     },
   },
   computed: {

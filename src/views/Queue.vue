@@ -703,6 +703,12 @@ export default {
     }
   },
   methods: {
+    // จุดเรียก validate ถ้าผ่านแล้วเรียก function ตรง dosomething ได้เลย
+    // validate() {
+    //   if (this.$refs.form.validate()) {
+    //     // do something
+    //   }
+    },
     testo() {
       this.dialogAddSucess = false
       this.dialog_Insert = false

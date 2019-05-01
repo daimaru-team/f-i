@@ -83,6 +83,5 @@ function GenerateCar_ID($con, $cm_id){
     
     return $genID;
 }
-
 exit();
 ?>

@@ -490,6 +490,22 @@ export default {
       const res = response.data
       console.log(res.count)
       console.log(res)
+
+      for (let i = 0; i < this.file.length; i += 1) {
+        const formData = new FormData();
+        const blob = this.file[i].slice(0, this.file[i].size, 'image/jpeg');
+        const newFile = new File([blob], this.file[i].name, { type: 'image/jpeg' });
+        formData.append('file', newFile)
+        formData.append('name', this.Gen_ID_WIP())
+        formData.append('W_ID', 'WID0000001')
+        formData.append('Report_ID', '22')
+        formData.append('Upload_DateTime', moment().format('YYYYMMDDHHmmss'))
+
+        // eslint-disable-next-line no-await-in-loop
+        const response2 = await Axios.post('https://testtingfuck.000webhostapp.com/Post_file.php', formData)
+        console.log(`img ${i} = `, response2.data)
+      }
+
       if (res === 1) {
         this.alertInsert = true;
         setTimeout(() => {
