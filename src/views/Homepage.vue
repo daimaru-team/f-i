@@ -3,7 +3,7 @@
 <v-app>
   <v-toolbar class="v-toolbar v-toolbar--clipped v-toolbar--fixed theme--dark red elevation-6" height="50" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
     <v-layout v-if="window.width > 1200">
-    
+
           <v-flex style="padding: 0px 0px 0px 0px;"></v-flex>
           <v-flex xs3 sm3 md3 ml-4> <h1>{{this.HeaderTxt}}  </h1> </v-flex>
 
@@ -12,8 +12,8 @@
 
     </v-layout>
     <v-layout v-else-if="window.width < 1200 && window.width > 500"  >
-    
-                    
+
+
           <v-flex xs4 sm4 md4> <h1>{{this.HeaderTxt}}  </h1> </v-flex>
 
           <v-flex xs4 sm4 md4 class="text-xs-center">
@@ -24,8 +24,8 @@
           <v-flex xs4 sm4 md4 headline font-weight-black font-italic class="text-xs-right"><span><digital-clock :blink="true"/></span></v-flex>
     </v-layout>
     <v-layout v-else-if="window.width < 500"  >
-    
-                    
+
+
           <v-flex xs5 sm5 md5> <h2>{{this.HeaderTxt}} </h2> </v-flex>
 
 
@@ -53,7 +53,7 @@
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>{{this.UserData[0].Emp_Name}} {{this.UserData[0].Emp_Lname}}</v-list-tile-title>
-              <h6># {{window.width}}</h6>
+              <h6># Online {{window.width}}</h6>
             </v-list-tile-content>
             <v-btn dark icon @click.stop="dialog_Morword= true">
               <v-icon>more_vert</v-icon>
@@ -140,7 +140,7 @@
         <v-card-text>Do you want to logout?</v-card-text>
         <v-card-actions><v-spacer></v-spacer>
           <v-btn color="blue white--text" @click="dialog_Adminlogout = false">No</v-btn>
-          <v-btn color="blue white--text" @click="dialog_Adminlogout = false,dialog_Morword = false,Queue = false , login =true" >Yes</v-btn>
+          <v-btn color="blue white--text" @click="log_out()" >Yes</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -159,7 +159,11 @@ import DigitalClock from 'vue-digital-clock';
 import moment from 'moment'
 import Clock from 'vue-clock2'
 import Axios from 'axios';
+// eslint-disable-next-line no-unused-vars
 import VueDaterangePicker from 'vue-daterange-picker';
+// eslint-disable-next-line no-unused-vars
+import VueSession from 'vue-session'
+import VueAWN from 'vue-awesome-notifications'
 import Login from './Login.vue'
 import Queue from './Queue.vue'
 import Customer from './Customer.vue'
@@ -172,6 +176,8 @@ import History from './History.vue'
 import CustomerUse from './CustomerUse.vue';
 import store from '../store'
 
+Vue.use(VueSession)
+Vue.use(VueAWN)
 // import login from './views/Login.vue'
 export default {
   components: {
@@ -179,7 +185,8 @@ export default {
     Clock,
     // eslint-disable-next-line vue/no-unused-components
     Queue,
-
+    // eslint-disable-next-line vue/no-unused-components
+    VueAWN,
     // eslint-disable-next-line vue/no-unused-components
     CustomerUse,
     // eslint-disable-next-line vue/no-unused-components
@@ -333,6 +340,20 @@ export default {
       this.HeaderTxt = null
       this.HeaderTxt = name
     },
+    log_out() {
+      console.log('11111')
+      this.$session.clear()
+      this.$session.destroy()
+      this.Store.display_page = 'Login'
+      this.dialog_Adminlogout = false
+      this.dialog_Morword = false
+      alert('dddfff')
+    },
+  },
+
+  onChangeFileUpload(fileInput) {
+    this.file = fileInput
+    this.addDataImg(this.Store.IDforSELECT)
   },
 }
 </script>

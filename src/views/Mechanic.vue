@@ -14,9 +14,10 @@
         <v-expansion-panel-content :key="item.Emp_ID" v-for="item in GetData_Emp">
             <template v-slot:header>
                 <div>
-                    <h3><v-icon color="amber accent-4">build</v-icon> <b> {{item.Emp_ID}} | </b> {{item.Mac_Name}} - {{item.Pos_Name}}
-
-
+                    <h3>
+                        <v-icon v-if="item.Pos_Name === 'Manager'" color="amber accent-4">supervisor_account</v-icon>
+                        <v-icon v-if="item.Pos_Name === 'Mechanic'" color="amber accent-4">build</v-icon>
+                         <b> {{item.Emp_ID}} | </b> {{item.Mac_Name}} - {{item.Pos_Name}}
                     </h3>
                 </div>
             </template>
@@ -37,7 +38,7 @@
                                     <p><b> เลขที่บัตรประชาชน :</b> 232301040-1-301-3132 </p>
                                     <p><b> ชื่อ-สกุล :</b> {{item.Mac_Name}}</p>
                                     <p><b> ชื่อเล่น :</b> {{item.Nickname}} </p>
-                                    <p><b> ตำแหน่ง :</b> {{item.os_Name}} </p>
+                                    <p><b> ตำแหน่ง :</b> {{item.Pos_Name}} </p>
                                     <p><b> อายุ :</b> {{calculate_age(item.Birthday)}}</p>
                                     <!-- {{calculate_age(item.Birthday)}} -->
                                     <p><b> วันเกิด :</b> {{item.Birthday}}</p>
@@ -484,6 +485,29 @@ export default {
       const diff = cur - birthdate; // This is the difference in milliseconds
       const age = Math.floor(diff / 31557600000);
       return age
+    },
+    async getDataDisplay() {
+      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
+      const paramKey = new URLSearchParams();
+      paramKey.append('key', this.Store.IDforSELECT)
+      const responseCus = await Axios.post(apiCus, paramKey)
+      this.dataCustomer = responseCus.data
+
+      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
+      const responseWip = await Axios.post(apiWIP, paramKey)
+      this.dataWorkInProcess = responseWip.data
+
+      if (this.dataWorkInProcess.length === 0) {
+        alert('Work in process is null')
+      } else {
+        console.log(this.dataWorkInProcess)
+      }
+        
+      if (this.dataCustodataWorkInProcessmer.length === 0) {
+        alert('Customer table is null')
+      } else {
+        console.log(this.dataCustomer)
+      }
     },
   },
 }

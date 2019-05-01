@@ -13,8 +13,10 @@
 
             <template v-slot:header>
                 <div>
-                    <h3>{{item.W_ID}} | {{item.CM_Name}} {{item.Model}} - {{item.License_plate}}
-                        <v-icon color="amber accent-4">mail</v-icon>
+                    <h3><b v-if="moment(myDate).format('YYYY-MM-DD') === item.Start_Date" class="red--text">{{item.Start_Date}}</b><b v-else>{{item.Start_Date}}</b>
+                        | {{item.W_ID}} | {{item.CM_Name}} {{item.Model}} - {{item.License_plate}}
+                        <v-icon v-if="moment(myDate).format('YYYY-MM-DD') === item.Finish_Date" color="amber accent-4">alarm</v-icon>
+
                     </h3>
                 </div>
             </template>
@@ -42,7 +44,7 @@
                                         <p><b> อาการเบื้องต้น :</b> {{item.W_Desc}}</p>
                                         <p><b> ช่างผู้รับผิดชอบ :</b> {{item.emp_name}}</p>
                                         <p><b> วันเริ่มงาน :</b> {{item.Start_Date}}</p>
-                                        <p><b> วันส่งงาน :</b> {{item.Finish_Date}}</p>
+                                        <p><b> วันส่งงาน :</b> {{item.Finish_Date}} <b class="red--text" v-if="moment(myDate).format('YYYY-MM-DD') === item.Finish_Date">Today !</b></p>
 
                                         <p><b> Status :</b> {{item.Status}}
 
@@ -332,7 +334,11 @@
 
                             <v-layout wrap pl-4 pr-4 pb-3>
                                 <v-flex xs12 sm12 md12 mt-2>
-                                    <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#" append-icon="search"></v-text-field>
+                                    <v-layout wrap>
+                                    <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#"></v-text-field>
+
+                                    <v-btn icon large color="red"><v-icon>search</v-icon></v-btn>
+                                    </v-layout>
                                 </v-flex>
 
                                 <v-flex xs12 sm6 md6 pr-3>
@@ -497,6 +503,7 @@ export default {
   },
   data() {
     return {
+      myDate: null,
       WidForDeleteBT: '',
       pId: '',
       pIdRules: [
@@ -660,6 +667,15 @@ export default {
       this.WidForDeleteBT = data
       // this.Get_Data_WID.W_ID = data
       //   console.log('kkkkkkkk',this.timelineWID)
+    },
+    validate() {
+      console.log('TESt');
+      if (this.$refs.form.validate()) {
+        console.log('TES1');
+        this.snackbar = true
+        this.dialogAddSucess = true
+      }
+      console.log('TES2');
     },
     moment() {
       return moment();
