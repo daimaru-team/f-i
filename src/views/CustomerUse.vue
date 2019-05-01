@@ -74,7 +74,7 @@
                                         </v-flex>
                                     </v-card-text>
                                 </v-flex>
-                                <v-flex md1 xl1 sm1 lg1 xs1 mr-1 class="grey lighten-3">
+                                <v-flex md1 xl1 sm1 lg1 xs1 mr-2 class="grey lighten-3">
                                     <v-layout justify-end wrap>
 
                                         <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
@@ -149,13 +149,16 @@
         <v-dialog v-model="dialog_About" max-height="900">
 
             <v-card height="100%" style="border-radius:60px 0px 60px 0px">
+
+               <v-btn style="padding: 15px 0px 0px 0px;" fab right fixed small color="red" class="white--text" @click="dialog_About = false,alert = !alert">
+                  <v-icon>logout</v-icon>
+                </v-btn>
+
                 <v-flex>
-                    <v-layout justify-center style="padding: 25px 0px 0px 0px;">
+                    <v-layout justify-center style="padding: 20px 0px 0px 0px;">
                         <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgWhite.png" width="240" height="80">
                     </v-layout>
-                        <v-btn fab small color="red" class="white--text" @click="dialog_About = false,alert = !alert">
-                            <v-icon>logout</v-icon>
-                        </v-btn>
+
                         <v-flex ml-4 mr-4>
                             <v-flex ml-1 mb-2 font-italic class="text-xs-center">
                                 <h2>F&I Garage customer service</h2>
@@ -247,24 +250,14 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
-import {
-  fas,
-} from '@fortawesome/free-solid-svg-icons'
-// eslint-disable-next-line no-unused-vars
-import {
-  FontAwesomeIcon,
-} from '@fortawesome/vue-fontawesome'
+
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
-// eslint-disable-next-line no-unused-vars
 import Vue from 'vue'
-// eslint-disable-next-line no-unused-vars
-import Vuetify from 'vuetify'
-// eslint-disable-next-line no-unused-vars
 import moment from 'moment'
 import DigitalClock from 'vue-digital-clock';
-import Axios from 'axios';
 import Clock from 'vue-clock2'
-// eslint-disable-next-line no-unused-vars
+import Axios from 'axios'
+
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
@@ -273,20 +266,25 @@ export default {
     DigitalClock,
     // eslint-disable-next-line vue/no-unused-components
   },
+  data2: () => ({
+    items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+    cruds: [
+      ['Create', 'add'],
+    ],
+  }),
   mounted() {
+    this.getDataDisplay()
     console.log(this.$vuetify.breakpoint)
   },
   data() {
     return {
-<<<<<<< HEAD
-      dataCustomer: '',
-      dataWorkInProcess: '',
-=======
       window: {
         width: 0,
         height: 0,
       },
->>>>>>> 2a6b3c7a229cc49f913e9a596a46c94db83bfe09
+      Store: this.$store.state,
+      dataWorkInProcess: '',
+      dataCustomer: '',
       dialog_Detail: false,
       dialog_logout: false,
       dialog_Chat: false,
@@ -317,61 +315,59 @@ export default {
       items_More: [{
         title: 'Logout',
       }],
-<<<<<<< HEAD
 
-      items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-=======
-    
->>>>>>> 2a6b3c7a229cc49f913e9a596a46c94db83bfe09
       right: null,
     }
   },
+
   created() {
     window.addEventListener('resize', this.handleResize)
     this.handleResize();
-    const api = 'https://testtingfuck.000webhostapp.com/select_display_emp.php';
-    // eslint-disable-next-line camelcase
-    const Emp_params = new URLSearchParams();
-    let readData = new Array();
-    Emp_params.append('Table', 'Employee')
-    // eslint-disable-next-line global-require
-    Axios.post(api, Emp_params)
-      .then((response) => {
-        readData = response.data
-        console.log('loooooop =', readData.length)
-        // eslint-disable-next-line eqeqeq
-        if (readData.length == 0) {
-          console.log('wrong pass or username')
-          alert('table is null or error')
-          // eslint-disable-next-line eqeqeq
-        } else if (readData != 0) {
-          console.log('reading')
-          this.GetData_Emp = readData
-          console.log('tst')
-          console.log(this.GetData_Emp.data)
-          // eslint-disable-next-line no-unused-vars
-          const aaa = this.calculate_age(this.GetData_Emp[0].Birthday)
-        }
-      })
-    const WID_params = new URLSearchParams();
-    let readData2 = new Array();
-    WID_params.append('Table', 'WorkInProcess')
-    // eslint-disable-next-line global-require
-    Axios.post(api, WID_params)
-      .then((response) => {
-        readData2 = response.data
-        console.log('loooooop =', readData2.length)
-        if (readData2.length === 0) {
-          alert('มีบางอย่างผิดพลาด โปรด reload ใหม่อีกครั้ง')
-        } else if (readData2 !== 0) {
-          this.GetData_Work_in = readData2
-          console.log('ING', this.GetData_Work_in)
-        }
-      })
+    // const api = 'https://testtingfuck.000webhostapp.com/select_display_emp.php';
+    // // eslint-disable-next-line camelcase
+    // const Emp_params = new URLSearchParams();
+    // let readData = new Array();
+    // Emp_params.append('Table', 'Employee')
+    // // eslint-disable-next-line global-require
+    // Axios.post(api, Emp_params)
+    //   .then((response) => {
+    //     readData = response.data
+    //     console.log('loooooop =', readData.length)
+    //     // eslint-disable-next-line eqeqeq
+    //     if (readData.length == 0) {
+    //       console.log('wrong pass or username')
+    //       alert('table is null or error')
+    //       // eslint-disable-next-line eqeqeq
+    //     } else if (readData != 0) {
+    //       console.log('reading')
+    //       this.GetData_Emp = readData
+    //       console.log('tst')
+    //       console.log(this.GetData_Emp.data)
+    //       // eslint-disable-next-line no-unused-vars
+    //       const aaa = this.calculate_age(this.GetData_Emp[0].Birthday)
+    //     }
+    //   })
+    // const WID_params = new URLSearchParams();
+    // let readData2 = new Array();
+    // WID_params.append('Table', 'WorkInProcess')
+    // // eslint-disable-next-line global-require
+    // Axios.post(api, WID_params)
+    //   .then((response) => {
+    //     readData2 = response.data
+    //     console.log('loooooop =', readData2.length)
+    //     if (readData2.length === 0) {
+    //       alert('มีบางอย่างผิดพลาด โปรด reload ใหม่อีกครั้ง')
+    //     } else if (readData2 !== 0) {
+    //       this.GetData_Work_in = readData2
+    //       console.log(this.GetData_Work_in)
+    //     }
+    //   })
+
     // this.read_table('Employee')
     // this.read_Table2()
   },
   methods: {
+
     comment() {
       const time = (new Date()).toTimeString()
       this.events.push({
@@ -385,62 +381,62 @@ export default {
       })
       this.input = null
     },
-
     moment() {
       return moment();
     },
-
     changeName(name) {
       console.log(`name=${name}`)
       console.log(`before update=${this.HeaderTxt}`)
       this.HeaderTxt = null
       this.HeaderTxt = name
     },
-<<<<<<< HEAD
-
-    async getDataDisplay() {
-      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
-      const paramKey = new URLSearchParams();
-      paramKey.append('key', this.Store.IDforSELECT)
-      const responseCus = await Axios.post(apiCus, paramKey)
-      this.dataCustomer = responseCus.data
-
-      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
-      const responseWip = await Axios.post(apiWIP, paramKey)
-      this.dataWorkInProcess = responseWip.data
-
-      if (this.dataWorkInProcess.length === 0) {
-        alert('Work in process is null')
-      } else {
-        console.log(this.dataWorkInProcess)
-      }
-
-      if (this.dataCustomer.length === 0) {
-        alert('Customer table is null')
-      } else {
-        console.log(this.dataCustomer)
-=======
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
     },
-    async dayleft() { // นับจำนวนวันที่เหลือ
-      const api3 = '_';
-      const dayParam = new URLSearchParams();
-      dayParam.append('Emp_ID', this.Store.IDforSELECT)
-      dayParam.append('date', moment().format('YYYY-MM-DD'))
+    // async dayleft() { // นับจำนวนวันที่เหลือ
+    //   const api3 = '_';
+    //   const dayParam = new URLSearchParams();
+    //   dayParam.append('Emp_ID', this.Store.IDforSELECT)
+    //   dayParam.append('date', moment().format('YYYY-MM-DD'))
 
-      const response = await Axios.post(api3, day_param)
+    //   const response = await Axios.post(api3, dayParam)
 
-      this.dayleft = response.data
-      if (this.display_timeline.length === 0) {
-        this.alertNotfound = true
-      } else if (this.display_timeline.length !== 0) {
-        console.log('dayyyy')
-        // alert(this.dayleft.length)
-        // alert(typeof (Number(this.dayleft[0].day_left)))
-        console.log(this.dayleft)
->>>>>>> 2a6b3c7a229cc49f913e9a596a46c94db83bfe09
+    //   this.dayleft = response.data
+    //   if (this.display_timeline.length === 0) {
+    //     this.alertNotfound = true
+    //   } else if (this.display_timeline.length !== 0) {
+    //     console.log('dayyyy')
+    //     // alert(this.dayleft.length)
+    //     // alert(typeof (Number(this.dayleft[0].day_left)))
+    //     console.log(this.dayleft)
+    //   }
+    // },
+
+    async getDataDisplay() {
+      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
+      const paramKey = new URLSearchParams();
+      // alert(this.Store.IDforSELECT)
+      paramKey.append('key', this.Store.IDforSELECT)
+      const responseCus = await Axios.post(apiCus, paramKey)
+      this.dataCustomer = responseCus.data
+      console.log('this Cus', responseCus.data)
+
+      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
+      const responseWip = await Axios.post(apiWIP, paramKey)
+      console.log('this WIP', responseWip.data)
+      this.dataWorkInProcess = responseWip.data
+
+      if (this.dataWorkInProcess.length === 0) {
+        // alert('Work in process is null')
+      } else {
+        console.log('ING1', this.dataWorkInProcess)
+      }
+
+      if (this.dataCustomer.length === 0) {
+        // alert('Customer table is null')
+      } else {
+        console.log('AAAA', this.dataCustomer)
       }
     },
   },

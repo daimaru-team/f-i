@@ -196,17 +196,15 @@
         </v-expansion-panel-content>
     </v-expansion-panel>
 
-    <v-dialog v-model="dialogInsert" persistent max-width="700px">
-        <v-card v-if="insert == true" color="grey darken-4" class="white--text">
+       <v-dialog v-model="dialogInsert" persistent max-width="700px">
+        <v-card color="grey darken-4" class="white--text">
             <v-card-text>
                 <v-layout wrap>
                     <v-flex mt-1 md1 xl1 sm1 lg1 xs1>
-
-                        <img v-if="window.width > 600" src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png" width="130" height="50">
-
+                        <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png" width="130" height="50">
                     </v-flex>
                         <v-flex md12 xl10 sm10 lg10 xs10>
-                            <h1 class="text-xs-center red--text">Insert Employee</h1>
+                            <h1 class="text-xs-center red--text">Insert work</h1>
                             <h3 class="text-xs-center">F&I GARAGE</h3>
                         </v-flex>
                         <v-flex md1 xl1 sm1 lg1 xs1>
@@ -217,135 +215,112 @@
 
             <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
                 <v-layout wrap>
-                    <v-card-text>ข้อมูลพนักงาน</v-card-text>
-                    <v-card elevation="5" color="grey lighten-3" width="100%">
-                        <v-layout wrap pl-4 pr-4 pb-3 pt-2>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="ชื่อ*" required></v-text-field>
-                            </v-flex>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-card-text>ข้อมูลส่วนตัว</v-card-text>
+                        <v-card elevation="0" color="grey lighten-3" width="100%">
 
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="นามสกุล*" persistent-hint required></v-text-field>
-                            </v-flex>
+                            <v-layout wrap pl-4 pr-4 pb-3>
+                                <v-flex xs12 sm12 md12 mt-2>
+                                    <v-layout wrap>
+                                    <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#"></v-text-field>
 
-                            <v-flex xs12 sm12 md12>
-                                <v-text-field label="ที่อยู่ปัจจุบัน*" required></v-text-field>
-                            </v-flex>
+                                    <v-btn icon large color="red"><v-icon>search</v-icon></v-btn>
+                                    </v-layout>
+                                </v-flex>
 
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="วันเกิด*" required></v-text-field>
-                            </v-flex>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="ชื่อ*" v-model="fName" :rules="fNameRules" required></v-text-field>
 
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="อีเมล์*" required></v-text-field>
-                            </v-flex>
+                                </v-flex>
 
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="Line ID*" required></v-text-field>
-                            </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="นามสกุล*" v-model="lName" :rules="lNameRules" persistent-hint required></v-text-field>
+                                </v-flex>
 
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="เบอร์โทร*" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" label="ตำแหน่ง*" persistent-hint>
-                                </v-autocomplete>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="ความถนัด" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="เงินเดือน*" required></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
-                    <v-card-text>ข้อมูลระบบ</v-card-text>
-                    <v-card elevation="5" color="grey lighten-3" width="100%">
-                        <v-layout wrap pl-4 pr-4 pb-2 pt-2>
-                            <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" required></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md6>
-                                <v-text-field label="ยืนยันอีกครั้ง*" required></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
+                                <v-flex xs12 sm12 md12>
+                                    <v-text-field label="ที่อยู่ปัจจุบัน" v-model="address" :rules="addressRules" required></v-text-field>
+                                </v-flex>
 
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="วันเกิด" v-model="birthday" :rules="birthdayRules" required mask="##/##/####" hint="พ.ศ"></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md6>
+
+                                    <v-text-field label="อีเมล์*" v-model="email" :rules="emailRules" required></v-text-field>
+
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="Line ID" v-model="lineID" :rules="lineIDRules" required></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="เบอร์โทร" v-model="tel" :rules="telRules" mask="##-####-####" required></v-text-field>
+                                </v-flex>
+                            </v-layout>
+
+                        </v-card>
+                        <v-card-text>ข้อมูลรถ</v-card-text>
+                        <v-card elevation="0" color="grey lighten-3" width="100%">
+
+                            <v-layout wrap pl-4 pr-4 pb-3 pt-2>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name" v-on:change="Gen_ID_Car()" single-line return-object></v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="รุ่น" v-model="model" :rules="modelRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="สี" v-model="color" :rules="colorRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="ทะเบียน" v-model="licensPlate" :rules="licensPlateRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6 pr-3>
+                                    <v-text-field label="ปีผลิต" v-model="year" :rules="yearRules" mask="####" :counter="4" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6>
+                                    <v-text-field label="เลขตัวถัง" v-model="BodyID" :rules="BodyIDRules" required></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-text-field label="สาเหตุ/อาการเบื้องต้น" v-model="Desc" :rules="DescRules" required></v-text-field>
+                                </v-flex>
+                            </v-layout>
+
+                        </v-card>
+                        <v-card-text>แผนงาน</v-card-text>
+
+                        <v-card elevation="0" color="grey lighten-3" width="100%">
+                            <v-layout wrap pl-4 pr-4 pb-3>
+                                <v-flex xs12 sm6 pr-2>
+                                    <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field v-model="dateFormatted" label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
+                                            </v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                                    </v-menu>
+                                </v-flex>
+
+                                <v-flex xs12 sm6>
+                                    <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" :rules="selectedItem_OwnerRules" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </v-form>
                 </v-layout>
             </v-container>
             <!-- <small>*indicates required field</small> -->
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click="dialogInsert = false">Cencel</v-btn>
-                <v-btn color="blue darken-1" flat @click="dialogInsert = false,insertCheck = true">Add</v-btn>
+                <v-btn color="blue darken-1" flat @click="dialog_Insert = false">Cencel</v-btn>
+                <v-btn color="blue darken-1" dark flat @click="validate()" :disabled="!valid">Add</v-btn>
             </v-card-actions>
         </v-card>
-
-        <v-dialog v-model="insertCheck" no-click-animation persistent max-width="700px">
-            <v-card color="grey darken-4" class="white--text" elevation="10">
-                <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
-                    <v-layout wrap>
-                        <v-card-text>
-                            <h2><v-icon color="white">person_outline</v-icon> รหัสพนักงาน : {{EmpID}}</h2>
-                        </v-card-text>
-                        <v-card elevation="3" color="grey lighten-3" width="100%">
-                            <v-layout wrap pl-4 pr-4 pb-3 pt-3 subheading>
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ชื่อ : </b>{{Name}}</div>
-                                </v-flex>
-
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>นามสกุล :</b> {{LastName}}</div>
-                                </v-flex>
-
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ที่อยู่ :</b> 62 / fge5g sdfbse hk sa.fg rgeorg . wr weefefg 10400</div>
-                                </v-flex>
-
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>วันเกิด :</b> 02/04/40</div>
-                                </v-flex>
-
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>อีเมลล์ :</b> Phonpisud</div>
-                                </v-flex>
-
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>Line ID :</b> @fgkqwktwb</div>
-                                </v-flex>
-
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>เบอร์โทร :</b> 0916984687</div>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ตำแหน่ง :</b> หัวหน้าช่าง</div>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ความถนัด :</b> ขันน็อตได้</div>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>เงินเดือน :</b> 60,000-</div>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>รหัสในการเข้าใช้ระบบ :</b> AA23667546</div>
-                                </v-flex>
-                            </v-layout>
-                        </v-card>
-
-                    </v-layout>
-                </v-container>
-                <!-- <small>*indicates required field</small> -->
-                <v-flex pr-3 pb-2>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="amber darken-4" flat @click="insertCheck = false,dialogInsert = true">แก้ไข</v-btn>
-                        <v-btn color="blue darken-1" flat @click="dialogInsert = false,insertCheck = false,alert = !alert">ยืนยัน</v-btn>
-                    </v-card-actions>
-                </v-flex>
-            </v-card>
-        </v-dialog>
     </v-dialog>
+
 
     <v-dialog v-model="dialog_delete" max-width="300">
         <v-card>
@@ -429,6 +404,24 @@ export default {
         width: 0,
         height: 0,
       },
+      insert: {
+        Emp_ID: '',
+        Emp_Name: '',
+        Emp_Lname: '',
+        Pos_ID: '',
+        Nickname: '',
+        Birthday: '',
+        Start_Date: '',
+        Salary: '',
+        Emp_Type: '',
+        Address: '',
+        Phone_Num: '',
+        Email: '',
+        // y: '',
+        // : '',
+        // : '',
+
+      },
       isEditing: false,
       dialog_Edit: false,
       dialog_delete: false,
@@ -445,7 +438,100 @@ export default {
       Name: 'Phonpisud',
       LastName: 'Sumangsa',
       selected: [],
-     
+
+      pId: '',
+      pIdRules: [
+        v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
+        v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
+      ],
+
+      fName: '',
+      fNameRules: [
+        v => !!v || 'กรุณากรอกชื่อ',
+      ],
+
+      lName: '',
+      lNameRules: [
+        v => !!v || 'กรุณากรอกนามสกุล',
+
+      ],
+
+      address: '',
+      addressRules: [
+        v => !!v || 'กรุณากรอกที่อยู่',
+
+      ],
+
+      birthday: '',
+      birthdayRules: [
+        v => !!v || 'กรุณากรอกวันเกิด',
+        v => (v && v.length >= 8) || 'di6',
+      ],
+
+      email: '',
+      emailRules: [
+        v => !!v || 'กรุณากรอกอีเมลล์',
+        v => /.+@.+/.test(v) || 'กรุณากรอกอีเมลล์ให้ถูกต้อง',
+      ],
+
+      lineID: '',
+      lineIDRules: [
+        v => !!v || 'กรุณากรอกไลน์ไอดี',
+
+      ],
+
+      tel: '',
+      telRules: [
+        v => !!v || 'กรุณากรอกเบอร์โทรศัพท์',
+        v => (v && v.length >= 10) || 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
+      ],
+
+      selectedItem_CM: '',
+      selectedItem_CMRules: [
+        v => !!v || 'กรุณาเลือกยี่ห้อรถ',
+      ],
+
+      model: '',
+      modelRules: [
+        v => !!v || 'กรุณาเลือกรุ่นรถ',
+
+      ],
+
+      color: '',
+      colorRules: [
+        v => !!v || 'กรุณากรอกข้อมูลสีรถ',
+
+      ],
+
+      licensPlate: '',
+      licensPlateRules: [
+        v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
+
+      ],
+
+      year: '',
+      yearRules: [
+        v => !!v || 'กรุณากรอกข้อมูลปีรถ',
+        v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
+      ],
+
+      BodyID: '',
+      BodyIDRules: [
+        v => !!v || 'กรุณากรอกเลขตัวถัง',
+
+      ],
+
+      Desc: '',
+      DescRules: [
+        v => !!v || 'กรุณากรอกข้อมูล',
+
+      ],
+
+      selectedItem_Owner: '',
+      selectedItem_OwnerRules: [
+        v => !!v || 'กรุณาเลือกรายการนี้',
+      ],
+
     }
   },
   computed: {
@@ -486,28 +572,36 @@ export default {
       const age = Math.floor(diff / 31557600000);
       return age
     },
-    async getDataDisplay() {
-      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
-      const paramKey = new URLSearchParams();
-      paramKey.append('key', this.Store.IDforSELECT)
-      const responseCus = await Axios.post(apiCus, paramKey)
-      this.dataCustomer = responseCus.data
-
-      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
-      const responseWip = await Axios.post(apiWIP, paramKey)
-      this.dataWorkInProcess = responseWip.data
-
-      if (this.dataWorkInProcess.length === 0) {
-        alert('Work in process is null')
-      } else {
-        console.log(this.dataWorkInProcess)
+    validate() {
+      console.log('TESt');
+      if (this.$refs.form.validate()) {
+        console.log('TES1');
+        this.snackbar = true
+        this.dialogAddSucess = true
       }
-        
-      if (this.dataCustodataWorkInProcessmer.length === 0) {
-        alert('Customer table is null')
-      } else {
-        console.log(this.dataCustomer)
-      }
+      console.log('TES2');
+    },
+    async insertNewEmp() {
+    //   const api = 'https://testtingfuck.000webhostapp.com/insert_new_emp.php'
+    //   const param = new URLSearchParams()
+        //   param.append('',)
+    //   param.append('Emp_PID',)
+    //   param.append('Emp_Name',)
+    //   param.append('Emp_Lname',)
+    //   param.append('Pos_ID',)
+    //   param.append('Nickname',)
+    //   param.append('Birthday',)
+    //   param.append('Start_Date',)
+    //   param.append('Salary',)
+    //   param.append('Emp_Type',)
+    //   param.append('Address',)
+    //   param.append('Phone_Num',)
+    //   param.append('Email',)
+    //   param.append('LineID',)
+    //   param.append('speciality',)
+
+
+    
     },
   },
 }

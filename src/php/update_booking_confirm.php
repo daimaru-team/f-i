@@ -15,6 +15,7 @@ $bookingQuery=$con->query($query);
 if($bookingQuery){
     echo "1";
 }    
+
 else{
     echo "0";
 }

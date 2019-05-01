@@ -704,40 +704,13 @@ export default {
     }
   },
   methods: {
-    // จุดเรียก validate ถ้าผ่านแล้วเรียก function ตรง dosomething ได้เลย
-    // validate() {
-    //   if (this.$refs.form.validate()) {
-    //     // do something
-    //   }
-    },
     testo() {
       this.dialogAddSucess = false
       this.dialog_Insert = false
       this.alert = !this.alert
       this.QrPic = true
     },
-    async getDataDisplay() {
-      const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';
-      const paramKey = new URLSearchParams();
-      paramKey.append('key', this.Store.IDforSELECT)
-      const responseCus = await Axios.post(apiCus, paramKey)
-      this.dataCustomer = responseCus.data
 
-      const apiWIP = 'https://testtingfuck.000webhostapp.com/select_WIP_customerUse.php'
-      const responseWip = await Axios.post(apiWIP, paramKey)
-      this.dataWorkInProcess = responseWip.data
-
-      if (this.dataWorkInProcess.length === 0) {
-        alert('Work in process is null')
-      } else {
-        console.log(this.dataWorkInProcess)
-      }
-      if (this.dataCustodataWorkInProcessmer.length === 0) {
-        alert('Customer table is null')
-      } else {
-        console.log(this.dataCustomer)
-      }
-    },
     validate() {
       console.log('TESt');
       if (this.$refs.form.validate()) {
@@ -760,17 +733,7 @@ export default {
       const [month, day, year] = date.split('/')
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
-    getJSON() {
-      return new Promise(((resolve) => {
-        Axios.get('https://tutorialzine.com/misc/files/example.json')
-          .then((json) => {
-            // The data from the request is available in a .then block
-            // We return the result using resolve.
-            console.log(json)
-            resolve(json);
-          });
-      }));
-    },
+
   },
 }
 </script>

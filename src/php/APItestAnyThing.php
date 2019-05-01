@@ -3,14 +3,62 @@
 error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json; charset=utf-8');
-
 include "Config.php";
+// $datajson="[{"Emp_ID":"10102","Emp_PID":"3333333333333",
+//     "Emp_Name":"phonpisud","Emp_Lname":"sumagsa","Pos_ID":"CEO",
+//     "Nickname":"ing","Birthday":"1980-03-02","Start_Date":"2019-03-31",
+//     "Salary":"30000","Emp_Type":"FT",
+//     "Phone_Num":"0999999999","Email":"ing@mail.com","LineID":"ingza555","speciality":null}]";
+// $data=json_decode($_POST['data_insert'],true);
 
-$genW_ID=GenerateWID($con);
-$cm_id="HON";
-$genCar_ID=GenerateCar_ID($con,$cm_id);
-echo "W_ID =".$genW_ID;
-echo "Car_ID = ".$genCar_ID;
+
+//($Cus_ID,$Cus_Name,$Cus_Lname,$Cus_Tel,$Address,$Email,$LineID,$Birthday,CURRENT_DATE())
+//cus-----------------------------------------------------
+$Cus_ID="1111111111111";//pid
+$Cus_Fname = "anupha";
+$Cus_Lname  = "supri";
+$Address  = "asdc saddasdzcds asdsasdasdas123";
+$Email  = "test@mail.com";
+$LineID  = "rak";
+$Cus_Tel = "0911111111";
+$Birthday = "19930404";
+//car-----------------------------------------------------
+$W_ID=GenerateWID($con);
+$Cm_ID  = "HON"; //brand
+$Car_ID=GenerateCar_ID($con,$Cm_ID); //ใช้วิธี select count ละเอามาบวก 1 แล้ว genstring โดยการนับตำแหน่งอักษร
+$Model  = "Jazz";
+$Car_Color  = "แดง";
+$License_Plete = "กท 123";
+$Year  = "2019";
+$Tank_Num = "sad2124afas23233";
+$Broken_List="สตาร์ทไม่ติด เครื่องหลวม";
+
+//backend---------------------------------------------------------
+$Create_date  = "20190502";
+$Start_Date  = "20190502";
+$Finish_Date = "20190610";
+$Emp_ID_Owner = "10101";
+$Remark= "";
+
+if ($con->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$Email='feen@hotmail.com';
+
+$query="UPDATE `Customer` SET `Cus_Fname`='".$Cus_Fname."',`Cus_Lname`='$Cus_Lname',`Phone_Num`='$Cus_Tel',`Address`='$Address',`Email`='$Email',`LineID`='$LineID',
+`Birthday`='$Birthday',`Create_date`='$Create_date' WHERE `Cus_ID`='$Cus_ID'";
+
+$re_cus=$con->query($query);
+
+if($re_cus){
+    echo "1";
+}    
+else{
+    echo "0";
+}
+
 
 function GenerateWID($con){
     $query="SELECT COUNT(*) AS TOTAL FROM `WorkInProcess`";
@@ -19,21 +67,15 @@ function GenerateWID($con){
     $response = array();
      while($row = $result->fetch_assoc())
        $response[] = $row;
-          
-    // $getvaluecal=(int)$_GET['getdata'];
-    // echo $getvaluecal."=get \r\n";
 
-    $calID=1+(int)$response[0]['TOTAL'];
-    
-    // echo "len CalID =".strlen((string)$calID);
+    $calID=(int)$response[0]['TOTAL'];
     $genID="WID";
     $loopgen=7-strlen((string)$calID);
-    for($i=0;$i<$loopgen;$i++){
+
+    for($i=0;$i<$loopgen;$i++)
         $genID.="0";
-    }
-    
+
     $genID.=(string)$calID;
-    // echo "\r\n new W_ID =".$genID;
     
     return $genID;
 }
@@ -59,34 +101,4 @@ function GenerateCar_ID($con, $cm_id){
 }
 exit();
 
-?>
-
-<?php
-
-$file = $_FILES['myImage']['tmp_name']; 
-$source_properties = getimagesize($file);
-$image_type = $source_properties[2]; 
-if( $image_type == IMAGETYPE_JPEG ) {   
-    $image_resource_id = imagecreatefromjpeg($file);  
-    $target_layer = fn_resize($image_resource_id,$source_properties[0],$source_properties[1]);
-    imagejpeg($target_layer,$_FILES['myImage']['name'] . "_thump.jpg");
-}
-else if( $image_type == IMAGETYPE_GIF )  {  
-    $image_resource_id = imagecreatefromgif($file);
-    $target_layer = fn_resize($image_resource_id,$source_properties[0],$source_properties[1]);
-    imagegif($target_layer,$_FILES['myImage']['name'] . "_thump.gif");
-}
-else if( $image_type == IMAGETYPE_PNG ) {
-    $image_resource_id = imagecreatefrompng($file); 
-    $target_layer = fn_resize($image_resource_id,$source_properties[0],$source_properties[1]);
-    imagepng($target_layer,$_FILES['myImage']['name'] . "_thump.png");
-}
-
-function fn_resize($image_resource_id,$width,$height) {
-$target_width =200;
-$target_height =200;
-$target_layer=imagecreatetruecolor($target_width,$target_height);
-imagecopyresampled($target_layer,$image_resource_id,0,0,0,0,$target_width,$target_height, $width,$height);
-return $target_layer;
-}
 ?>

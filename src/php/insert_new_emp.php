@@ -6,21 +6,42 @@ header('Content-type: application/json charset=utf-8');
 
 include "Config.php";
 
-$Emp_ID=$_POST['Emp_ID'];
-$Emp_PID=$_POST['Emp_PID'];
-$Emp_Name=$_POST['Emp_Name'];
-$Emp_Lname=$_POST['Emp_Lname'];
-$Pos_ID=$_POST['Pos_ID'];
-$Nickname=$_POST['Nickname'];
-$Birthday=$_POST['Birthday'];
-$Start_Date=$_POST['Start_Date'];
-$Salary=$_POST['Salary'];
-$Emp_Type=$_POST['Emp_Type'];
-$Address=$_POST['Address'];
-$Phone_Num=$_POST['Phone_Num'];
-$Email=$_POST['Email'];
-$LineID=$_POST['LineID'];
-$speciality=$_POST['speciality'];
+
+$data=json_decode($_POST['data_insert'],true);
+
+$Emp_ID=GenEmpID($con);
+$Emp_PID=$data[0]['Emp_PID'];
+$Emp_Name=$data[0]['Emp_Name'];
+$Emp_Lname=$data[0]['Emp_Lname'];
+$Pos_ID=$data[0]['Pos_ID'];
+$Nickname=$data[0]['Nickname'];
+$Birthday=$data[0]['Birthday'];
+$Start_Date=$data[0]['Start_Date'];
+$Salary=$data[0]['Salary'];
+$Emp_Type=$data[0]['Emp_Type'];
+$Address=$data[0]['Address'];
+$Phone_Num=$data[0]['Phone_Num'];
+$Email=$data[0]['Email'];
+$LineID=$data[0]['LineID'];
+$speciality=$data[0]['speciality'];
+$Password=$data[0]['password'];
+
+// $Emp_ID="10102";
+// $Emp_PID="3333333333333";
+// $Emp_Name="phonpisud";
+// $Emp_Lname="sumagsa";
+// $Pos_ID="CEO";
+// $Nickname="ingzi";
+// $Birthday="20120101";
+// $Start_Date="2019-03-31";
+// $Salary="30000";
+// $Emp_Type="FT";
+// $Address="3242wl;s ds;lkfds;lkdf s;lsdkfdlks12321dsa asdzxcxzxzcczc";
+// $Phone_Num="0999999999";
+// $Email="ing@mail.com";
+// $LineID="ingza555";
+// $speciality="ไม่มี";
+// $Password="1234";
 
 if ($con->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -36,52 +57,35 @@ if ($con->connect_error) {
 
     if($re_cus)
     {
-        echo "Success query_CusTB \r\n".$re_cus."\r\n";
+        $queryUser="INSERT INTO `users`(`id`, `User_Login`, `password`, `Owner_ID`, `User_Type`) 
+        VALUES (null,'".$Emp_ID."','".$Password."','".$Emp_ID."','Employee')";
+        $re_user=$con->query($queryUser);
+        if($re_user){
+            echo "1";
+        }else{
+            echo "0";
+        }
+        echo "\r\n Success query_CusTB \r\n".$re_cus."\r\n";
     }    
     else{
-        echo "Error Customer".$re_cus."\r\n";
+        echo "0";
+         echo "\r\n Error Customer".$re_cus."\r\n";
     }
 
 
 
-function GenerateWID($con){
-    $query="SELECT COUNT(*) AS TOTAL FROM `WorkInProcess`";
-    $result = $con->query($query);
-    
-    $response = array();
-     while($row = $result->fetch_assoc())
-       $response[] = $row;
-
-    $calID=1+(int)$response[0]['TOTAL'];
-    $genID="WID";
-    $loopgen=7-strlen((string)$calID);
-
-    for($i=0;$i<$loopgen;$i++)
-        $genID.="0";
-
-    $genID.=(string)$calID;
-    
-    return $genID;
-}
-
-function GenerateCar_ID($con, $cm_id){
-    $query="SELECT COUNT(*) AS TOTAL  FROM Car WHERE Brand='$cm_id'";
+function GenEmpID($con){
+    $query="SELECT Emp_ID FROM Employee ORDER BY Emp_ID DESC LIMIT 1";
     $result = $con->query($query);
 
     $response = array();
      while($row = $result->fetch_assoc())
        $response[] = $row;
 
-    $calID=1+(int)$response[0]['TOTAL'];
-
-    $genID=$cm_id;
-    $loopgen=5-strlen((string)$calID);
-    for($i=0;$i<$loopgen;$i++)
-        $genID.="0";
-    
-    $genID.=(string)$calID;
-    
-    return $genID;
+    $calID=1+(int)$response[0]['Emp_ID'];
+    return $calID;
 }
+
+
 exit();
 ?>

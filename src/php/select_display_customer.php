@@ -25,7 +25,6 @@ for($i=0;$i<COUNT($response);$i++){
         WHERE Car.Brand=cm.CM_ID
         AND Car.Cus_ID='$key'";
 
-        echo $query."\r\n";
         $CarResult = $con->query($query);
 
         $carRes = array();

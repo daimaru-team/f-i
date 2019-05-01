@@ -9,9 +9,7 @@ $booking_id=$_POST['book_id'];
 $date=$_POST['date'];
 
 $query="UPDATE `Booking` SET `come_in_date`='$date' WHERE `book_ID`='$booking_id'";
-
 $bookingQuery=$con->query($query);
-
 if($bookingQuery){
     echo "1";
 }    

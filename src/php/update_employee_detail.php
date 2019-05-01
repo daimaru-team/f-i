@@ -23,9 +23,12 @@ $Email=$data[0]['Email'];
 $LineID=$data[0]['LineID'];
 $speciality=$data[0]['speciality'];
 
-$query="UPDATE `Employee` SET `Emp_PID`='$Emp_PID',`Emp_Name`='$',`Emp_Lname`='$',`Pos_ID`='$Pos_ID',`Nickname`='$Nickname',
-`Birthday`='$Birthday',`Start_Date`='$Start_Date',`Salary`='$Salary',`Emp_Type`='$Emp_Type',`Address`='$Address',`Phone_Num`='$Phone_Num',`Email`='$Email',`LineID`='$LineID',
-`speciality`='$speciality' WHERE  `Emp_ID`='$'Emp_ID";
+$query="UPDATE `Employee` SET `Emp_PID`='$Emp_PID',`Emp_Name`='$Emp_Name',
+`Emp_Lname`='$Emp_Lname',`Pos_ID`='$Pos_ID',`Nickname`='$Nickname',
+`Birthday`='$Birthday',`Start_Date`='$Start_Date',
+`Salary`='$Salary',`Emp_Type`='$Emp_Type',`Address`='$Address',
+`Phone_Num`='$Phone_Num',`Email`='$Email',`LineID`='$LineID',
+`speciality`='$speciality' WHERE `Emp_ID`='$Emp_ID'";
 
 $result=$con->query($query);
 

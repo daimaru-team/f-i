@@ -7,6 +7,8 @@ include "Config.php";
 
 //($Cus_ID,$Cus_Name,$Cus_Lname,$Cus_Tel,$Address,$Email,$LineID,$Birthday,CURRENT_DATE())
 //cus-----------------------------------------------------
+
+
 $data=json_decode($_POST['data_insert'],true);
 
 $Cus_ID=$data[0]['Cus_ID'];//pid
@@ -34,6 +36,7 @@ $Start_Date = $data[0]['Start_Date'];
 $Finish_Date = $data[0]['Finish_Date'];
 $Emp_ID_Owner = $data[0]['Emp_ID'];
 $Remark=$data[0]['Remark'];
+
 if ($con->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

@@ -19,7 +19,7 @@ AND `Cus`.`Cus_ID` = `WIP`.`Cus_ID`
 AND `CM`.`CM_ID` = `Car`.`Brand` 
 AND `Emp`.`Emp_ID` = `WIP`.`Emp_ID`
 AND `WIP`.`Cus_ID`='$key'
-AND `Emp`.`Pos_ID`= Pos.Pos_ID";
+AND `Emp`.`Pos_ID`= `Pos.Pos_ID`";
 
 $result = $con->query($query);
 
