@@ -56,19 +56,26 @@
                                 <v-flex mt-3 headline font-weight-bold>
                                     <v-icon>ballot</v-icon> งานที่รับผิดชอบ
                                 </v-flex>
-                                <v-flex mt-3 ml-3>
+                                <v-flex ml-3>
 
-                                    <div v-for="work in GetData_Work_in" v-bind:key="work.W_ID" v-if="work.Emp_ID === item.Emp_ID">
+                                    <div  v-if="item.WorkDesc==='null'">
+                                        <v-flex mt-3>
+                                            <v-v-card-text><h4>ไม่มีงานที่ค้างอยู่</h4></v-v-card-text>
+                                         </v-flex>
+                                    </div >
+                                    <div v-else v-for="work in item.WorkDesc" v-bind:key="work.W_ID">
+                                        <v-flex mt-3>
                                         <h3>
                                             <p><b> Work ID : {{work.W_ID}} </b></p>
                                         </h3>
-                                        <p><b>  Status: "{{work.Status}}" </b></p>
+                                        <p><b>  Status : "{{work.Status}}" </b></p>
 
-                                        <p><b> Car_ID: </b>{{work.Car_ID}}</p>
-                                        <p><b> Description: </b> {{work.W_Desc}}</p>
+                                        <p><b> Car_ID : </b>{{work.Car_ID}}</p>
+                                        <p><b> Description : </b> {{work.W_Desc}}</p>
 
-                                        <p><b>วันนัดรับรถ:</b> {{work.Finish_Date}} </p>
-
+                                        <p><b>วันนัดรับรถ :</b> {{work.Finish_Date}} </p>
+                                        </v-flex>
+                                        <v-divider></v-divider>
                                     </div>
                                 </v-flex>
 
