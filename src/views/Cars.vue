@@ -569,30 +569,9 @@ export default {
 
       ],
 
-      licensPlate: '',
-      licensPlateRules: [
-        v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
+      
 
-      ],
-
-      year: '',
-      yearRules: [
-        v => !!v || 'กรุณากรอกข้อมูลปีรถ',
-        v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
-      ],
-
-      BodyID: '',
-      BodyIDRules: [
-        v => !!v || 'กรุณากรอกเลขตัวถัง',
-
-      ],
-
-      Desc: '',
-      DescRules: [
-        v => !!v || 'กรุณากรอกข้อมูล',
-
-      ],
-
+   
       selectedItem_Owner: '',
       selectedItem_OwnerRules: [
         v => !!v || 'กรุณาเลือกรายการนี้',

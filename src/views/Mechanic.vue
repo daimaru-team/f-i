@@ -58,7 +58,7 @@
                                 </v-flex>
                                 <v-flex mt-3 ml-3>
 
-                                    <div v-for="work in GetData_Work_in" v-bind:key="work.W_ID" v-if="work.Emp_ID===item.Emp_ID">
+                                    <div v-for="work in GetData_Work_in" v-bind:key="work.W_ID" v-if="work.Emp_ID === item.Emp_ID">
                                         <h3>
                                             <p><b> Work ID : {{work.W_ID}} </b></p>
                                         </h3>
@@ -217,45 +217,49 @@
 
             <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
                 <v-layout wrap>
+                    <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>ข้อมูลพนักงาน</v-card-text>
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-3 pt-2>
+                            <v-flex xs12 sm12 md12>
+                                <v-text-field label="เลขประจำตัวประชาชน*" :rules="pIdRules" required></v-text-field>
+                            </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="ชื่อ*" required></v-text-field>
+                                <v-text-field label="ชื่อ*" :rules="fNameRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="นามสกุล*" persistent-hint required></v-text-field>
+                                <v-text-field v- label="นามสกุล*" :rules="lNameRules" persistent-hint required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm12 md12>
-                                <v-text-field label="ที่อยู่ปัจจุบัน*" required></v-text-field>
+                                <v-text-field label="ที่อยู่ปัจจุบัน*" v-model="address" :rules="addressRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="วันเกิด*" required></v-text-field>
+                                <v-text-field label="วันเกิด*" v-model="birthday" :rules="birthdayRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="อีเมล์*" required></v-text-field>
+                                <v-text-field label="อีเมล์*" v-model="email" :rules="emailRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="Line ID*" required></v-text-field>
+                                <v-text-field label="Line ID*" v-model="lineID" :rules="lineIDRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="เบอร์โทร*" required></v-text-field>
+                                <v-text-field label="เบอร์โทร*" :rules="telRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" label="ตำแหน่ง*" persistent-hint>
+                                <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" label="ตำแหน่ง*" persistent-hint v-model="position" :rules="positionRules">
                                 </v-autocomplete>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ความถนัด" required></v-text-field>
+                                <v-text-field label="ความถนัด" v-model="spaciality" :rules="spacialityRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="เงินเดือน*" required></v-text-field>
+                                <v-text-field label="เงินเดือน*" v-model="salaly" :rules="salalyRules" required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -263,14 +267,14 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-2 pt-2>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" required></v-text-field>
+                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" v-model="password" :rules="passwordRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ยืนยันอีกครั้ง*" required></v-text-field>
+                                <v-text-field label="ยืนยันอีกครั้ง*" v-model="passwordConfirm" :rules="passwordConfirmRules"  required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
-
+                    </v-form>
                 </v-layout>
             </v-container>
             <!-- <small>*indicates required field</small> -->
@@ -278,7 +282,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click="dialogInsert = false">Cencel</v-btn>
-                <v-btn color="blue darken-1" flat @click="dialogInsert = false,insertCheck = true">Add</v-btn>
+                <v-btn color="blue darken-1" flat @click="validate()">Add</v-btn>
             </v-card-actions>
         </v-card>
 
@@ -451,47 +455,104 @@ export default {
         sortable: false,
         value: 'Emp_ID',
       },
-      {
-        text: 'Name',
-        value: 'Emp_name',
-      },
-      {
-        text: 'Last Name',
-        value: 'Emp_name',
-      },
-      {
-        text: 'Position',
-        value: 'Pos_ID',
-      },
-      {
-        text: 'Address',
-        value: 'Position',
-      },
-      {
-        text: 'Date OB',
-        value: 'Date OB',
-      },
-      {
-        text: 'Join date',
-        value: 'Join date',
-      },
-      {
-        text: 'Salary',
-        value: 'Salary',
-      },
-      {
-        text: 'Phone number',
-        value: 'Phone number',
-      },
-      {
-        text: 'Email',
-        value: 'Email',
-      },
-      {
-        text: 'Line ID',
-        value: 'Line ID',
-      },
       ],
+       pId: '',
+      pIdRules: [
+        v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
+        v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
+      ],
+
+      fName: '',
+      fNameRules: [
+        v => !!v || 'กรุณากรอกชื่อ',
+      ],
+
+      lName: '',
+      lNameRules: [
+        v => !!v || 'กรุณากรอกนามสกุล',
+
+      ],
+
+      address: '',
+      addressRules: [
+        v => !!v || 'กรุณากรอกที่อยู่',
+
+      ],
+
+      birthday: '',
+      birthdayRules: [
+        v => !!v || 'กรุณากรอกวันเกิด',
+        v => (v && v.length >= 8) || 'di6',
+      ],
+
+      email: '',
+      emailRules: [
+        v => !!v || 'กรุณากรอกอีเมลล์',
+        v => /.+@.+/.test(v) || 'กรุณากรอกอีเมลล์ให้ถูกต้อง',
+      ],
+
+      lineID: '',
+      lineIDRules: [
+        v => !!v || 'กรุณากรอกไลน์ไอดี',
+
+      ],
+
+      tel: '',
+      telRules: [
+        v => !!v || 'กรุณากรอกเบอร์โทรศัพท์',
+        v => (v && v.length >= 10) || 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
+      ],
+
+      selectedItem_CM: '',
+      selectedItem_CMRules: [
+        v => !!v || 'กรุณาเลือกยี่ห้อรถ',
+      ],
+
+      model: '',
+      modelRules: [
+        v => !!v || 'กรุณาเลือกรุ่นรถ',
+
+      ],
+
+
+      Desc: '',
+      DescRules: [
+        v => !!v || 'กรุณากรอกข้อมูล',
+
+      ],
+      position: '',
+      positionRules: [
+        v => !!v || 'กรุณากรอกข้อมูล',
+
+      ],
+      spaciality: '',
+      spacialityRules: [
+        v => !!v || 'กรุณากรอกข้อมูล',
+
+      ],
+      salaly: '',
+      salalyRules: [
+        v => !!v || 'กรุณากรอกข้อมูล',
+
+      ],
+      password: '',
+      passwordRules: [
+        v => !!v || 'กรุณากรอกรหัสผ่าน',
+
+      ],
+      passwordConfirm: '',
+      passwordConfirmRules: [
+        v => !!v || 'กรุณากรอกรหัสผ่านอีกครั้ง',
+
+      ],
+
+
+      selectedItem_Owner: '',
+      selectedItem_OwnerRules: [
+        v => !!v || 'กรุณาเลือกรายการนี้',
+      ],
+      valid: false,
+
     }
   },
   computed: {
@@ -532,6 +593,14 @@ export default {
       const age = Math.floor(diff / 31557600000);
 
       return age
+    },
+    validate() {
+
+      if (this.$refs.form.validate()) {
+        this.snackbar = true
+        this.insertCheck = true
+      }
+
     },
     async getDataDisplay() {
       const apiCus = 'https://testtingfuck.000webhostapp.com/select_display_customerUse.php';

@@ -1,5 +1,6 @@
 <template>
-<v-card width="100%">
+
+    <v-card width="100%">
     <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
         <v-expansion-panel-content :key="item.Cus_ID" v-for="item in GetData_Cus" >
             <template v-slot:header>
@@ -107,6 +108,8 @@
     </v-expansion-panel>
 
 </v-card>
+
+
 </template>
 
 <script>
@@ -151,6 +154,8 @@ export default {
       dialog_delete: false,
       dialog_Timeline: false,
       dialog_confrim: false,
+      alertUpdateNewDate: false,
+      errorUpdateNewDate: false,
       search: '',
       pagination: {},
       selected: [],
@@ -186,6 +191,8 @@ export default {
       console.log(response.data)
       this.GetData_Cus = response.data
     },
+
+
   },
 }
 </script>

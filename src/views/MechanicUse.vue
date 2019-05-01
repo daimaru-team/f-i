@@ -15,7 +15,7 @@
                 <v-tooltip left>
                     <template v-slot:activator="{ on }">
                         <v-btn icon v-on="on" @click.stop="dialog_Morword = true">
-                            <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20">
+                            <v-icon size="40">account_circle</v-icon>
                     </v-btn>
                     </template>
                     <span>User & Logout</span>
@@ -62,7 +62,7 @@
                             <v-flex>
                                 <v-flex>
                                     <v-layout justify-center wrap>
-                                        <v-btn color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon>
+                                        <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon>
                                         </v-btn>
                                     </v-layout>
                                 </v-flex>
@@ -200,15 +200,15 @@
                 <!-- Dailog User detail กดรูป -->
                 <v-dialog v-model="dialog_Morword" max-width="350">
                     <v-card>
-                        <v-list>
+                        <v-list class="grey darken-4 white--text">
                             <v-list-tile avatar>
-                                <v-list-tile-avatar>
-                                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+                                <v-list-tile-avatar >
+                                    <img src="https://testtingfuck.000webhostapp.com/imageLogo/IconMechanic.png">
                               </v-list-tile-avatar>
 
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{this.UserData[0].Emp_Name}} {{this.UserData[0].Emp_Lname}}</v-list-tile-title>
-                                        <v-list-tile-sub-title>ตำแหน่ง: Mechanicle</v-list-tile-sub-title>
+                                        <v-list-tile-sub-title class="white--text">ตำแหน่ง: Mechanicle</v-list-tile-sub-title>
                                     </v-list-tile-content>
 
                                     <v-list-tile-action>
@@ -225,34 +225,23 @@
                             <!-- logoutdialog (key for search)-->
                         </v-list>
                         <v-divider></v-divider>
-                        <v-card-text>
-                            <v-list-tile-title>รหัสพนักงาน : {{this.UserData[0].Emp_ID}} </v-list-tile-title>
+                        <v-card-text class="grey lighten-2">
+                            <v-list-tile-title><b>รหัสพนักงาน : </b>{{this.UserData[0].Emp_ID}} </v-list-tile-title>
                         </v-card-text>
-                        <v-divider></v-divider>
+                        <v-divider class="grey lighten-1"></v-divider>
+                        <v-divider class="grey lighten-1"></v-divider>
+                    
 
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
+                        <v-card-actions class="grey lighten-2">
+                            <v-flex font-italic ml-2><h4>F & I GARAGE</h4></v-flex>
 
-                            <v-btn color="primary" flat @click="dialog_Morword = false">OK</v-btn>
+                            <v-btn  color="red" class="white--text" style="border-radius:70px 0px 70px 0px" @click="dialog_Morword = false">Close</v-btn>
                         </v-card-actions>
 
                     </v-card>
                 </v-dialog>
             </v-card>
 
-            <!-- Dailog logout กดออกจากระบบ -->
-            <v-dialog v-model="dialog_logout" max-width="290">
-                <v-card>
-                    <v-card-title class="headline grey lighten-2" primary-title>F&I Garage</v-card-title>
-                    <v-card-text>Do you want to logout?</v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue white--text" @click="dialog_logout = false">No</v-btn>
-                        <v-btn color="blue white--text" @click="dialog_logout = false,login = true">Yes</v-btn>
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
 
         </main>
 

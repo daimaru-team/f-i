@@ -327,6 +327,12 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    log_out() {
+      this.$session.clear()
+      this.$session.destroy()
+      this.Store.display_page = 'Login'
+      this.dialog_Morword = false
+    },
     moment() {
       return moment();
     },
@@ -339,15 +345,6 @@ export default {
       console.log(`before update=${this.HeaderTxt}`)
       this.HeaderTxt = null
       this.HeaderTxt = name
-    },
-    log_out() {
-      console.log('11111')
-      this.$session.clear()
-      this.$session.destroy()
-      this.Store.display_page = 'Login'
-      this.dialog_Adminlogout = false
-      this.dialog_Morword = false
-      alert('dddfff')
     },
   },
 

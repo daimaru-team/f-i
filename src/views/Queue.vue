@@ -1,7 +1,19 @@
-/* eslint-disable camelcase */
+
 <template>
+<div>
+<v-app>
+    <v-alert :value="alertUpdateNewDate" type="success"
+        transition="scale-transition" dismissible Color="red">
+        อัพเดทวันจะเข้ารับบริการสำเร็จ </v-alert>
+    <v-alert :value="errorUpdateNewDate" type="error"
+        transition="scale-transition" dismissible>
+        ระบบไม่สามารถทำการให้ท่านได้.. โปรดตรวจสอบข้อมูลหรือการเชื่อมต่อ และลองใหม่อีกครั้งภายหลัง!
+    </v-alert>
+
 <v-card width="100%">
-    <v-alert fixed :value="alert" type="success" transition="scale-transition" dismissible>Insert queue successfully!</v-alert>
+    <v-alert fixed :value="alert" type="success" transition="scale-transition" dismissible>
+        Insert queue successfully!
+    </v-alert>
 
     <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
         <v-expansion-panel-content v-for="item in display_booking">
@@ -86,7 +98,7 @@
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
-                                            <v-btn fab small dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,alert = false">
+                                            <v-btn fab small dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit_date = true,alert = false">
                                                 <v-icon dark>edit</v-icon>
                                             </v-btn>
                                         </template>
@@ -117,38 +129,7 @@
                         </v-flex>
                     </v-layout>
                 </v-flex>
-                <!-- <v-flex class="text-xs-center white--text" headline pt-3 pb-3>Timeline</v-flex>
-
-          <v-container class="grey darken-4 white--text black--text">
-              <v-timeline dense clipped>
-                  <v-slide-x-transition group>
-                   <v-timeline-item v-for="event in timeline"
-                   :key="event.id" class="mb-3" color="pink" small>
-                      <v-layout justify-space-between>
-                        <v-flex xs7 v-text="event.text"></v-flex>
-                        <v-flex xs5 text-xs-right v-text="event.time"></v-flex>
-                      </v-layout>
-                    </v-timeline-item>
-                  </v-slide-x-transition>
-
-                  <v-timeline-item class="mb-4" hide-dot>
-                    <span>TODAY</span>
-                  </v-timeline-item>
-
-                  <v-timeline-item class="mb-3" small>
-                    <v-layout justify-space-between>
-                      <v-flex xs7>
-                        <v-chip class="white--text ml-0" color="purple" label small>
-                          APP
-                        </v-chip>
-                        Digital Downloads fulfilled 1 item.
-                      </v-flex>
-                      <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                    </v-layout>
-                  </v-timeline-item>
-               </v-timeline>
-          </v-container>
-           <v-flex class="text-xs-center white--text" headline pt-3 pb-3>M.Phonpisud</v-flex> -->
+              enter white--text" headline pt-3 pb-3>M.Phonpisud</v-flex> -->
             </v-card>
 
             <v-dialog v-model="dialog_confrim" persistent max-width="700px">
@@ -249,7 +230,7 @@
                 </v-card>
             </v-dialog>
 
-            <v-dialog v-model="dialog_Edit" persistent max-width="700px">
+            <v-dialog v-model="dialog_Edit_date" persistent max-width="700px">
                 <v-card color="grey darken-4" class="white--text">
                     <v-card-text>
                         <h1 class="text-xs-center red--text">Edit Queue</h1>
@@ -263,56 +244,13 @@
                                 <v-card elevation="0" color="grey lighten-3" width="100%">
                                     <v-layout wrap pl-4 pr-4 pt-2>
 
-                                        <v-flex xs12 sm6 pr-2>
-                                            <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-                                                <template v-slot:activator="{ on }">
-                                                    <v-text-field v-model="dateFormatted" label="กำหนดวันรับรถเข้ารับบริการ" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
-                                                    </v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                                            </v-menu>
-                                        </v-flex>
-
-                                        <v-flex xs12 sm6>
-                                            <v-select :items="Mac_for_newQ" value="Emp_ID" hint="กำหนดช่างผู้รับผิดชอบงาน" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
-                                        </v-flex>
                                     </v-layout>
                                 </v-card>
 
                                 <v-card-text>ข้อมูลส่วนตัว</v-card-text>
                                 <v-card elevation="0" color="grey lighten-3" width="100%">
                                     <v-layout wrap pl-4 pr-4 pb-3>
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>ชื่อ-สกุล : </b>{{item.name}}</div>
-                                        </v-flex>
-
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>Line ID : </b> {{item.lineID}}</div>
-                                        </v-flex>
-
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>เบอร์โทรศัพท์ : </b> {{item.tel}}</div>
-                                        </v-flex>
-
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>อีเมลล์ :</b> {{item.Email}}</div>
-                                        </v-flex>
-
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>เบอร์โทร :</b> 0916984687</div>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>Car :</b> {{item.car_brand+' '+item.car_model}}</div>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>Year :</b> {{item.car_year}}</div>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>อาการเบื้องต้น :</b> {{item.broken_desc}}</div>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12 pt-3>
-                                            <div><b>วันที่ต้องการนำรถมาเข้ารับบริการ :</b> {{item.come_in_date}}</div>
-                                        </v-flex>
+                                        
                                     </v-layout>
                                 </v-card>
 
@@ -325,8 +263,8 @@
                                 <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png" width="170" height="50">
                             </v-flex>
                                 <v-spacer></v-spacer>
-                                <v-btn color="red" class="white--text" @click="dialog_Edit = false,insert = true">Cancel</v-btn>
-                                <v-btn color="red" class="white--text" @click="dialog_Edit = false,alert = !alert">OK</v-btn>
+                                <v-btn color="red" class="white--text" @click="dialog_Edit_date = false,insert = true">Cancel</v-btn>
+                                <v-btn color="red" class="white--text" @click="dialog_Edit_date = false,alert = !alert">OK</v-btn>
                         </v-card-actions>
                     </v-card-text>
                 </v-card>
@@ -460,27 +398,10 @@
         </v-card>
     </v-dialog>
 
-    <v-dialog v-model="QrPic" max-width="300">
-        <v-flex mb-2>
-            <v-card color="green">
-                <v-layout justify-center class="white--text">
-                    <h3>Send Qr code to Email complete !</h3>
-                </v-layout>
-            </v-card>
-        </v-flex>
-        <v-card>
-            <img src="https://mrkenthelibrarian.files.wordpress.com/2012/05/qrcmrken.png?w=280&h=280" width="300" height="300">
-        </v-card>
-            <v-flex mt-2>
-                <v-card color="green">
-                    <v-layout justify-center class="white--text">
-                        <h3>Qr code สำหรับการเข้าใช้ระบบ</h3>
-                    </v-layout>
-                </v-card>
-            </v-flex>
-    </v-dialog>
-
 </v-card>
+</v-app>
+</div>
+
 </template>
 
 <script>
@@ -647,7 +568,10 @@ export default {
       Store: this.$store.state,
       alert: false,
       dialog_Insert: null,
-      dialog_Edit: null,
+      dialog_Edit_date: null,
+      dialog_Edit_confirmBook: null,
+      dialog_Edit_startWo: null,
+      menu_edit: false,
       menu1: false,
       menu2: false,
       search: '',
@@ -655,10 +579,14 @@ export default {
       dataWorkInProcess: '',
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
+      date_edit: new Date().toISOString().substr(0, 10),
+      dateFormatted_edit: this.formatDate(new Date().toISOString().substr(0, 10)),
       Mac_for_newQ: [],
       Car_list_forAdd: [],
       pagination: {},
       selected: [],
+      alertUpdateNewDate: false,
+      errorUpdateNewDate: false,
       insert_newQ: [{
         Cus_ID: '',
         Cus_name: '',
@@ -754,16 +682,26 @@ export default {
       const [month, day, year] = date.split('/')
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
-    getJSON() {
-      return new Promise(((resolve) => {
-        Axios.get('https://tutorialzine.com/misc/files/example.json')
-          .then((json) => {
-            // The data from the request is available in a .then block
-            // We return the result using resolve.
-            console.log(json)
-            resolve(json);
-          });
-      }));
+    async UpdateBookingDate(bookId, datenew) {
+      const api = 'https://testtingfuck.000webhostapp.com/update_booking_date.php'
+      const paramUpdate = new URLSearchParams()
+      paramUpdate.append('book_id', bookId)
+      paramUpdate.append('date', datenew)
+      const response = await Axios.post(api, paramUpdate)
+      const res = response.data
+      console.log(res.count)
+      console.log(res)
+      if (res === 1) {
+        this.alertUpdateNewDate = true;
+        setTimeout(() => {
+          this.alertUpdateNewDate = false;
+        }, 10000);
+      } else {
+        this.errorUpdateNewDate = true;
+        setTimeout(() => {
+          this.errorUpdateNewDate = false;
+        }, 10000);
+      }
     },
   },
 }
