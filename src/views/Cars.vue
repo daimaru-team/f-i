@@ -61,7 +61,7 @@
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
-                                            <v-btn small fab dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,alert = false">
+                                            <v-btn small fab dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Edit = true,dateEditID=item.W_ID,alert = false">
                                                 <v-icon dark>edit</v-icon>
                                             </v-btn>
                                         </template>
@@ -71,7 +71,7 @@
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
-                                            <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,getDataDeletegetDataDelete(item.W_ID),alert = false">
+                                            <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,WidForDeleteBT=item.W_ID,alert = false">
                                                 <v-icon dark>delete_forever</v-icon>
                                             </v-btn>
                                         </template>
@@ -81,7 +81,7 @@
                                 <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
-                                            <v-btn small fab dark right color="blue" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_Timeline = true,getDataExpans(item)">
+                                            <v-btn small fab dark right color="blue" v-on="on" class="elevation-10"  style="margin-top:10px;" @click="getDataExpans(item)">
                                                 <v-icon dark>storage</v-icon>
                                             </v-btn>
                                         </template>
@@ -161,7 +161,7 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
-                            <v-btn color="red white--text" @click="dialog_delete = false">Yes</v-btn>
+                            <v-btn color="red white--text" @click="deletewip(WidForDeleteBT),dialog_delete = false">Yes</v-btn>
                             <v-spacer></v-spacer>
                         </v-card-actions>
                     </v-card>
@@ -175,23 +175,25 @@
 
                             <v-container grid-list-md style="padding: 0px 10px 10px 15px;">
                                 <v-layout wrap>
-
-                                    <v-card-text>แผนงาน</v-card-text>
+<!-- {{dateFormatted}} {{date}} -->
+                                    <v-card-text>แผนงาน </v-card-text>
 
                                     <v-card elevation="0" color="grey lighten-3" width="100%">
                                         <v-layout wrap pl-4 pr-4 pt-2>
 
                                             <v-flex xs12 sm6 pr-2>
+
                                                 <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
                                                     <template v-slot:activator="{ on }">
-                                                        <v-text-field v-model="dateFormatted" label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly></v-text-field>
+                                                        <v-text-field v-model="date" label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly></v-text-field>
                                                     </template>
                                                     <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                                                 </v-menu>
                                             </v-flex>
 
                                             <v-flex xs12 sm6>
-                                                <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                                <!-- <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ"
+                                                 single-line return-object></v-select> -->
                                             </v-flex>
                                         </v-layout>
                                     </v-card>
@@ -243,7 +245,7 @@
                             </v-flex>
                                     <v-spacer></v-spacer>
                                     <v-btn color="red" class="white--text" @click="dialog_Edit = false,insert = true">Cancel</v-btn>
-                                    <v-btn color="red" class="white--text" @click="dialog_Edit = false,alert = !alert">OK</v-btn>
+                                    <v-btn color="red" class="white--text" @click="UpdateDate(dateEditID,date),dialog_Edit = false,alert = !alert">OK</v-btn>
                             </v-card-actions>
                         </v-card-text>
                     </v-card>
@@ -270,7 +272,7 @@
                                 <v-timeline dense clipped class="">
 
                                     <v-timeline-item color="grey darken-3" class="mb-4">
-                                        <h3>{{item.W_ID}}</h3>
+                                        <h3>{{timelineWID.W_ID}}</h3>
                                     </v-timeline-item>
 
                                     <v-timeline-item color="red" class="mb-3" small v-for="timelineItem in timelineWID.timeline">
@@ -330,14 +332,14 @@
                 <v-layout wrap>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-card-text>ข้อมูลส่วนตัว</v-card-text>
-                        <v-card elevation="0" color="grey lighten-3" width="100%">
+                        <v-card elevation="0" color="grey lighten-3" width="100%" style="border-radius:80px 0px 0px 0px">
 
                             <v-layout wrap pl-4 pr-4 pb-3>
-                                <v-flex xs12 sm12 md12 mt-2>
+                                <v-flex xs12 sm12 md12 mt-2 ml-3>
                                     <v-layout wrap>
                                     <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#"></v-text-field>
 
-                                    <v-btn icon large color="red"><v-icon>search</v-icon></v-btn>
+                                    <v-btn icon large color="red" @click="findPID(pId)"><v-icon>search</v-icon></v-btn>
                                     </v-layout>
                                 </v-flex>
 
@@ -369,7 +371,7 @@
                                 </v-flex>
 
                                 <v-flex xs12 sm6 md6>
-                                    <v-text-field label="เบอร์โทร" v-model="tel" :rules="telRules" mask="##-####-####" required></v-text-field>
+                                    <v-text-field label="เบอร์โทร" v-model="tel" :rules="telRules" :counter="10" mask="##-####-####" required></v-text-field>
                                 </v-flex>
                             </v-layout>
 
@@ -379,7 +381,7 @@
 
                             <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                                 <v-flex xs12 sm6 md6 pr-3>
-                                    <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name" v-on:change="Gen_ID_Car()" single-line return-object></v-autocomplete>
+                                    <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID" v-model="selectedItem_CM" :rules="selectedItem_CMRules" item-text="CM_Name"  single-line return-object></v-autocomplete>
                                 </v-flex>
                                 <v-flex xs12 sm6 md6>
                                     <v-text-field label="รุ่น" v-model="model" :rules="modelRules" required></v-text-field>
@@ -404,20 +406,18 @@
                         </v-card>
                         <v-card-text>แผนงาน</v-card-text>
 
-                        <v-card elevation="0" color="grey lighten-3" width="100%">
+                        <v-card elevation="0" color="grey lighten-3" width="100%" style="border-radius:0px 0px 80px 0px">
                             <v-layout wrap pl-4 pr-4 pb-3>
 
-                                <v-flex xs12 sm6 pr-2>
-                                    <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field v-model="dateFormatted" label="กำหนดวันเสร็จสิ้นและส่งมอบงาน" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
-                                            </v-text-field>
-                                        </template>
-                                        <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                                    </v-menu>
+                                <v-flex xs12 sm6 md6 pr-2>
+                                    <v-text-field  label="วันเริ่มงาน" persistent-hint v-model="startDate" mask="####-##-##" :rules="startDateRules" prepend-icon="event"></v-text-field>
                                 </v-flex>
 
-                                <v-flex xs12 sm6>
+                                <v-flex xs12 sm6 md6 pr-2>
+                                    <v-text-field  label="วันรับรถ" persistent-hint v-model="finishDatetDate"  mask="####-##-##" :rules="finishDateRules"></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md6>
                                     <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" :rules="selectedItem_OwnerRules" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
                                 </v-flex>
                             </v-layout>
@@ -429,20 +429,20 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click="dialog_Insert = false">Cencel</v-btn>
-                <v-btn color="blue darken-1" dark flat @click="validate()" :disabled="!valid">Add</v-btn>
+                <v-btn color="red" style="border-radius:40px 0px 40px 0px" dark @click="dialog_Insert = false">Cencel</v-btn>
+                <v-btn color="red" style="border-radius:40px 0px 40px 0px" dark @click="validate()" :disabled="!valid">Add</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 
     <v-dialog v-model="dialogAddSucess" max-width="300">
         <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>F&I Garage</v-card-title>
+            <v-card-title class="headline white--text grey darken-4" primary-title>F&I Garage</v-card-title>
             <v-card-title>Do you want to Add queue ?</v-card-title>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue white--text" @click="dialog_Insert = false,dialogAddSucess = false">No</v-btn>
-                <v-btn color="blue white--text" @click="testo()">Yes</v-btn>
+                <v-btn color="red white--text" style="border-radius:40px 0px 0px 0px" @click="dialog_Insert = false,dialogAddSucess = false">No</v-btn>
+                <v-btn color="red white--text" style="border-radius:0px 0px 40px 0px" @click="dialogAddSucess = false">Yes</v-btn>
                 <v-spacer></v-spacer>
             </v-card-actions>
         </v-card>
@@ -503,6 +503,7 @@ export default {
   },
   data() {
     return {
+      date: '',
       myDate: null,
       WidForDeleteBT: '',
       pId: '',
@@ -569,13 +570,45 @@ export default {
 
       ],
 
-      
+      licensPlate: '',
+      licensPlateRules: [
+        v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
 
-   
+      ],
+      year: '',
+      yearRules: [
+        v => !!v || 'กรุณากรอกข้อมูลปีรถ',
+        v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
+      ],
+
+      BodyID: '',
+      BodyIDRules: [
+        v => !!v || 'กรุณากรอกเลขตัวถัง',
+
+      ],
+      Desc: '',
+      DescRules: [
+        v => !!v || 'กรุณากรอกรายละเอียด',
+
+      ],
+
       selectedItem_Owner: '',
       selectedItem_OwnerRules: [
         v => !!v || 'กรุณาเลือกรายการนี้',
       ],
+
+      startDate: '',
+      startDateRules: [
+        v => !!v || 'กรุณากรอกวันเริ่มงาน',
+        v => (v && v.length >= 8) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ปี/เดือน/วัน)',
+      ],
+      finishDate: '',
+      finishDateRules: [
+        v => !!v || 'กรุณากรอกวันสิ้นสุดงาน',
+        v => (v && v.length >= 8) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ปี/เดือน/วัน)',
+      ],
+
+      dateEditID: '',
       valid: false,
       timelineWID: '',
       dialog_Edit: false,
@@ -639,6 +672,7 @@ export default {
   methods: {
     getDataExpans(data) {
       this.timelineWID = data
+      this.dialog_Timeline = true
       //   console.log('kkkkkkkk',this.timelineWID)
     },
     getDataDelete(data) {
@@ -648,15 +682,112 @@ export default {
       //   console.log('kkkkkkkk',this.timelineWID)
     },
     validate() {
-      if (this.$refs.form.validate()) {
+      this.snackbar = true
+      this.dialogAddSucess = true
 
-        this.snackbar = true
-        this.dialogAddSucess = true
-      }
+      this.insertToWIP();
       console.log('TES2');
     },
     moment() {
       return moment();
+    },
+    async insertToWIP() {
+      const datainsert = [{
+
+        Cus_ID: this.pId,
+        Cus_Name: this.fName,
+        Cus_Lname: this.lName,
+        Address: this.address,
+        Email: this.email,
+        LineID: this.lineID,
+        Tel: this.tel,
+        Birthday: this.birthday,
+        Cm_ID: this.selectedItem_CM.CM_ID,
+        Model: this.model,
+        Car_Color: this.color,
+        License_Plete: this.licensPlate,
+        Year: this.year,
+        Tank_Num: this.BodyID,
+        Broken_List: this.Desc,
+        Start_Date: this.startDate,
+        Finish_Date: this.finishDatetDate,
+        Emp_ID: this.selectedItem_Owner.Emp_ID,
+        Remark: 'ไม่มี',
+      }]
+      const api = 'https://testtingfuck.000webhostapp.com/insert_new_wip.php'
+      const param = new URLSearchParams()
+      console.log(datainsert)
+      param.append('data_insert', JSON.stringify(datainsert))
+      const response = await Axios.post(api, param)
+      const res = response.data
+      console.log(res)
+
+      if (res === '1') {
+        console.log('insert finished')
+      } else if (res === '0') {
+        console.log('insert false')
+      }
+    },
+
+    async findPID(id) {
+      console.log('testq')
+      if (id.length === 13) {
+        const api = 'https://testtingfuck.000webhostapp.com/findID.php'
+        const paramkey = new URLSearchParams();
+        paramkey.append('key', id);
+        const response = await Axios.post(api, paramkey)
+        const res = response.data
+        if (res !== '0') {
+          this.pId = res[0].Cus_ID
+          this.fName = res[0].Cus_Fname
+          this.lName = res[0].Cus_Lname
+          this.tel = res[0].Phone_Num
+          this.address = res[0].Address
+          this.email = res[0].Email
+          this.lineID = res[0].LineID
+          this.birthday = res[0].Birthday
+        } else {
+          console.log('not found this user')
+        }
+      }
+    },
+    async deletewip(id) {
+      const api = 'https://testtingfuck.000webhostapp.com/deleteWIP.php'
+      const param = new URLSearchParams()
+      param.append('W_ID', id)
+      const response = await Axios.post(api, param)
+      const res = response.data
+      console.log('res', res)
+      // eslint-disable-next-line eqeqeq
+      if (res == '1') {
+        console.log('pass')
+      } else {
+        console.log('error update')
+      }
+    },
+
+    async UpdateDate(bookId, datenew) {
+      alert(bookId)
+      alert(datenew)
+      const api = 'https://testtingfuck.000webhostapp.com/update_wip_detail.php'
+      const paramUpdate = new URLSearchParams()
+      paramUpdate.append('W_ID', bookId)
+      paramUpdate.append('date', datenew)
+      const response = await Axios.post(api, paramUpdate)
+      const res = response.data
+      console.log(res.count)
+      console.log(res)
+      if (res === 1) {
+        this.alertUpdateNewDate = true;
+        setTimeout(() => {
+          this.alertUpdateNewDate = false;
+        }, 10000);
+      } else {
+        this.errorUpdateNewDate = true;
+        setTimeout(() => {
+          this.errorUpdateNewDate = false;
+        }, 10000);
+      }
     },
   },
 }

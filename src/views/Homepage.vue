@@ -41,19 +41,24 @@
   </v-toolbar>
 
   <v-navigation-drawer v-model="drawer" class="grey darken-4" app dark fixed hide-overlay width="250">
-    <v-flex mt-2>
+    <v-flex mt-2 mb-1>
       <v-layout justify-center>
         <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png" width="240" height="80">
       </v-layout>
+
     </v-flex>
+      <v-divider></v-divider>
+      <v-divider></v-divider>
       <v-list>
         <v-list-tile avatar>
           <v-list-tile-avatar>
-            <img src="https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/1402451/1160/772/m1/fpnw/wm0/mechanic-avatar-icon-flat-01-.jpg?1467032839&s=1661b6ffa5d32fa4b2c3eb17980c818d">
+            <v-flex ml-1>
+            <v-icon size="45">account_circle</v-icon>
+            </v-flex>
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>{{this.UserData[0].Emp_Name}} {{this.UserData[0].Emp_Lname}}</v-list-tile-title>
-              <h6># Online {{window.width}}</h6>
+              <h6 class="blue--text"># Online</h6>
             </v-list-tile-content>
             <v-btn dark icon @click.stop="dialog_Morword= true">
               <v-icon>more_vert</v-icon>
@@ -61,14 +66,15 @@
         </v-list-tile>
         <v-divider class="grey darken-4 pt-1"></v-divider>
         <v-divider></v-divider>
-        <v-divider class="green accent-4 pt-10" pt-1></v-divider>
+        <v-divider></v-divider>
       </v-list>
 
       <v-list class="pt-0">
 
           <v-list-tile v-for="item in items" @click="changeName(item.name)" :key="item.key" :to="item.link" :name="item.name">
             <v-flex>
-              {{item.title}}
+              <h3><v-icon size="23" style="padding:0px 4px 0px 0px">{{item.icon}} </v-icon>
+                {{item.title}}</h3>
             </v-flex>
               <h1>></h1>
           </v-list-tile>
@@ -101,34 +107,34 @@
 
     <v-dialog v-model="dialog_Morword" max-width="350">
       <v-card>
-        <v-list>
+        <v-list class="grey darken-4 white--text">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+              <v-icon color="red" size="45">account_circle</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
-              <v-list-tile-sub-title>Customer</v-list-tile-sub-title>
+              <v-list-tile-title><b>{{Display_user_nav.fullname}} </b> ({{Display_user_nav.nickname}})</v-list-tile-title>
+              <v-list-tile-sub-title class= "white--text">สิทธิ์การเข้าถึง :{{Store.User_type_store}} </v-list-tile-sub-title>
             </v-list-tile-content>
 
             <v-list-tile-action>
-              <v-btn color="blue" icon flat @click="dialog_Adminlogout = true"><v-icon>logout</v-icon></v-btn>
+              <v-btn color="blue" icon flat @click="log_out()"><v-icon>logout</v-icon></v-btn>
             </v-list-tile-action>
           </v-list-tile>
 
         </v-list>
         <v-divider></v-divider>
 
-          <v-card-text>
-            <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
+          <v-card-text class="grey lighten-3">
+            <v-list-tile-title>รหัสพนักงาน:{{UserData[0].Emp_ID}}</v-list-tile-title>
             <!-- <v-list-tile-title  v-for="(item,i) in items_Cars" :key="i">Car {{i+1}}:{{items_Cars}}</v-list-tile-title> -->
           </v-card-text>
           <v-divider></v-divider>
 
-          <v-card-actions>
+          <v-card-actions class="grey lighten-3">
             <v-spacer></v-spacer>
-            <v-btn color="primary" flat @click="dialog_Morword = false">OK</v-btn>
+            <v-btn color="red" style="border-radius:40px 0px 40px 0px" @click="dialog_Morword = false">OK</v-btn>
           </v-card-actions>
 
       </v-card>
@@ -245,7 +251,7 @@ export default {
       items: [{
         key: 'Queue',
         title: 'Qeue Management',
-        icon: 'mail',
+        icon: 'developer_board',
         link: '/Queue',
         name: 'Queue',
         badge: true,
@@ -254,21 +260,21 @@ export default {
       {
         key: 'Customer',
         title: 'Customer',
-        // icon: 'label',
+        icon: 'person',
         link: '/Customer',
         name: 'Customer',
       },
       {
         key: 'Mechanic',
         title: 'Employee',
-        // icon: 'label',
+        icon: 'assignment_ind',
         link: '/Mechanic',
         name: 'Mechanic',
       },
       {
         key: 'Cars',
         title: 'Work in process',
-        // icon: 'label',
+        icon: 'directions_car',
         link: '/Cars',
         name: 'Cars',
       },
@@ -289,7 +295,7 @@ export default {
       ],
     }
   },
-
+ 
   mounted() {
     const a = this.Store.IDforSELECT;
     // alert(a)
@@ -299,14 +305,16 @@ export default {
     user_data_params.append('Colname', 'Emp_ID')
     user_data_params.append('ID', this.Store.IDforSELECT)
 
-    Axios.post(api, user_data_params)
+     Axios.post(api, user_data_params)
       .then((response) => {
         this.UserData = response.data
         // console.log('select data = ')
         // console.log(this.UserData)
-        this.Display_user_nav.fullname = `${this.UserData[0].Emp_Name} ${this.UserData[0].Emp_FName}`
+        this.Display_user_nav.fullname = `${this.UserData[0].Emp_Name} ${this.UserData[0].Emp_Lname}`
         this.Display_user_nav.nickname = this.UserData[0].Nickname
+        console.log('dataUser :', this.UserData)
       })
+
     console.log(this.$vuetify.breakpoint)
   },
 

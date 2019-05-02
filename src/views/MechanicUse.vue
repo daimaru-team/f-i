@@ -2,7 +2,7 @@
 <v-app>
     <v-layout>
 
-        <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px); overflow-y:">
+        <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
             <v-flex title>
                 Mechanic
             </v-flex>
@@ -16,7 +16,7 @@
                     <template v-slot:activator="{ on }">
                         <v-btn icon v-on="on" @click.stop="dialog_Morword = true">
                             <v-icon size="40">account_circle</v-icon>
-                    </v-btn>
+                        </v-btn>
                     </template>
                     <span>User & Logout</span>
                 </v-tooltip>
@@ -37,41 +37,64 @@
                         </template>
 
                         <v-card color="grey lighten-3">
-                            <v-flex>
-                              <v-card-text>
-                              <v-flex>
-                                    <h3><p> Work ID : {{item.W_ID}} </p></h3>
-                              </v-flex>
-                              <v-divider></v-divider>
-                              <v-divider></v-divider>
-                              <v-flex mt-3 headline font-weight-bold>
-                                <v-icon>insert_drive_file</v-icon> รายละเอียดงาน
-                              </v-flex>
-                              <v-flex mt-3 ml-3>
-                                    <p><b> Car : </b> {{item.CM_Name}} {{item.Model}} </p>
-                                    <p><b> Year : </b>{{item.Car_Year}}</p>
-                                    <!-- <p><b> Color :</b> {{item.Color}}</p> -->
-                                    <p><b> Licens plate : </b>{{item.License_plate}}</p>
-                                    <p><b> Customer : </b> {{item.cus_name}}</p>
-                                    <p><b> อาการเบื้องต้น : </b> {{item.W_Desc}}</p>
-                                    <p><b> ช่างผู้รับผิดชอบ : </b>{{item.emp_name}}</p>
-                                    <!-- <p><b> Status :</b>{{item.Status}} -->
+                          <v-flex>
+                            <v-layout>
+                                <v-flex md11 xl11 sm11 lg11 xs11>
+                                    <v-card-text>
+                                        <v-flex>
+                                            <h3>
+                                                <p> Work ID : {{item.W_ID}} </p>
+                                            </h3>
+                                        </v-flex>
+                                        <v-divider></v-divider>
+                                        <v-divider></v-divider>
+                                        <v-flex mt-3 headline font-weight-bold>
+                                            <v-icon>insert_drive_file</v-icon> รายละเอียดงาน
+                                        </v-flex>
+                                        <v-flex mt-3 ml-3>
+                                            <p><b> Car : </b> {{item.CM_Name}} {{item.Model}} </p>
+                                            <p><b> Year : </b>{{item.Car_Year}}</p>
+                                            <!-- <p><b> Color :</b> {{item.Color}}</p> -->
+                                            <p><b> Licens plate : </b>{{item.License_plate}}</p>
+                                            <p><b> Customer : </b> {{item.cus_name}}</p>
+                                            <p><b> อาการเบื้องต้น : </b> {{item.W_Desc}}</p>
+                                            <p><b> ช่างผู้รับผิดชอบ : </b>{{item.emp_name}}</p>
+                                            <!-- <p><b> Status :</b>{{item.Status}} -->
+                                        </v-flex>
+                                    </v-card-text>
+
+                                    <v-flex>
+                                        <v-flex>
+                                            <v-layout justify-center wrap>
+                                                <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon>
+                                                </v-btn>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex>
+                                            <v-layout justify-center wrap v-for="day in dayleft" v-if="day.W_ID===item.W_ID">
+                                                <b class="red--text">เหลือเวลาอีก {{day.day_left}} วัน จะถึงกำหนด</b>
+                                            </v-layout>
+                                        </v-flex>
                                     </v-flex>
-                                </v-card-text>
-                            </v-flex>
-                            <v-flex>
-                                <v-flex>
-                                    <v-layout justify-center wrap>
-                                        <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon>
-                                        </v-btn>
+                                </v-flex>
+                                <v-flex md1 xl1 sm1 lg1 xs1 class="grey lighten-3">
+                                  <v-layout justify-end wrap>
+
+
+                                    <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn small fab dark color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_confrim(item),alert = false">
+                                                <v-icon dark>check_circle</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>ยืนยันรับงาน</span>
+                                    </v-tooltip>
                                     </v-layout>
                                 </v-flex>
-                                <v-flex>
-                                    <v-layout justify-center wrap v-for="day in dayleft" v-if="day.W_ID===item.W_ID">
-                                        <b class="red--text">เหลือเวลาอีก {{day.day_left}} วัน จะถึงกำหนด</b>
-                                    </v-layout>
-                                </v-flex>
-                            </v-flex>
+
+
+                            </v-layout>
+                          </v-flex>
                         </v-card>
 
                         <!-- Dialog update timline -->
@@ -202,7 +225,7 @@
                     <v-card>
                         <v-list class="grey darken-4 white--text">
                             <v-list-tile avatar>
-                                <v-list-tile-avatar >
+                                <v-list-tile-avatar>
                                     <img src="https://testtingfuck.000webhostapp.com/imageLogo/IconMechanic.png">
                               </v-list-tile-avatar>
 
@@ -230,18 +253,18 @@
                         </v-card-text>
                         <v-divider class="grey lighten-1"></v-divider>
                         <v-divider class="grey lighten-1"></v-divider>
-                    
 
                         <v-card-actions class="grey lighten-2">
-                            <v-flex font-italic ml-2><h4>F & I GARAGE</h4></v-flex>
+                            <v-flex font-italic ml-2>
+                                <h4>F & I GARAGE</h4>
+                            </v-flex>
 
-                            <v-btn  color="red" class="white--text" style="border-radius:70px 0px 70px 0px" @click="dialog_Morword = false">Close</v-btn>
+                            <v-btn color="red" class="white--text" style="border-radius:70px 0px 70px 0px" @click="dialog_Morword = false">Close</v-btn>
                         </v-card-actions>
 
                     </v-card>
                 </v-dialog>
             </v-card>
-
 
         </main>
 

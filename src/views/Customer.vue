@@ -72,7 +72,11 @@
 
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,getDataDelete(item.Cus_ID),alert = false">
+                                        <v-btn fab dark right color="red"
+                                        v-on="on" class="elevation-10"
+                                        style="margin-top:10px;"
+                                        @click="dialog_delete = true,
+                                        getDataDelete(item.Cus_ID),alert = false">
                                             <v-icon dark>delete_forever</v-icon>
                                         </v-btn>
                                     </template>

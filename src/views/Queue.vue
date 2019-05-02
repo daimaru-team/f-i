@@ -152,12 +152,16 @@
                                                     <v-text-field v-model="dateFormatted" label="กำหนดการวันรับรถเข้ามารับบริการ" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" v-on="on" readonly>
                                                     </v-text-field>
                                                 </template>
-                                                <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                                                <v-date-picker v-model="date" no-title
+                                                @input="menu1 = false"></v-date-picker>
                                             </v-menu>
                                         </v-flex>
 
                                         <v-flex xs12 sm6>
-                                            <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                            <v-select :items="Mac_for_newQ" value="Emp_ID"
+                                            v-model="selectedItem_Owner" item-text="Mac_Name"
+                                            label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)"
+                                            single-line return-object></v-select>
                                         </v-flex>
                                     </v-layout>
                                 </v-card>
@@ -206,7 +210,7 @@
                             </v-flex>
                                 <v-spacer></v-spacer>
                                 <v-btn style="border-radius:40px 0px 0px 0px" color="red" class="white--text" @click="dialog_confrim = false,insert = true">Cancel</v-btn>
-                                <v-btn style="border-radius:0px 0px 40px 0px" color="red" class="white--text" @click="dialog_confrim = false,alert = !alert">OK</v-btn>
+                                <v-btn style="border-radius:0px 0px 40px 0px" color="red" class="white--text" @click="confirmStatusBooking(book_ID.book_ID),dialog_confrim = false,alert = !alert">OK</v-btn>
                         </v-card-actions>
                     </v-card-text>
                 </v-card>
@@ -235,7 +239,7 @@
                                 </v-flex>
 
                                 <v-flex xs12 sm4 md4>
-                                    <v-select :items="Mac_for_newQ" value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" v-on:change="changeRoute(selectedItem_Owner.Emp_ID)" single-line return-object></v-select>
+                                    <v-select :items="Mac_for_newQ" item-value="Emp_ID" v-model="selectedItem_Owner" item-text="Mac_Name" label="ช่างผู้รับผิดชอบ" single-line return-object></v-select>
                                 </v-flex>
                                     </v-layout>
                                 </v-card>
@@ -247,7 +251,7 @@
                                     <v-layout wrap>
                                     <v-text-field label="เลขที่บัตรประชาชน" v-model="pId" :rules="pIdRules" required mask="#-####-#####-##-#"></v-text-field>
 
-                                    <v-btn icon large color="red"><v-icon>search</v-icon></v-btn>
+                                    <v-btn icon large color="red" @click="findPID(pId)"><v-icon>search</v-icon></v-btn>
                                     </v-layout>
                                 </v-flex>
 
@@ -265,7 +269,7 @@
                                 </v-flex>
 
                                 <v-flex xs12 sm6 md6 pr-3>
-                                    <v-text-field label="วันเกิด" v-model="birthday" :rules="birthdayRules" required mask="##/##/####" hint="พ.ศ"></v-text-field>
+                                    <v-text-field label="วันเกิด" v-model="birthday" :rules="birthdayRules" required mask="####/##/##" hint="พ.ศ"></v-text-field>
                                 </v-flex>
 
                                 <v-flex xs12 sm6 md6>
@@ -290,7 +294,10 @@
                                      <v-layout wrap pl-4 pr-4 pb-3 pt-2>
 
                                 <v-flex xs12 sm6 md6 pr-3>
-                                     <v-text-field label="ยี่ห้อ" v-model="selectedItem_Owner" :rules="selectedItem_OwnerRules" required></v-text-field>
+
+                                     <v-autocomplete :items="Car_list_forAdd" label='ยี่ห้อ' value="CM_ID"
+                                     v-model="selectedItem_CM" :rules="selectedItem_CMRules"
+                                      item-text="CM_Name" single-line return-object></v-autocomplete>
                                 </v-flex>
                                 <v-flex xs12 sm6 md6>
                                     <v-text-field label="รุ่น" v-model="model" :rules="modelRules" required></v-text-field>
@@ -343,7 +350,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="red white--text" style="border-radius:80px 0px 0px 0px" @click="dialog_delete = false">No</v-btn>
-                        <v-btn color="red white--text" style="border-radius:0px 0px 50px 0px" @click="dialog_delete = false">Yes</v-btn>
+                        <v-btn color="red white--text" style="border-radius:0px 0px 50px 0px" @click="deleteBooking(book_ID.book_ID),dialog_delete = false">Yes</v-btn>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -414,20 +421,16 @@
 <script>
 import moment from 'moment'
 import Clock from 'vue-clock2'
-// eslint-disable-next-line no-unused-vars
+
 import Datepicker from 'vuejs-datepicker'
 import Axios from 'axios';
-import {
-  Store,
-} from 'vuex';
+
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import {
-  faBeer,
-} from '@fortawesome/free-solid-svg-icons';
-// eslint-disable-next-line no-unused-vars
-const state = {
-  date: new Date(2016, 9, 16),
-}
+
+
+// const state = {
+//   date: new Date(2016, 9, 16),
+// }
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
@@ -437,11 +440,11 @@ export default {
   },
   beforeCreate() {
     const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
-    const Emp_params = new URLSearchParams();
-    let readData = new Array();
-    Emp_params.append('Table', 'WorkInProcess')
+    const Empparams = new URLSearchParams();
+    let readData = []
+    Empparams.append('Table', 'WorkInProcess')
     // eslint-disable-next-line global-require
-    Axios.post(api, Emp_params)
+    Axios.post(api, Empparams)
       .then((response) => {
         readData = response.data
         console.log('loooooop =', readData.length)
@@ -454,12 +457,12 @@ export default {
           this.Mac_for_newQ = readData
         }
       })
-    const api_car_list = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
-    const CMread = new Array();
-    const car_read_params = new URLSearchParams();
-    car_read_params.append('Table', 'Car_Maker')
+    const apicarlist = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
+
+    const carReadParams = new URLSearchParams();
+    carReadParams.append('Table', 'Car_Maker')
     // eslint-disable-next-line global-require
-    Axios.post(api_car_list, car_read_params)
+    Axios.post(apicarlist, carReadParams)
       .then((response) => {
         this.Car_list_forAdd = response.data
         if (this.Car_list_forAdd.length === 0) {
@@ -651,7 +654,16 @@ export default {
     date(val) {
       this.dateFormatted = this.formatDate(this.date)
       // eslint-disable-next-line comma-dangle
-    }
+    },
+    data_dis_booking() {
+      const apibooking = 'https://testtingfuck.000webhostapp.com/select_display_booking.php';
+
+      Axios.post(apibooking)
+        .then((response) => {
+          this.data_dis_booking = response.data
+        // console.log(this.Store.data_dis_booking)
+        })
+    },
   },
   methods: {
 
@@ -665,11 +677,13 @@ export default {
     },
     getDataExpansDialog_delete(data) {
       this.book_ID = data
+
       this.dialog_delete = true
     },
     getDataExpansDialog_add_to_garage(data) {
       // this.selectedItem_CM = data.selectedItem_CM
-      this.book_ID = data
+
+      this.book_ID = data.book_ID
       this.model = data.car_model
 
 
@@ -683,20 +697,20 @@ export default {
 
       this.email = data.Email
       this.tel = data.tel
-
-
       this.dialog_add_to_garage = true
     },
     validate() {
-      if (this.$refs.form.validate()) {
-        this.dialog_Edit_date = false
-      }
+      // if (this.$refs.form.validate()) {
+      this.UpdateBookingDate(this.book_ID.book_ID, this.dateEdit)
+      this.dialog_Edit_date = false
+      // }
     },
     validateAddGarage() {
-      if (this.$refs.form2.validateAddGarage()) {
-        this.dialog_add_to_garage = false
-        this.alert = !this.alert
-      }
+      // if (this.$refs.form2.validateAddGarage()) {
+      this.dialog_add_to_garage = false
+      this.insertToWIP()
+      this.alert = !this.alert
+      // }
       console.log('TES2');
     },
     testo() {
@@ -739,6 +753,89 @@ export default {
         }, 10000);
       }
     },
+    async insertToWIP() {
+      const datainsert = [{
+        booking_id: this.book_ID,
+        Cus_ID: this.pId,
+        Cus_Name: this.fName,
+        Cus_Lname: this.lName,
+        Address: this.address,
+        Email: this.email,
+        LineID: this.lineID,
+        Tel: this.tel,
+        Birthday: this.birthday,
+        Cm_ID: this.selectedItem_CM.CM_ID,
+        Model: this.model,
+        Car_Color: this.color,
+        License_Plete: this.licensPlate,
+        Year: this.year,
+        Tank_Num: this.BodyID,
+        Broken_List: this.Desc,
+        Start_Date: this.come_in_date,
+        Finish_Date: this.finish_date,
+        Emp_ID: this.selectedItem_Owner.Emp_ID,
+      }]
+      const api = 'https://testtingfuck.000webhostapp.com/insert_update_bookingIN.php'
+      const param = new URLSearchParams()
+      console.log(datainsert)
+      param.append('data_insert', JSON.stringify(datainsert))
+      const response = await Axios.post(api, param)
+      const res = response.data
+      console.log(res)
+
+      if (res === '1') {
+        console.log('insert finished')
+      } else if (res === '0') {
+        console.log('insert false')
+      }
+    },
+    async findPID(id) {
+      console.log('testq')
+      if (id.length === 13) {
+        const api = 'https://testtingfuck.000webhostapp.com/findID.php'
+        const paramkey = new URLSearchParams();
+        paramkey.append('key', id);
+        const response = await Axios.post(api, paramkey)
+        const res = response.data
+        if (res !== '0') {
+          this.pId = res[0].Cus_ID
+          this.fName = res[0].Cus_Fname
+          this.lName = res[0].Cus_Lname
+          this.tel = res[0].Phone_Num
+          this.address = res[0].Address
+          this.email = res[0].Email
+          this.lineID = res[0].LineID
+          this.birthday = res[0].Birthday
+        } else {
+          console.log('not found this user')
+        }
+      }
+    },
+    async confirmStatusBooking(id) {
+      const api = 'https://testtingfuck.000webhostapp.com/update_booking_confirm.php'
+      const param = new URLSearchParams()
+      param.append('book_ID', id)
+      const response = await Axios.post(api, param)
+      const res = response.data
+      if (res === '1') {
+        console.log('pass')
+      } else {
+        console.log('error update')
+      }
+    },
+    async deleteBooking(id) {
+      const api = 'https://testtingfuck.000webhostapp.com/deleteBooking.php'
+      const param = new URLSearchParams()
+      param.append('book_ID', id)
+      const response = await Axios.post(api, param)
+      const res = response.data
+      if (res === '1') {
+        console.log('pass')
+      } else {
+        console.log('error update')
+      }
+    },
   },
 }
+
 </script>
