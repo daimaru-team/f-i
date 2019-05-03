@@ -1,6 +1,7 @@
 <template>
 <div>
     <v-app>
+
         <v-toolbar class="v-toolbar v-toolbar--fixed theme--dark red elevation-6" height="50" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
             <v-layout v-if="window.width > 1200">
 
@@ -100,7 +101,7 @@
               </v-layout>
 
           </main>
-   
+
         <v-dialog v-model="dialog_Morword" max-width="350">
             <v-card>
                 <v-list class="grey darken-4 white--text">
@@ -185,179 +186,179 @@ Vue.use(VueSession)
 Vue.use(VueAWN)
 // import login from './views/Login.vue'
 export default {
-    components: {
-        // eslint-disable-next-line vue/no-unused-components
-        Clock,
-        // eslint-disable-next-line vue/no-unused-components
-        Queue,
-        // eslint-disable-next-line vue/no-unused-components
-        VueAWN,
-        // eslint-disable-next-line vue/no-unused-components
-        CustomerUse,
-        // eslint-disable-next-line vue/no-unused-components
-        Customer,
-        // eslint-disable-next-line vue/no-unused-components
-        Cars,
-        // eslint-disable-next-line vue/no-unused-components
-        Mechanic,
-        // eslint-disable-next-line vue/no-unused-components
-        MechanicUse,
-        // eslint-disable-next-line vue/no-unused-components
-        Celender,
-        // eslint-disable-next-line vue/no-unused-components
-        History,
-        // eslint-disable-next-line vue/no-unused-components
-        // eslint-disable-next-line vue/no-unused-components
-        // eslint-disable-next-line no-undef
-        // eslint-disable-next-line vue/no-unused-components
-        Login,
-        DigitalClock,
-        // eslint-disable-next-line vue/no-unused-components
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    Clock,
+    // eslint-disable-next-line vue/no-unused-components
+    Queue,
+    // eslint-disable-next-line vue/no-unused-components
+    VueAWN,
+    // eslint-disable-next-line vue/no-unused-components
+    CustomerUse,
+    // eslint-disable-next-line vue/no-unused-components
+    Customer,
+    // eslint-disable-next-line vue/no-unused-components
+    Cars,
+    // eslint-disable-next-line vue/no-unused-components
+    Mechanic,
+    // eslint-disable-next-line vue/no-unused-components
+    MechanicUse,
+    // eslint-disable-next-line vue/no-unused-components
+    Celender,
+    // eslint-disable-next-line vue/no-unused-components
+    History,
+    // eslint-disable-next-line vue/no-unused-components
+    // eslint-disable-next-line vue/no-unused-components
+    // eslint-disable-next-line no-undef
+    // eslint-disable-next-line vue/no-unused-components
+    Login,
+    DigitalClock,
+    // eslint-disable-next-line vue/no-unused-components
 
+  },
+  data() {
+    return {
+      Store: this.$store.state,
+      HeaderTxt: '',
+      UserData: [],
+      toggle_exclusive: 0,
+      drawer: null,
+      myDate: null,
+      mini: false,
+      right: null,
+      dialog_Morword: false,
+      dialog_Adminlogout: false,
+      fromLogin: false,
+      alert: false,
+      Display_user_nav: [{
+        fullname: '',
+        nickname: '',
+
+      }],
+      // update: true,
+      // website: true,
+      // login: true,
+      // QrcodeReader: true,
+      // CustomerUse: true,
+      // Mechanicle: true,
+      Queue: true,
+
+      window: {
+        width: 0,
+        height: 0,
+      },
+
+      items: [{
+        key: 'Queue',
+        title: 'Qeue Management',
+        icon: 'developer_board',
+        link: '/Queue',
+        name: 'Queue',
+        badge: true,
+
+      },
+      {
+        key: 'Customer',
+        title: 'Customer',
+        icon: 'person',
+        link: '/Customer',
+        name: 'Customer',
+      },
+      {
+        key: 'Mechanic',
+        title: 'Employee',
+        icon: 'assignment_ind',
+        link: '/Mechanic',
+        name: 'Mechanic',
+      },
+      {
+        key: 'Cars',
+        title: 'Work in process',
+        icon: 'directions_car',
+        link: '/Cars',
+        name: 'Cars',
+      },
+        // {
+        //   // key: 'Celender',
+        //   // title: 'Celenders work',
+        //   // // icon: 'label',
+        //   // link: '/Celenders',
+        //   // name: 'Celenders',
+        // },
+        // {
+        //   // key: 'History',
+        //   // title: 'History',
+        //   // // icon: 'label',
+        //   // link: '/History',
+        //   // name: 'History',
+        // },
+      ],
+    }
+  },
+
+  mounted() {
+    const a = this.Store.IDforSELECT;
+    // alert(a)
+    const api = 'https://testtingfuck.000webhostapp.com/data_user_select.php';
+    const user_data_params = new URLSearchParams();
+    user_data_params.append('Table', 'Employee')
+    user_data_params.append('Colname', 'Emp_ID')
+    user_data_params.append('ID', this.Store.IDforSELECT)
+
+    Axios.post(api, user_data_params)
+      .then((response) => {
+        this.UserData = response.data
+        // console.log('select data = ')
+        // console.log(this.UserData)
+        this.Display_user_nav.fullname = `${this.UserData[0].Emp_Name} ${this.UserData[0].Emp_Lname}`
+        this.Display_user_nav.nickname = this.UserData[0].Nickname
+        console.log('dataUser :', this.UserData)
+      })
+
+    console.log(this.$vuetify.breakpoint)
+  },
+
+  beforeCreate() {
+    const api_booking = 'https://testtingfuck.000webhostapp.com/select_display_booking.php';
+
+    Axios.post(api_booking)
+      .then((response) => {
+        this.Store.data_dis_booking = response.data
+        // console.log(this.Store.data_dis_booking)
+      })
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize)
+  },
+  methods: {
+    log_out() {
+      this.$session.clear()
+      this.$session.destroy()
+      this.Store.display_page = 'Login'
+      this.dialog_Morword = false
     },
-    data() {
-        return {
-            Store: this.$store.state,
-            HeaderTxt: '',
-            UserData: [],
-            toggle_exclusive: 0,
-            drawer: null,
-            myDate: null,
-            mini: false,
-            right: null,
-            dialog_Morword: false,
-            dialog_Adminlogout: false,
-            fromLogin: false,
-            alert: false,
-            Display_user_nav: [{
-                fullname: '',
-                nickname: '',
-
-            }],
-            // update: true,
-            // website: true,
-            // login: true,
-            // QrcodeReader: true,
-            // CustomerUse: true,
-            // Mechanicle: true,
-            Queue: true,
-
-            window: {
-                width: 0,
-                height: 0,
-            },
-
-            items: [{
-                    key: 'Queue',
-                    title: 'Qeue Management',
-                    icon: 'developer_board',
-                    link: '/Queue',
-                    name: 'Queue',
-                    badge: true,
-
-                },
-                {
-                    key: 'Customer',
-                    title: 'Customer',
-                    icon: 'person',
-                    link: '/Customer',
-                    name: 'Customer',
-                },
-                {
-                    key: 'Mechanic',
-                    title: 'Employee',
-                    icon: 'assignment_ind',
-                    link: '/Mechanic',
-                    name: 'Mechanic',
-                },
-                {
-                    key: 'Cars',
-                    title: 'Work in process',
-                    icon: 'directions_car',
-                    link: '/Cars',
-                    name: 'Cars',
-                },
-                // {
-                //   // key: 'Celender',
-                //   // title: 'Celenders work',
-                //   // // icon: 'label',
-                //   // link: '/Celenders',
-                //   // name: 'Celenders',
-                // },
-                // {
-                //   // key: 'History',
-                //   // title: 'History',
-                //   // // icon: 'label',
-                //   // link: '/History',
-                //   // name: 'History',
-                // },
-            ],
-        }
+    moment() {
+      return moment();
     },
-
-    mounted() {
-        const a = this.Store.IDforSELECT;
-        // alert(a)
-        const api = 'https://testtingfuck.000webhostapp.com/data_user_select.php';
-        const user_data_params = new URLSearchParams();
-        user_data_params.append('Table', 'Employee')
-        user_data_params.append('Colname', 'Emp_ID')
-        user_data_params.append('ID', this.Store.IDforSELECT)
-
-        Axios.post(api, user_data_params)
-            .then((response) => {
-                this.UserData = response.data
-                // console.log('select data = ')
-                // console.log(this.UserData)
-                this.Display_user_nav.fullname = `${this.UserData[0].Emp_Name} ${this.UserData[0].Emp_Lname}`
-                this.Display_user_nav.nickname = this.UserData[0].Nickname
-                console.log('dataUser :', this.UserData)
-            })
-
-        console.log(this.$vuetify.breakpoint)
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
     },
+    changeName(name) {
+      console.log(`name=${name}`)
+      console.log(`before update=${this.HeaderTxt}`)
+      this.HeaderTxt = null
+      this.HeaderTxt = name
+    },
+  },
 
-    beforeCreate() {
-        const api_booking = 'https://testtingfuck.000webhostapp.com/select_display_booking.php';
-
-        Axios.post(api_booking)
-            .then((response) => {
-                this.Store.data_dis_booking = response.data
-                // console.log(this.Store.data_dis_booking)
-            })
-    },
-    created() {
-        window.addEventListener('resize', this.handleResize)
-        this.handleResize();
-    },
-    destroyed() {
-        window.removeEventListener('resize', this.handleResize)
-    },
-    methods: {
-        log_out() {
-            this.$session.clear()
-            this.$session.destroy()
-            this.Store.display_page = 'Login'
-            this.dialog_Morword = false
-        },
-        moment() {
-            return moment();
-        },
-        handleResize() {
-            this.window.width = window.innerWidth;
-            this.window.height = window.innerHeight;
-        },
-        changeName(name) {
-            console.log(`name=${name}`)
-            console.log(`before update=${this.HeaderTxt}`)
-            this.HeaderTxt = null
-            this.HeaderTxt = name
-        },
-    },
-
-    onChangeFileUpload(fileInput) {
-        this.file = fileInput
-        this.addDataImg(this.Store.IDforSELECT)
-    },
+  onChangeFileUpload(fileInput) {
+    this.file = fileInput
+    this.addDataImg(this.Store.IDforSELECT)
+  },
 }
 </script>
