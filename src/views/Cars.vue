@@ -50,7 +50,7 @@
 
                                             <v-icon v-if="0==1" color="amber accent-4">error</v-icon>
 
-                                            <v-icon v-if="1==1" color="green">offline_pin</v-icon>
+                                            <v-icon v-if="1==1" color="green">hourglass_empty</v-icon>
                                         </p>
                                     </v-flex>
                                 </v-flex>

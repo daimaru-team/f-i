@@ -66,7 +66,7 @@
                                     <v-flex>
                                         <v-flex>
                                             <v-layout justify-center wrap>
-                                                <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,this.$awn.success('Your custom message')">Update <v-icon>history </v-icon>
+                                                <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID">Update <v-icon>history </v-icon>
                                                 </v-btn>
                                             </v-layout>
                                         </v-flex>
@@ -117,7 +117,7 @@
                                 <v-container style="max-width: 600px;">
                                     <v-timeline dense align-top clipped>
                                         <v-timeline-item fill-dot class="white--text" color="orange" large>
-                                            <template v-slot:icon><span>JL</span></template>
+                                            <template v-slot:icon><span>Areefeen</span></template>
                                             <v-text-field outline v-model="input_header" hide-details flat label="กรอกรายละเอียด คลิกที่นี่.. " solo @click.stop="Post= true" @keydown.enter="comment">
                                                 <template v-slot:append>
 
@@ -139,7 +139,7 @@
                                             <v-flex>
                                                 <v-layout justify-start>
                                                     <v-flex>
-                                                        <v-chip small close v-for="(item,i) in 3" v-model="chip1">
+                                                        <v-chip small close v-for="(item,i) in 3">
                                                             <v-avatar class="elevation-5">
                                                                 <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="trevor" width="15" height="20" @click.stop = "dialog_picture= true">
                                               </v-avatar>
@@ -288,10 +288,8 @@ import VueSession from 'vue-session'
 import UploadButton from 'vuetify-upload-button';
 // eslint-disable-next-line no-unused-vars
 import Vuetify from 'vuetify'
-import VueAWN from 'vue-awesome-notifications'
 
 Vue.use(VueSession)
-Vue.use(VueAWN)
 
 export default {
   components: {
@@ -302,7 +300,6 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     DigitalClock,
     // eslint-disable-next-line vue/no-unused-components
-    VueAWN,
     // eslint-disable-next-line vue/no-unused-components
 
   },

@@ -23,15 +23,12 @@
             <template v-slot:header>
                 <div @click="disableNotification(panel)">
                     <h3 >{{item.come_in_date}} | {{item.car_brand}} {{item.car_model}} | {{item.name}}&nbsp;{{item.last_name}}
-
-                            <v-icon medium color="grey lighten-1">notifications_active</v-icon>
-
-                                
                     </h3>
                     
                 </div>
                 <v-layout justify-end mr-1 @click="disableNotification(panel)">
-                <v-icon v-if="item.confirm_status==='1'" medium color="green">check_circle</v-icon>
+                  <v-icon v-if="item.confirm_status==='1'" medium color="green">beenhere</v-icon>
+                  <v-icon v-if="item.confirm_status==='0'" medium color="red">check_circle</v-icon>                  
                 </v-layout>
             </template>
 
@@ -74,7 +71,7 @@
                                     <h3>
                                     <p v-if="item.confirm_status==='0'"><b> Status :</b> รอยืนยัน
                                         <!-- สถานะเสร็จ -->
-                                        <v-icon color="amber accent-4">error</v-icon>
+                                        <v-icon color="amber accent-4">report</v-icon>
                                     </p>
                                     <p v-if="item.confirm_status==='1'"><b> Status :</b> ยืนยันการจอง
                                         <!-- สถานะยังไม่เสร็จ -->

@@ -44,20 +44,17 @@
                                     </v-flex>
                                 </v-flex>
 
-                                <v-flex v-for="(item,i) in 2">
+                                <v-flex v-for="itemCar in item.Car_Detail">
                                     <v-divider></v-divider>
                                     <v-flex mb-2 mt-2>
-                                        <h3><v-icon>time_to_leave</v-icon><b> Car Number :</b> {{i+1}} </h3>
+                                        <h3><v-icon>time_to_leave</v-icon><b> Car ID :</b> {{itemCar.Car_ID}} </h3>
                                     </v-flex>
                                     <v-flex ml-5>
-                                        <p><b> Car ID :</b> 23423 </p>
-                                        <p><b> รถ :</b> ISUZU D-max </p>
-                                        <p><b> ปี :</b> 2005</p>
-                                        <p><b> สี :</b> Blue</p>
-                                        <p><b> ทะเบียน :</b> ghfy-29384 bkk</p>
-                                        <p><b> อาการเบื้องต้น :</b> สตาร์ทไม่ติด อาการคล้ายแบตเตอรี่หมด</p>
-                                        <p><b> ช่างผู้รับผิดชอบ :</b> M.phonpisud</p>
-                                        <p><b> สถานะ :</b> อยู่ระหว่างดำเนินการ
+                                        <p><b> รถ :</b> {{itemCar.CM_Name}} {{itemCar.Model}}</p>
+                                        <p><b> ปี :</b> {{itemCar.Car_Year}} </p>
+                                        <p><b> สี :</b> {{itemCar.Color}} </p>
+                                        <p><b> ทะเบียน :</b> {{itemCar.License_plate}}</p>
+                                        <p class="red"><b> สถานะ :</b>  ยังงไม่มานนนนะะ
                                             <!-- สถานะเสร็จ -->
                                             <v-icon v-if="1==1" color="amber accent-4">error</v-icon>
                                             <!-- สถานะยังไม่เสร็จ -->
