@@ -1,7 +1,7 @@
 
 <template>
 <div>
-<v-app>
+
     <v-alert :value="alertUpdateNewDate" type="success"
         transition="scale-transition" dismissible Color="red">
         อัพเดทวันจะเข้ารับบริการสำเร็จ </v-alert>
@@ -15,19 +15,24 @@
         Insert queue successfully!
     </v-alert>
 
-    <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
+    <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13" v-model="panel">
         <v-expansion-panel-content v-for="item in display_booking">
+        <template v-slot:actions>
+          <v-icon @click="disableNotification(panel)" color="gray">$vuetify.icons.expand</v-icon>
+        </template>
             <template v-slot:header>
-                <div>
-                    <h3>{{item.come_in_date}} | {{item.car_brand}} {{item.car_model}} | {{item.name}}&nbsp;{{item.last_name}}
-                        <v-badge right color="pink" overlap v-if="1==1">
-                            <template v-slot:badge>
-                                <span>1</span>
-                            </template>
+                <div @click="disableNotification(panel)">
+                    <h3 >{{item.come_in_date}} | {{item.car_brand}} {{item.car_model}} | {{item.name}}&nbsp;{{item.last_name}}
+
                             <v-icon medium color="grey lighten-1">notifications_active</v-icon>
-                        </v-badge>
+
+                                
                     </h3>
+                    
                 </div>
+                <v-layout justify-end mr-1 @click="disableNotification(panel)">
+                <v-icon v-if="item.confirm_status==='1'" medium color="green">check_circle</v-icon>
+                </v-layout>
             </template>
 
             <v-card color="grey lighten-3">
@@ -85,7 +90,7 @@
                         <v-flex md1 xl1 sm1 lg1 xs1>
 
                             <v-layout justify-end wrap>
-                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
                                             <v-btn large fab dark color="light-blue darken-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_add_to_garage(item),alert = false">
@@ -94,8 +99,8 @@
                                         </template>
                                         <span>รับรถเข้าอู่</span>
                                     </v-tooltip>
-                                </v-flex>
-                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+ 
+     
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
                                             <v-btn fab small dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_Edit_date(item),alert = false">
@@ -104,8 +109,7 @@
                                         </template>
                                         <span>แก้ไขวันรับรถ</span>
                                     </v-tooltip>
-                                </v-flex>
-                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
                                             <v-btn small fab dark right color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_confrim(item),alert = false">
@@ -114,8 +118,8 @@
                                         </template>
                                         <span>ยืนยันรับงาน</span>
                                     </v-tooltip>
-                                </v-flex>
-                                <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
+
+
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
                                             <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_delete(item),alert = false">
@@ -124,7 +128,7 @@
                                         </template>
                                         <span>ลบคิว</span>
                                     </v-tooltip>
-                                </v-flex>
+
                             </v-layout>
                         </v-flex>
 
@@ -413,7 +417,6 @@
     </v-dialog>
 
 </v-card>
-</v-app>
 </div>
 
 </template>
@@ -479,6 +482,8 @@ export default {
   },
   data() {
     return {
+      panel: '',
+      panelNum: '',
       pId: '',
       pIdRules: [
         v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
@@ -666,7 +671,10 @@ export default {
     },
   },
   methods: {
-
+    disableNotification(data) {
+      this.panelNum = data
+      //alert('Disable icn Noti Panel ที่'+ data + 'แล้วววว')
+    },
     getDataExpansDialog_Edit_date(data) {
       this.book_ID = data
       this.dialog_Edit_date = true

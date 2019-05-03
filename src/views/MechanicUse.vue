@@ -79,8 +79,6 @@
                                 </v-flex>
                                 <v-flex md1 xl1 sm1 lg1 xs1 class="grey lighten-3">
                                   <v-layout justify-end wrap>
-
-
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
                                             <v-btn small fab dark color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_confrim(item),alert = false">

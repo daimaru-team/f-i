@@ -10,16 +10,17 @@
         <span>Insert employee</span>
     </v-tooltip>
 
-    <v-expansion-panel focusable :pagination.sync="pagination">
-        <v-expansion-panel-content :key="item.Emp_ID" v-for="item in GetData_Emp">
+    <v-expansion-panel focusable :pagination.sync="pagination" v-model="panel">
+        <v-expansion-panel-content :key="item.Emp_ID" v-for="item in GetData_Emp" >
             <template v-slot:header>
-                <div>
+              
                     <h3>
-                        <v-icon v-if="item.Pos_Name === 'Manager'" color="amber accent-4">supervisor_account</v-icon>
-                        <v-icon v-if="item.Pos_Name === 'Mechanic'" color="amber accent-4">build</v-icon>
+                        <v-avatar size="34" color="grey lighten-3">
+                            <v-icon v-if="item.Pos_Name === 'Manager'" color="amber accent-4">supervisor_account</v-icon>
+                            <v-icon v-if="item.Pos_Name === 'Mechanic'" color="amber accent-4">build</v-icon>
+                        </v-avatar>
                          <b> {{item.Emp_ID}} | </b> {{item.Mac_Name}} - {{item.Pos_Name}}
                     </h3>
-                </div>
             </template>
             <v-card color="grey lighten-3">
                 <v-flex>
@@ -437,6 +438,7 @@ export default {
   },
   data() {
     return {
+      panel: null,
       window: {
         width: 0,
         height: 0,
@@ -445,6 +447,7 @@ export default {
       dialog_Edit: false,
       dialog_delete: false,
       search: '',
+      ExpandID: '',
       GetData_Emp: [],
       GetData_Work_in: [],
       alert: false,
