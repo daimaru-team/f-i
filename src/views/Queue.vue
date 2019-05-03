@@ -425,413 +425,413 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 //   date: new Date(2016, 9, 16),
 // }
 export default {
-    components: {
-        // eslint-disable-next-line vue/no-unused-components
-        Clock,
-        // eslint-disable-next-line vue/no-unused-components
-        Datepicker,
-    },
-    beforeCreate() {
-        const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
-        const Empparams = new URLSearchParams();
-        let readData = []
-        Empparams.append('Table', 'WorkInProcess')
-        // eslint-disable-next-line global-require
-        Axios.post(api, Empparams)
-            .then((response) => {
-                readData = response.data
-                console.log('loooooop =', readData.length)
-                // eslint-disable-next-line eqeqeq
-                if (readData.length == 0) {
-                    alert('table is null or error')
-                    // eslint-disable-next-line eqeqeq
-                } else if (readData != 0) {
-                    console.log(readData)
-                    this.Mac_for_newQ = readData
-                }
-            })
-        const apicarlist = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
-
-        const carReadParams = new URLSearchParams();
-        carReadParams.append('Table', 'Car_Maker')
-        // eslint-disable-next-line global-require
-        Axios.post(apicarlist, carReadParams)
-            .then((response) => {
-                this.Car_list_forAdd = response.data
-                if (this.Car_list_forAdd.length === 0) {
-                    alert('table is null or error')
-                } else if (this.Car_list_forAdd.length !== 0) {
-                    console.log()
-                }
-            })
-    },
-    mounted() {
-        console.log('test storqqqq')
-        this.display_booking = this.Store.data_dis_booking
-        console.log(this.display_booking)
-    },
-    data() {
-        return {
-            panel: '',
-            panelNum: '',
-            pId: '',
-            pIdRules: [
-                v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
-                v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
-            ],
-
-            fName: '',
-            fNameRules: [
-                v => !!v || 'กรุณากรอกชื่อ',
-            ],
-
-            lName: '',
-            lNameRules: [
-                v => !!v || 'กรุณากรอกนามสกุล',
-
-            ],
-
-            address: '',
-            addressRules: [
-                v => !!v || 'กรุณากรอกที่อยู่',
-
-            ],
-
-            birthday: '',
-            birthdayRules: [
-                v => !!v || 'กรุณากรอกวันเกิด',
-                v => (v && v.length >= 8) || 'di6',
-            ],
-
-            email: '',
-            emailRules: [
-                v => !!v || 'กรุณากรอกอีเมลล์',
-                v => /.+@.+/.test(v) || 'กรุณากรอกอีเมลล์ให้ถูกต้อง',
-            ],
-
-            lineID: '',
-            lineIDRules: [
-                v => !!v || 'กรุณากรอกไลน์ไอดี',
-
-            ],
-
-            tel: '',
-            telRules: [
-                v => !!v || 'กรุณากรอกเบอร์โทรศัพท์',
-                v => (v && v.length >= 10) || 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
-            ],
-
-            selectedItem_CM: '',
-            selectedItem_CMRules: [
-                v => !!v || 'กรุณาเลือกยี่ห้อรถ',
-            ],
-
-            model: '',
-            modelRules: [
-                v => !!v || 'กรุณาเลือกรุ่นรถ',
-
-            ],
-
-            color: '',
-            colorRules: [
-                v => !!v || 'กรุณากรอกข้อมูลสีรถ',
-
-            ],
-
-            licensPlate: '',
-            licensPlateRules: [
-                v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
-
-            ],
-
-            year: '',
-            yearRules: [
-                v => !!v || 'กรุณากรอกข้อมูลปีรถ',
-                v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
-            ],
-
-            BodyID: '',
-            BodyIDRules: [
-                v => !!v || 'กรุณากรอกเลขตัวถัง',
-
-            ],
-
-            Desc: '',
-            DescRules: [
-                v => !!v || 'กรุณากรอกข้อมูล',
-
-            ],
-
-            selectedItem_Owner: '',
-            selectedItem_OwnerRules: [
-                v => !!v || 'กรุณาเลือกรายการนี้',
-            ],
-
-            come_in_date: '',
-            finish_date: '',
-            come_in_dateRules: [
-                v => !!v || 'กรุณากรอก',
-            ],
-
-            dateEdit: '',
-            dateEditRules: [
-                v => !!v || 'กรุณากรอกวันที่จะนำรถเข้ามารับบริการ',
-                v => (v && v.length >= 8) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ปี/เดือน/วัน)',
-            ],
-
-            book_ID: '',
-            valid: false,
-            valid2: false,
-            dialog_add_to_garage: false,
-            dialog_confrim: false,
-            dialog_delete: false,
-            Store: this.$store.state,
-            alert: false,
-            dialog_Insert: null,
-            dialog_Edit_date: null,
-            dialog_Edit_confirmBook: null,
-            dialog_Edit_startWo: null,
-            menu_edit: false,
-            menu1: false,
-            menu2: false,
-            search: '',
-            dataCustomer: '',
-            dataWorkInProcess: '',
-            date: new Date().toISOString().substr(0, 10),
-            dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
-            date_edit: new Date().toISOString().substr(0, 10),
-            dateFormatted_edit: this.formatDate(new Date().toISOString().substr(0, 10)),
-            Mac_for_newQ: [],
-            Car_list_forAdd: [],
-            pagination: {},
-            selected: [],
-            alertUpdateNewDate: false,
-            errorUpdateNewDate: false,
-            insert_newQ: [{
-                Cus_ID: '',
-                Cus_name: '',
-                Cus_Lname: '',
-                Cus_Address: '',
-                Cus_Email: '',
-                Cus_LindID: '',
-                Cus_Tel: '',
-                Birthday: '',
-                Car_ID: '',
-                Brand: '',
-                model: '',
-                Color: '',
-                year: '',
-                W_ID: '',
-                Broken_List: '',
-                Finish_date: '',
-                Work_Owner_Emp: '',
-            }],
-            dialogAddSucess: false,
-            QrPic: false,
-            display_booking: [],
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    Clock,
+    // eslint-disable-next-line vue/no-unused-components
+    Datepicker,
+  },
+  beforeCreate() {
+    const api = 'https://testtingfuck.000webhostapp.com/Select_Mac.php';
+    const Empparams = new URLSearchParams();
+    let readData = []
+    Empparams.append('Table', 'WorkInProcess')
+    // eslint-disable-next-line global-require
+    Axios.post(api, Empparams)
+      .then((response) => {
+        readData = response.data
+        console.log('loooooop =', readData.length)
+        // eslint-disable-next-line eqeqeq
+        if (readData.length == 0) {
+          alert('table is null or error')
+          // eslint-disable-next-line eqeqeq
+        } else if (readData != 0) {
+          console.log(readData)
+          this.Mac_for_newQ = readData
         }
+      })
+    const apicarlist = 'https://testtingfuck.000webhostapp.com/CarMaker_Select.php';
+
+    const carReadParams = new URLSearchParams();
+    carReadParams.append('Table', 'Car_Maker')
+    // eslint-disable-next-line global-require
+    Axios.post(apicarlist, carReadParams)
+      .then((response) => {
+        this.Car_list_forAdd = response.data
+        if (this.Car_list_forAdd.length === 0) {
+          alert('table is null or error')
+        } else if (this.Car_list_forAdd.length !== 0) {
+          console.log()
+        }
+      })
+  },
+  mounted() {
+    console.log('test storqqqq')
+    this.display_booking = this.Store.data_dis_booking
+    console.log(this.display_booking)
+  },
+  data() {
+    return {
+      panel: '',
+      panelNum: '',
+      pId: '',
+      pIdRules: [
+        v => !!v || 'กรุณากรอกข้อมูลเลขที่บัตรประชาชน',
+        v => (v && v.length === 13) || 'เลขบัตรประชาชนของคุณไม่ถูกต้อง',
+      ],
+
+      fName: '',
+      fNameRules: [
+        v => !!v || 'กรุณากรอกชื่อ',
+      ],
+
+      lName: '',
+      lNameRules: [
+        v => !!v || 'กรุณากรอกนามสกุล',
+
+      ],
+
+      address: '',
+      addressRules: [
+        v => !!v || 'กรุณากรอกที่อยู่',
+
+      ],
+
+      birthday: '',
+      birthdayRules: [
+        v => !!v || 'กรุณากรอกวันเกิด',
+        v => (v && v.length >= 8) || 'di6',
+      ],
+
+      email: '',
+      emailRules: [
+        v => !!v || 'กรุณากรอกอีเมลล์',
+        v => /.+@.+/.test(v) || 'กรุณากรอกอีเมลล์ให้ถูกต้อง',
+      ],
+
+      lineID: '',
+      lineIDRules: [
+        v => !!v || 'กรุณากรอกไลน์ไอดี',
+
+      ],
+
+      tel: '',
+      telRules: [
+        v => !!v || 'กรุณากรอกเบอร์โทรศัพท์',
+        v => (v && v.length >= 10) || 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง',
+      ],
+
+      selectedItem_CM: '',
+      selectedItem_CMRules: [
+        v => !!v || 'กรุณาเลือกยี่ห้อรถ',
+      ],
+
+      model: '',
+      modelRules: [
+        v => !!v || 'กรุณาเลือกรุ่นรถ',
+
+      ],
+
+      color: '',
+      colorRules: [
+        v => !!v || 'กรุณากรอกข้อมูลสีรถ',
+
+      ],
+
+      licensPlate: '',
+      licensPlateRules: [
+        v => !!v || 'กรุณากรอกข้อมูลป้ายทะเบียน',
+
+      ],
+
+      year: '',
+      yearRules: [
+        v => !!v || 'กรุณากรอกข้อมูลปีรถ',
+        v => (v && v.length >= 4) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ค.ศ xxxx)',
+      ],
+
+      BodyID: '',
+      BodyIDRules: [
+        v => !!v || 'กรุณากรอกเลขตัวถัง',
+
+      ],
+
+      Desc: '',
+      DescRules: [
+        v => !!v || 'กรุณากรอกข้อมูล',
+
+      ],
+
+      selectedItem_Owner: '',
+      selectedItem_OwnerRules: [
+        v => !!v || 'กรุณาเลือกรายการนี้',
+      ],
+
+      come_in_date: '',
+      finish_date: '',
+      come_in_dateRules: [
+        v => !!v || 'กรุณากรอก',
+      ],
+
+      dateEdit: '',
+      dateEditRules: [
+        v => !!v || 'กรุณากรอกวันที่จะนำรถเข้ามารับบริการ',
+        v => (v && v.length >= 8) || 'กรุณากรอกข้อมูลให้ถูกต้อง (ปี/เดือน/วัน)',
+      ],
+
+      book_ID: '',
+      valid: false,
+      valid2: false,
+      dialog_add_to_garage: false,
+      dialog_confrim: false,
+      dialog_delete: false,
+      Store: this.$store.state,
+      alert: false,
+      dialog_Insert: null,
+      dialog_Edit_date: null,
+      dialog_Edit_confirmBook: null,
+      dialog_Edit_startWo: null,
+      menu_edit: false,
+      menu1: false,
+      menu2: false,
+      search: '',
+      dataCustomer: '',
+      dataWorkInProcess: '',
+      date: new Date().toISOString().substr(0, 10),
+      dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
+      date_edit: new Date().toISOString().substr(0, 10),
+      dateFormatted_edit: this.formatDate(new Date().toISOString().substr(0, 10)),
+      Mac_for_newQ: [],
+      Car_list_forAdd: [],
+      pagination: {},
+      selected: [],
+      alertUpdateNewDate: false,
+      errorUpdateNewDate: false,
+      insert_newQ: [{
+        Cus_ID: '',
+        Cus_name: '',
+        Cus_Lname: '',
+        Cus_Address: '',
+        Cus_Email: '',
+        Cus_LindID: '',
+        Cus_Tel: '',
+        Birthday: '',
+        Car_ID: '',
+        Brand: '',
+        model: '',
+        Color: '',
+        year: '',
+        W_ID: '',
+        Broken_List: '',
+        Finish_date: '',
+        Work_Owner_Emp: '',
+      }],
+      dialogAddSucess: false,
+      QrPic: false,
+      display_booking: [],
+    }
+  },
+  computed: {
+    pages() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.pagination.rowsPerPage = 12
+      console.log(this.pagination.rowsPerPage)
+      if (this.pagination.rowsPerPage == null
+                || this.pagination.totalItems == null
+      ) return 0
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
-    computed: {
-        pages() {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.pagination.rowsPerPage = 12
-            console.log(this.pagination.rowsPerPage)
-            if (this.pagination.rowsPerPage == null ||
-                this.pagination.totalItems == null
-            ) return 0
-            return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
-        },
-        computedDateFormatted() {
-            return this.formatDate(this.date)
-        },
+    computedDateFormatted() {
+      return this.formatDate(this.date)
     },
-    watch: {
-        date(val) {
-            this.dateFormatted = this.formatDate(this.date)
-            // eslint-disable-next-line comma-dangle
-        },
-        data_dis_booking() {
-            const apibooking = 'https://testtingfuck.000webhostapp.com/select_display_booking.php';
-
-            Axios.post(apibooking)
-                .then((response) => {
-                    this.data_dis_booking = response.data
-                    // console.log(this.Store.data_dis_booking)
-                })
-        },
+  },
+  watch: {
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date)
+      // eslint-disable-next-line comma-dangle
     },
-    methods: {
-        disableNotification(data) {
-            this.panelNum = data
-            //alert('Disable icn Noti Panel ที่'+ data + 'แล้วววว')
-        },
-        getDataExpansDialog_Edit_date(data) {
-            this.book_ID = data
-            this.dialog_Edit_date = true
-        },
-        getDataExpansDialog_confrim(data) {
-            this.book_ID = data
-            this.dialog_confrim = true
-        },
-        getDataExpansDialog_delete(data) {
-            this.book_ID = data
+    data_dis_booking() {
+      const apibooking = 'https://testtingfuck.000webhostapp.com/select_display_booking.php';
 
-            this.dialog_delete = true
-        },
-        getDataExpansDialog_add_to_garage(data) {
-            // this.selectedItem_CM = data.selectedItem_CM
-
-            this.book_ID = data.book_ID
-            this.model = data.car_model
-
-            this.year = data.car_year
-            this.Desc = data.car_model
-            this.Desc = data.broken_desc
-
-            this.come_in_date = data.come_in_date
-            this.fName = data.name
-            this.lName = data.last_name
-
-            this.email = data.Email
-            this.tel = data.tel
-            this.dialog_add_to_garage = true
-        },
-        validate() {
-            // if (this.$refs.form.validate()) {
-            this.UpdateBookingDate(this.book_ID.book_ID, this.dateEdit)
-            this.dialog_Edit_date = false
-            // }
-        },
-        validateAddGarage() {
-            // if (this.$refs.form2.validateAddGarage()) {
-            this.dialog_add_to_garage = false
-            this.insertToWIP()
-            this.alert = !this.alert
-            // }
-            console.log('TES2');
-        },
-        testo() {
-            this.dialogAddSucess = false
-            this.dialog_Insert = false
-            this.alert = !this.alert
-            this.QrPic = true
-        },
-        moment() {
-            return moment();
-        },
-        formatDate(date) {
-            if (!date) return null
-            const [year, month, day] = date.split('-')
-            return `${month}/${day}/${year}`
-        },
-        parseDate(date) {
-            if (!date) return null
-            const [month, day, year] = date.split('/')
-            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-        },
-        async UpdateBookingDate(bookId, datenew) {
-            const api = 'https://testtingfuck.000webhostapp.com/update_booking_date.php'
-            const paramUpdate = new URLSearchParams()
-            paramUpdate.append('book_id', bookId)
-            paramUpdate.append('date', datenew)
-            const response = await Axios.post(api, paramUpdate)
-            const res = response.data
-            console.log(res.count)
-            console.log(res)
-            if (res === 1) {
-                this.alertUpdateNewDate = true;
-                setTimeout(() => {
-                    this.alertUpdateNewDate = false;
-                }, 10000);
-            } else {
-                this.errorUpdateNewDate = true;
-                setTimeout(() => {
-                    this.errorUpdateNewDate = false;
-                }, 10000);
-            }
-        },
-        async insertToWIP() {
-            const datainsert = [{
-                booking_id: this.book_ID,
-                Cus_ID: this.pId,
-                Cus_Name: this.fName,
-                Cus_Lname: this.lName,
-                Address: this.address,
-                Email: this.email,
-                LineID: this.lineID,
-                Tel: this.tel,
-                Birthday: this.birthday,
-                Cm_ID: this.selectedItem_CM.CM_ID,
-                Model: this.model,
-                Car_Color: this.color,
-                License_Plete: this.licensPlate,
-                Year: this.year,
-                Tank_Num: this.BodyID,
-                Broken_List: this.Desc,
-                Start_Date: this.come_in_date,
-                Finish_Date: this.finish_date,
-                Emp_ID: this.selectedItem_Owner.Emp_ID,
-            }]
-            const api = 'https://testtingfuck.000webhostapp.com/insert_update_bookingIN.php'
-            const param = new URLSearchParams()
-            console.log(datainsert)
-            param.append('data_insert', JSON.stringify(datainsert))
-            const response = await Axios.post(api, param)
-            const res = response.data
-            console.log(res)
-
-            if (res === '1') {
-                console.log('insert finished')
-            } else if (res === '0') {
-                console.log('insert false')
-            }
-        },
-        async findPID(id) {
-            console.log('testq')
-            if (id.length === 13) {
-                const api = 'https://testtingfuck.000webhostapp.com/findID.php'
-                const paramkey = new URLSearchParams();
-                paramkey.append('key', id);
-                const response = await Axios.post(api, paramkey)
-                const res = response.data
-                if (res !== '0') {
-                    this.pId = res[0].Cus_ID
-                    this.fName = res[0].Cus_Fname
-                    this.lName = res[0].Cus_Lname
-                    this.tel = res[0].Phone_Num
-                    this.address = res[0].Address
-                    this.email = res[0].Email
-                    this.lineID = res[0].LineID
-                    this.birthday = res[0].Birthday
-                } else {
-                    console.log('not found this user')
-                }
-            }
-        },
-        async confirmStatusBooking(id) {
-            const api = 'https://testtingfuck.000webhostapp.com/update_booking_confirm.php'
-            const param = new URLSearchParams()
-            param.append('book_ID', id)
-            const response = await Axios.post(api, param)
-            const res = response.data
-            if (res === '1') {
-                console.log('pass')
-            } else {
-                console.log('error update')
-            }
-        },
-        async deleteBooking(id) {
-            const api = 'https://testtingfuck.000webhostapp.com/deleteBooking.php'
-            const param = new URLSearchParams()
-            param.append('book_ID', id)
-            const response = await Axios.post(api, param)
-            const res = response.data
-            if (res === '1') {
-                console.log('pass')
-            } else {
-                console.log('error update')
-            }
-        },
+      Axios.post(apibooking)
+        .then((response) => {
+          this.data_dis_booking = response.data
+          // console.log(this.Store.data_dis_booking)
+        })
     },
+  },
+  methods: {
+    disableNotification(data) {
+      this.panelNum = data
+      // alert('Disable icn Noti Panel ที่'+ data + 'แล้วววว')
+    },
+    getDataExpansDialog_Edit_date(data) {
+      this.book_ID = data
+      this.dialog_Edit_date = true
+    },
+    getDataExpansDialog_confrim(data) {
+      this.book_ID = data
+      this.dialog_confrim = true
+    },
+    getDataExpansDialog_delete(data) {
+      this.book_ID = data
+
+      this.dialog_delete = true
+    },
+    getDataExpansDialog_add_to_garage(data) {
+      // this.selectedItem_CM = data.selectedItem_CM
+
+      this.book_ID = data.book_ID
+      this.model = data.car_model
+
+      this.year = data.car_year
+      this.Desc = data.car_model
+      this.Desc = data.broken_desc
+
+      this.come_in_date = data.come_in_date
+      this.fName = data.name
+      this.lName = data.last_name
+
+      this.email = data.Email
+      this.tel = data.tel
+      this.dialog_add_to_garage = true
+    },
+    validate() {
+      // if (this.$refs.form.validate()) {
+      this.UpdateBookingDate(this.book_ID.book_ID, this.dateEdit)
+      this.dialog_Edit_date = false
+      // }
+    },
+    validateAddGarage() {
+      // if (this.$refs.form2.validateAddGarage()) {
+      this.dialog_add_to_garage = false
+      this.insertToWIP()
+      this.alert = !this.alert
+      // }
+      console.log('TES2');
+    },
+    testo() {
+      this.dialogAddSucess = false
+      this.dialog_Insert = false
+      this.alert = !this.alert
+      this.QrPic = true
+    },
+    moment() {
+      return moment();
+    },
+    formatDate(date) {
+      if (!date) return null
+      const [year, month, day] = date.split('-')
+      return `${month}/${day}/${year}`
+    },
+    parseDate(date) {
+      if (!date) return null
+      const [month, day, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    },
+    async UpdateBookingDate(bookId, datenew) {
+      const api = 'https://testtingfuck.000webhostapp.com/update_booking_date.php'
+      const paramUpdate = new URLSearchParams()
+      paramUpdate.append('book_id', bookId)
+      paramUpdate.append('date', datenew)
+      const response = await Axios.post(api, paramUpdate)
+      const res = response.data
+      console.log(res.count)
+      console.log(res)
+      if (res === 1) {
+        this.alertUpdateNewDate = true;
+        setTimeout(() => {
+          this.alertUpdateNewDate = false;
+        }, 10000);
+      } else {
+        this.errorUpdateNewDate = true;
+        setTimeout(() => {
+          this.errorUpdateNewDate = false;
+        }, 10000);
+      }
+    },
+    async insertToWIP() {
+      const datainsert = [{
+        booking_id: this.book_ID,
+        Cus_ID: this.pId,
+        Cus_Name: this.fName,
+        Cus_Lname: this.lName,
+        Address: this.address,
+        Email: this.email,
+        LineID: this.lineID,
+        Tel: this.tel,
+        Birthday: this.birthday,
+        Cm_ID: this.selectedItem_CM.CM_ID,
+        Model: this.model,
+        Car_Color: this.color,
+        License_Plete: this.licensPlate,
+        Year: this.year,
+        Tank_Num: this.BodyID,
+        Broken_List: this.Desc,
+        Start_Date: this.come_in_date,
+        Finish_Date: this.finish_date,
+        Emp_ID: this.selectedItem_Owner.Emp_ID,
+      }]
+      const api = 'https://testtingfuck.000webhostapp.com/insert_update_bookingIN.php'
+      const param = new URLSearchParams()
+      console.log(datainsert)
+      param.append('data_insert', JSON.stringify(datainsert))
+      const response = await Axios.post(api, param)
+      const res = response.data
+      console.log(res)
+
+      if (res === '1') {
+        console.log('insert finished')
+      } else if (res === '0') {
+        console.log('insert false')
+      }
+    },
+    async findPID(id) {
+      console.log('testq')
+      if (id.length === 13) {
+        const api = 'https://testtingfuck.000webhostapp.com/findID.php'
+        const paramkey = new URLSearchParams();
+        paramkey.append('key', id);
+        const response = await Axios.post(api, paramkey)
+        const res = response.data
+        if (res !== '0') {
+          this.pId = res[0].Cus_ID
+          this.fName = res[0].Cus_Fname
+          this.lName = res[0].Cus_Lname
+          this.tel = res[0].Phone_Num
+          this.address = res[0].Address
+          this.email = res[0].Email
+          this.lineID = res[0].LineID
+          this.birthday = res[0].Birthday
+        } else {
+          console.log('not found this user')
+        }
+      }
+    },
+    async confirmStatusBooking(id) {
+      const api = 'https://testtingfuck.000webhostapp.com/update_booking_confirm.php'
+      const param = new URLSearchParams()
+      param.append('book_ID', id)
+      const response = await Axios.post(api, param)
+      const res = response.data
+      if (res === '1') {
+        console.log('pass')
+      } else {
+        console.log('error update')
+      }
+    },
+    async deleteBooking(id) {
+      const api = 'https://testtingfuck.000webhostapp.com/deleteBooking.php'
+      const param = new URLSearchParams()
+      param.append('book_ID', id)
+      const response = await Axios.post(api, param)
+      const res = response.data
+      if (res === '1') {
+        console.log('pass')
+      } else {
+        console.log('error update')
+      }
+    },
+  },
 }
 </script>

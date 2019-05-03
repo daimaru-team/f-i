@@ -13,7 +13,7 @@
     <v-expansion-panel focusable :pagination.sync="pagination" v-model="panel">
         <v-expansion-panel-content :key="item.Emp_ID" v-for="item in GetData_Emp" >
             <template v-slot:header>
-              
+
                     <h3>
                         <v-avatar size="34" color="grey lighten-3">
                             <v-icon v-if="item.Pos_Name === 'Manager'" color="amber accent-4">supervisor_account</v-icon>
