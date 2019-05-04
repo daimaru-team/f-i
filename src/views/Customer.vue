@@ -69,9 +69,8 @@
 
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="red"
+                                        <v-btn small fab dark right color="red"
                                         v-on="on" class="elevation-10"
-                                        style="margin-top:10px;"
                                         @click="dialog_delete = true,
                                         getDataDelete(item.Cus_ID),alert = false">
                                             <v-icon dark>delete_forever</v-icon>
@@ -118,10 +117,13 @@ import moment from 'moment'
 import Clock from 'vue-clock2'
 import Axios from 'axios';
 
+
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     Clock,
+    // eslint-disable-next-line vue/no-unused-components
+
   },
   created() {
     window.addEventListener('resize', this.handleResize)
@@ -161,6 +163,9 @@ export default {
       pagination: {},
       selected: [],
       GetData_Cus: [],
+      DataEdit: [{
+
+      }],
     }
   },
   computed: {
@@ -192,8 +197,30 @@ export default {
       console.log(response.data)
       this.GetData_Cus = response.data
     },
+    async DeleteCustomer(id) {
+      const api = ''
+      const param = new URLSearchParams()
+      param.append('Cus_ID', id)
+      const response = await Axios.post(api, param)
+      if (response.data === 1) {
 
+      } else {
 
+      }
+    },
+
+    async UpdateDataCustomer(data) {
+      const api = ''
+      const param = new URLSearchParams()
+      const dataJSON = JSON.stringify(data);
+      param.append('data_insert', dataJSON)
+      const response = await Axios.post(api, param)
+      if (response.data === 1) {
+
+      } else {
+
+      }
+    },
   },
 }
 </script>

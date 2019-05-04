@@ -33,8 +33,8 @@ $confirm_status = 0;
 //(NULL,'".$name."','".$lastname."' ,'".$LineID."','".$tel."','".$Email."','".$car_brand."','".$car_model."','".$car_year."','".$broken_desc."', CURRENT_DATE(),'".$come_in_date."',$confirm_status)
 
 
-$query_CusTB="INSERT INTO Booking (book_ID, name, last_name, lineID, tel, Email, car_brand, car_model, car_year, broken_desc, booking_create, come_in_date, confirm_status) 
-VALUES (NULL,'".$name."','".$lastname."' ,'".$LineID."','".$tel."','".$Email."','".$car_brand."','".$car_model."','".$car_year."','".$broken_desc."', CURRENT_DATE(),'".$come_in_date."',$confirm_status);";
+$query_CusTB="INSERT INTO `Booking`(`book_ID`, `name`, `last_name`, `lineID`, `tel`, `Email`, `car_brand`, `car_model`, `car_year`, `broken_desc`, `booking_create`, `come_in_date`, `confirm_status`, `Emp_ID`)
+VALUES (NULL,'".$name."','".$lastname."' ,'".$LineID."','".$tel."','".$Email."','".$car_brand."','".$car_model."','".$car_year."','".$broken_desc."', CURRENT_DATE(),'".$come_in_date."',$confirm_status,NULL);";
 
 $re_cus=$con->query($query_CusTB);
 

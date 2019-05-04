@@ -23,8 +23,7 @@ $response = array();
 }
 
 for($i=0;$i<count($response);$i++){
-	$wid=$response[$i]['W_ID'];
-	$query="SELECT * FROM `Timeline_Report` WHERE W_ID='".$wid."' ORDER BY DateTime_Created DESC";
+	$query="SELECT * FROM `Timeline_Report` WHERE W_ID='".$response[$i]['W_ID']."' ORDER BY DateTime_Created DESC";
 	$result = $con->query($query);
 	$responseTimeline = array();
 	while($row = $result->fetch_assoc())

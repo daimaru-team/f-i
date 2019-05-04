@@ -13,7 +13,7 @@
     <v-expansion-panel focusable :pagination.sync="pagination" v-model="panel">
         <v-expansion-panel-content :key="item.Emp_ID" v-for="item in GetData_Emp" >
             <template v-slot:header>
-              
+
                     <h3>
                         <v-avatar size="34" color="grey lighten-3">
                             <v-icon v-if="item.Pos_Name === 'Manager'" color="amber accent-4">supervisor_account</v-icon>
@@ -87,7 +87,7 @@
                             <v-layout justify-end wrap>
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getdataexpan(item),dialog_Edit = true,alert = false">
+                                        <v-btn small fab dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getdataexpan(item),dialog_Edit = true,alert = false">
                                             <v-icon dark>edit</v-icon>
                                         </v-btn>
                                     </template>
@@ -96,7 +96,7 @@
 
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                        <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
                                             <v-icon dark>delete_forever</v-icon>
                                         </v-btn>
                                     </template>

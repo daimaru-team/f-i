@@ -123,7 +123,7 @@
 
                                                     <v-flex>
                                                         <v-layout justify-centee>
-                                                            <upload-btn icon ripple :fileChangedCallback="onChangeFileUpload">
+                                                            <upload-btn icon ripple :fileChangedCallback="onChangeFileUpload" multiple accept="">
                                                                 <template slot="icon-left">
                                                                     <v-icon color="white">add_photo_alternate</v-icon>
                                                                 </template>
@@ -333,14 +333,11 @@ export default {
       dayleft: null,
       Mechanicle: true,
       display_wip: [],
-      data_to_insert: [{
-        W_ID: null,
-        Report_ID: null,
-        img_name: null,
-        img_data: null,
-      }],
+      data_to_insert: [],
       display_timeline: [],
       moment,
+      file: [],
+      fileInsert: [],
       window: {
         width: 0,
         height: 0,
@@ -536,10 +533,8 @@ export default {
       this.addDataImg(this.Store.IDforSELECT)
     },
     async addDataImg(IdOfEmp) {
-      console.log(this.file)
       for (let i = 0; i < this.file.length; i += 1) {
-        const filename = this.file[i].name
-
+        console.log(this.file[i])
         // if (filename.includes('.jpg') || filename.includes('.png')) {
         //   formData.append('file', this.file[i]);
         //   console.log(`databefore sent=${this.file[i].name}`)
@@ -548,32 +543,19 @@ export default {
         // const blob = this.file[i].slice(0, this.file[i].size, 'image/png');
         // const newFile = new File([blob], 'name.png', { type: 'image/png' });
         const dataset = {
-          W_ID: null,
+          W_ID: this.key_timeline,
           img_name: null,
           img_data: null,
+          Emp_ID: IdOfEmp,
         }
         // eslint-disable-next-line no-await-in-loop
-        const test = await this.getBase64(this.file[i])
-        console.log(test)
-        dataset.img_data = test
-        dataset.img_name = filename
-        dataset.W_ID = IdOfEmp
-        dataset.Report_ID = '2'
+        dataset.img_name = this.file[i].name
+        const jsonS = JSON.stringify(dataset)
+        console.log(jsonS)
         this.data_to_insert.push(dataset)
       }
-      const jsonS = JSON.stringify(this.data_to_insert)
-      console.log(jsonS)
+      console.log('dataInsert=', this.data_)
     },
-
-    getBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
-    },
-
   },
   computed: {
     timeline() {

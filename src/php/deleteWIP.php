@@ -6,10 +6,9 @@ header('Content-type: application/json charset=utf-8');
 include "Config.php";
 
 
-$booking_id=$_POST['book_ID'];
-$Emp_ID=$_POST['Emp_ID'];
+$booking_id=$_POST['W_ID'];
 
-$query="UPDATE `Booking` SET `confirm_status`='1',`Emp_ID`='$Emp_ID' WHERE `book_ID`='$booking_id'";
+$query="DELETE FROM `WorkInProcess` WHERE `W_ID`='$booking_id'";
 
 $bookingQuery=$con->query($query);
 
@@ -19,5 +18,6 @@ if($bookingQuery){
 else{
     echo "0";
 }
+
 exit();
 ?>
