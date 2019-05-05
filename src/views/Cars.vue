@@ -175,7 +175,7 @@
 
                             <v-container grid-list-md style="padding: 0px 10px 10px 15px;">
                                 <v-layout wrap>
-<!-- {{dateFormatted}} {{date}} -->
+                                <!-- {{dateFormatted}} {{date}} -->
                                     <v-card-text>แผนงาน </v-card-text>
 
                                     <v-card elevation="0" color="grey lighten-3" width="100%">

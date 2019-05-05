@@ -230,44 +230,44 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                             <v-flex xs12 sm12 md12>
-                                <v-text-field label="เลขประจำตัวประชาชน*"  v-model="pId" mask="#-####-#####-##-#" :rules="pIdRules" required></v-text-field>
+                                <v-text-field label="เลขประจำตัวประชาชน*"  v-model="IData.pId" mask="#-####-#####-##-#" :rules="pIdRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="ชื่อ*" v-model="fName" :rules="fNameRules" required></v-text-field>
+                                <v-text-field label="ชื่อ*" v-model="IData.Emp_Name" :rules="fNameRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field v- label="นามสกุล*" v-model="lName" :rules="lNameRules" persistent-hint required></v-text-field>
+                                <v-text-field v- label="นามสกุล*" v-model="IData.Emp_Lname" :rules="lNameRules" persistent-hint required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm12 md12>
-                                <v-text-field label="ที่อยู่ปัจจุบัน*" v-model="address" :rules="addressRules" required></v-text-field>
+                                <v-text-field label="ที่อยู่ปัจจุบัน*" v-model="IData.Address" :rules="addressRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="วันเกิด*" v-model="birthday" :rules="birthdayRules" mask="##/##/####" required></v-text-field>
+                                <v-text-field label="วันเกิด*" v-model="IData.Birthday" :rules="birthdayRules" mask="##/##/####" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="อีเมล์*" v-model="email" :rules="emailRules" required></v-text-field>
+                                <v-text-field label="อีเมล์*" v-model="IData.Email" :rules="emailRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="Line ID*" v-model="lineID" :rules="lineIDRules" required></v-text-field>
+                                <v-text-field label="Line ID*" v-model="IData.LineID" :rules="lineIDRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="เบอร์โทร*" :rules="telRules" mask="##-####-####" required></v-text-field>
+                                <v-text-field label="เบอร์โทร*" v-model="IData.Phone_Num" :rules="telRules" mask="##-####-####" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" label="ตำแหน่ง*" persistent-hint v-model="position" :rules="positionRules">
+                                <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" v-model="IData.Pos_ID" label="ตำแหน่ง*" persistent-hint :rules="positionRules">
                                 </v-autocomplete>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ความถนัด" v-model="spaciality" :rules="spacialityRules" required></v-text-field>
+                                <v-text-field label="ความถนัด" v-model="IData.speciality" :rules="spacialityRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="เงินเดือน*" v-model="salaly" :rules="salalyRules" required></v-text-field>
+                                <v-text-field label="เงินเดือน*" v-model="IData.Salary" :rules="salalyRules" required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -275,10 +275,10 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-2 pt-2>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" :counter="10" mask="##########" v-model="password" :rules="passwordRules" required></v-text-field>
+                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" :counter="10" mask="##########" v-model="password" type="password" :rules="passwordRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ยืนยันอีกครั้ง*" :counter="10" mask="##########" type="password" v-model="passwordConfirm" :rules="passwordConfirmRules"  required></v-text-field>
+                                <v-text-field label="ยืนยันอีกครั้ง*" :counter="10" mask="##########" type="password" v-model="IData.Password" :rules="passwordConfirmRules"  required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -563,11 +563,27 @@ export default {
         v => !!v || 'กรุณาเลือกรายการนี้',
       ],
       valid: false,
-
+      btInsertLoading: false,
+      IData: [{
+        Emp_PID: null,
+        Emp_Name: null,
+        Emp_Lname: null,
+        Pos_ID: null,
+        Nickname: null,
+        Birthday: null,
+        Start_Date: null,
+        Salary: null,
+        Emp_Type: null,
+        Address: null,
+        Phone_Num: null,
+        Email: null,
+        LineID: null,
+        Password: null,
+        speciality: null,
+      }],
     }
   },
   computed: {
-
     pages() {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.pagination.rowsPerPage = 12
@@ -577,12 +593,18 @@ export default {
       ) return 0
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     },
+
   },
 
   destroyed() {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    async getPosition() {
+      const api = ''
+      const param = new URLSearchParams()
+      const response = await Axios.past(api, param)
+    },
     testtest() {
       this.isEditing = !this.isEditing
     },
@@ -607,7 +629,8 @@ export default {
     },
     validate() {
       if (this.$refs.form.validate()) {
-        if (this.password === this.passwordConfirm) {
+        if (this.password === this.IData.Password) {
+          console.log(this.IData)
           this.snackbar = true
           this.insertCheck = true
         } else {
@@ -637,6 +660,11 @@ export default {
       } else {
         console.log(this.dataCustomer)
       }
+    },
+    async addNewEmployee() {
+      const api = ''
+      const param = new URLSearchParams()
+      const response = await Axios.past(api, param)
     },
   },
 }

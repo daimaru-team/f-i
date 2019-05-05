@@ -1,12 +1,11 @@
 <template>
-<div>
 
-    <v-alert :value="alertUpdateNewDate" type="success"
+    <!-- <v-alert :value="alertUpdateNewDate" type="success"
     transition="scale-transition" dismissible Color="red">
         อัพเดทวันจะเข้ารับบริการสำเร็จ </v-alert>
     <v-alert :value="errorUpdateNewDate" type="error" transition="scale-transition" dismissible>
         ระบบไม่สามารถทำการให้ท่านได้.. โปรดตรวจสอบข้อมูลหรือการเชื่อมต่อ และลองใหม่อีกครั้งภายหลัง!
-    </v-alert>
+    </v-alert> -->
 
     <v-card width="100%">
         <v-alert fixed :value="alert" type="success" transition="scale-transition" dismissible>
@@ -165,7 +164,7 @@
                 <v-dialog v-model="dialog_confrim" persistent max-width="700px">
                     <v-card color="grey darken-4" class="white--text">
                         <v-card-text>
-                            <h1 class="text-xs-center red--text">ยืนยันคิว {{selectedEmp_Confirm}}</h1>
+                            <h1 class="text-xs-center red--text">ยืนยันคิว</h1>
                             <h3 class="text-xs-center">
                               {{book_ID.car_brand+' '+book_ID.car_model+' '+book_ID.car_year}}</h3>
 
@@ -501,6 +500,7 @@
                     <v-card color="grey darken-4" class="white--text">
                         <v-card-text>
                             <h1 class="text-xs-center red--text">Edit date</h1>
+
                             <h3 class="text-xs-center">Booking ID : {{book_ID.book_ID}} </h3>
 
                             <v-container grid-list-md style="padding: 0px 10px 10px 15px;">
@@ -579,15 +579,15 @@
         </v-dialog>
 
     </v-card>
-</div>
+
 </template>
 
 <script>
 import moment from 'moment'
 import Clock from 'vue-clock2'
-
 import Datepicker from 'vuejs-datepicker'
 import Axios from 'axios';
+
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 

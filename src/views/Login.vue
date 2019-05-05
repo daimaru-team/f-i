@@ -1,5 +1,6 @@
 <template>
 <v-app>
+
     <div class="grey darken-4">
         <v-parallax width="230" height="1000" dark
         src="https://petrolblog.com/wp-content/uploads/2016/01/Skoda-garage-door.jpg">
@@ -71,7 +72,7 @@
                                             <v-flex md6 xs6 sm6 lg6 xl6 mt-3>
                                                 <v-layout display-1 justify-center>
                                                     จองคิวซ่อม
-                                                </v-layout>
+                                                    <cer/> test                                              </v-layout>
 
                                             </v-flex>
 
@@ -317,12 +318,14 @@ import {
   QrcodeCapture,
 } from 'vue-qrcode-reader'
 import Datepicker from 'vuejs-datepicker';
+import cer from './cer.vue'
 
 Vue.use(VueSession)
 
 export default {
   name: 'login',
   components: {
+    cer,
     // eslint-disable-next-line vue/no-unused-components
     QrcodeStream,
     // eslint-disable-next-line vue/no-unused-components

@@ -11,7 +11,6 @@
                     <v-layout justify-end>
                         <v-avatar>
                             <v-btn small icon @click.stop="dialog_Detail= true">
-                                <!-- <img src="https://randomuser.me/api/portraits/men/1.jpg" width="30" height="20"> -->
                                 <v-icon size="30" color="white">account_circle</v-icon>
                         </v-btn>
                         </v-avatar>
@@ -24,7 +23,7 @@
 
         <main class="v-content__wrap" full-hight style="padding: 50px 0px 0px 0px;">
             <v-expansion-panel focusable>
-                <v-expansion-panel-content v-for="(item,i) in 3" :key="i">
+                <v-expansion-panel-content v-for="item in dataWorkInProcess" :key="i">
                     <template v-slot:header>
                         <div>
                             <h3>Toyota Revo 2.4J<v-icon color="amber accent-4">mail</v-icon>
@@ -37,7 +36,7 @@
                                 <v-flex md11 xl11 sm11 lg11 xs11>
                                     <v-card-text class="grey lighten-3">
                                         <v-flex mb-2 ml-1>
-                                            <h2><b> Booking ID :</b> {{item.book_ID}} </h2>
+                                            <h2><b> Booking ID :</b> {{item.W_ID}} </h2>
                                         </v-flex>
                                         <v-divider></v-divider>
                                         <v-divider></v-divider>
@@ -46,15 +45,15 @@
                                                 <v-icon>person</v-icon> รายระเอียดงาน
                                             </v-flex>
                                             <v-flex mt-3 ml-3>
-                                                <p><b> Car :</b> Toyota </p>
-                                                <p><b> รุ่น :</b> Revo 2.4L </p>
-                                                <p><b> ปี :</b> 2014</p>
-                                                <p><b> ทะเบียน :</b> 61160 </p>
-                                                <p><b> อาการ/สาเหตุ :</b> สตาร์ทไม่ติด คล้ายไฟไม่ชาจต์</p>
-                                                <p><b> ช่างผู้รับผิดชอบ :</b> M.Phonpisud Sumangsa</p>
-                                                <p><b> วันเริ่มงาน :</b> 13/12/2561</p>
-                                                <p><b> วันส่งงาน :</b> 13/12/2561</p>
-                                                <p><b> Status :</b> อยู่ระหว่างดำเนินการ</p>
+                                                <p><b> Car :</b> {{item.CM_Name}} </p>
+                                                <p><b> รุ่น :</b> {{item.Model}} </p>
+                                                <p><b> ปี :</b> {{item.Car_Year}}</p>
+                                                <p><b> ทะเบียน :</b> {{item.License_plate}} </p>
+                                                <p><b> อาการ/สาเหตุ :</b> {{item.W_Desc}}</p>
+                                                <p><b> ช่างผู้รับผิดชอบ :</b> {{item.emp_name}}</p>
+                                                <p><b> วันเริ่มงาน :</b>{{item.Start_Date}}</p>
+                                                <p><b> วันส่งงาน :</b> {{item.Finish_Date}}</p>
+                                                <p><b> Status :</b> {{item.Status}}</p>
                                             </v-flex>
                                         </v-flex>
                                         <v-flex mt-2>
@@ -100,6 +99,63 @@
                             </v-layout>
                         </v-flex>
 
+                        <v-dialog v-model="dialog_Timeline" max-width="700px">
+                            <v-card>
+                                <v-flex headline pt-2 pb-3>
+                                    <v-layout justify-space-around>
+                                        <v-flex xs11 md11 xl11 lg11 sm11 ml-4 mt-3>
+                                            <h3>Timeline</h3>
+                                            <h6>{{item.CM_Name}} {{item.Model}} {{item.Car_Year}}</h6>
+                                        </v-flex>
+                                        <v-flex xs1 md1 xl1 lg1 sm1 mr-2>
+                                            <v-btn fab small color="red" class="white--text" @click="dialog_Timeline = false,alert = !alert">
+                                                <v-icon>logout</v-icon>
+                                            </v-btn>
+                                        </v-flex>
+
+                                    </v-layout>
+                                </v-flex>
+                                <v-flex pr-3 pl-3>
+                                    <v-layout justify-space-around>
+                                        <v-timeline dense clipped class="">
+
+                                            <v-timeline-item color="grey darken-3" class="mb-4">
+                                                <h3>{{DataTimeLine.W_ID}}</h3>
+                                            </v-timeline-item>
+
+                                            <v-timeline-item color="red" class="mb-3" small v-for="timelineItem in DataTimeLine.timeline">
+                                                <v-card class="elevation-15">
+                                                    <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
+                                                        <v-flex xs7>
+                                                            <v-chip class="white--text ml-0" color="purple" label small>
+                                                                รายงานผลปกติ
+                                                            </v-chip>
+                                                            &nbsp;
+                                                            <b>{{timelineItem.Report_Name}}</b><br/>
+                                                            <p><br/>&nbsp;&nbsp;&nbsp;{{timelineItem.Description}}</p>
+                                                        </v-flex>
+
+                                                        <v-flex xs5 text-xs-right>
+                                                            <v-layout justify-end wrap>
+                                                                <v-flex xs12 md12 xl12 lg12 sm12>Datetime : {{timelineItem.DateTime_Created}}</v-flex>
+                                                                <v-flex mt-1 xs12 md12 xl12 lg12 sm12>
+                                                                    <h4>M.{{item.emp_name}}</h4>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </v-flex>
+
+                                                    </v-layout>
+                                                </v-card>
+                                            </v-timeline-item>
+
+                                        </v-timeline>
+
+                                    </v-layout>
+                                </v-flex>
+                            </v-card>
+                        </v-dialog>
+
+
                     </v-card>
                     <v-divider class="grey darken-4"></v-divider>
                 </v-expansion-panel-content>
@@ -115,7 +171,7 @@
                               </v-list-tile-avatar>
 
                             <v-list-tile-content>
-                                <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
+                                <v-list-tile-title>{{dataCustomer[0].CusFullName}}</v-list-tile-title>
                                 <v-list-tile-sub-title>Customer</v-list-tile-sub-title>
                             </v-list-tile-content>
 
@@ -130,7 +186,9 @@
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
-                    <v-list-tile-title v-for="(item,i) in items_Cars" :key="i">Car {{i+1}}:{{items_Cars}}</v-list-tile-title>
+                    <v-list-tile-title v-for="(item,i) in dataWorkInProcess">
+                          Car {{i+1}} : {{item.CM_Name +' '+ item.Model}}
+                        </v-list-tile-title>
 
                 </v-card-text>
                 <v-divider></v-divider>
@@ -147,7 +205,7 @@
         <v-dialog v-model="dialog_About" max-height="900">
 
             <v-card height="100%" style="border-radius:60px 0px 60px 0px">
-              
+
                <v-btn style="padding: 0px 14px 0px 0px;" fab flat right fixed small class="white--text" @click="dialog_About = false,alert = !alert">
                   <v-icon color="black" medium>logout</v-icon>
                 </v-btn>
@@ -279,9 +337,12 @@ export default {
         width: 0,
         height: 0,
       },
+      dialog_Timeline: false,
       Store: this.$store.state,
-      dataWorkInProcess: '',
-      dataCustomer: '',
+      dataWorkInProcess: [],
+      dataCustomer: [],
+      DataTimeLine:
+      { timeline: '' },
       dialog_Detail: false,
       dialog_logout: false,
       dialog_Chat: false,
@@ -312,7 +373,7 @@ export default {
       items_More: [{
         title: 'Logout',
       }],
-    
+
       right: null,
     }
   },
@@ -363,6 +424,9 @@ export default {
     // this.read_Table2()
   },
   methods: {
+    getDataExpans(data) {
+      this.DataTimeLine = data
+    },
     log_out() {
       console.log('11111')
       this.$session.clear()
@@ -441,6 +505,9 @@ export default {
       } else {
         console.log('AAAA', this.dataCustomer)
       }
+    },
+    async getDataEmployee() {
+
     },
   },
   computed: {

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
+    "@cdglib/js-pdfmake-custom": "^2.2.10",
     "@mdi/font": "^3.5.95",
     "axios": "^0.18.0",
     "material-icons": "^0.3.0",

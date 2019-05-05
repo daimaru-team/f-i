@@ -65,11 +65,11 @@ if ($con->connect_error) {
         }else{
             echo "0";
         }
-        echo "\r\n Success query_CusTB \r\n".$re_cus."\r\n";
+        // echo "\r\n Success query_CusTB \r\n".$re_cus."\r\n";
     }    
     else{
         echo "0";
-         echo "\r\n Error Customer".$re_cus."\r\n";
+        //  echo "\r\n Error Customer".$re_cus."\r\n";
     }
 
 

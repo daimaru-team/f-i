@@ -1,12 +1,10 @@
 <template>
 <div>
     <v-app>
-
         <v-toolbar class="v-toolbar v-toolbar--fixed theme--dark red elevation-6"
-        height="50"
+         height="50"
          style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
             <v-layout v-if="window.width > 1200">
-
                 <v-flex style="padding: 0px 30px 0px 0px;"></v-flex>
                 <v-flex xs3 sm3 md3>
                     <h1>{{this.HeaderTxt}} </h1>
@@ -18,7 +16,6 @@
                 <v-flex class="text-xs-right">
                     <h1>{{moment(myDate).format('DD / MM / YYYY')}}</h1>
                 </v-flex>
-
             </v-layout>
             <v-layout v-else-if="window.width < 1200 && window.width > 500">
 
@@ -49,8 +46,8 @@
 
 
         <v-navigation-drawer v-model="drawer"
-        class="grey darken-4"
-        dark fixed hide-overlay width="250">
+         class="grey darken-4"
+          dark fixed hide-overlay width="250">
             <v-flex mt-2 mb-1>
                 <v-layout justify-center>
                     <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png"
@@ -113,7 +110,7 @@
                   <router-view />
               </v-layout>
               <v-layout v-if="window.width < 1200"
-              style="padding: 0px 0px 0px 0px;" justify-start>
+                style="padding: 0px 0px 0px 0px;" justify-start>
                   <router-view />
                   <v-btn color="yellow" bottom small fab fixed
                   style="border-radius: 0px 60px 60px 0px"
