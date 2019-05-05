@@ -92,7 +92,7 @@ export default {
               'ปี: 2018                 ยี่ห้อ: susuki\n',
               'รุ่น: aft-124             ทะเบียน: abc7309\n',
               'อาการเสีย: not dor             เลขตัวถัง : 122\n',
-              
+
             ],
             style: 'headerref',
           },
@@ -118,14 +118,14 @@ export default {
             fontSize: 12,
             table: {
               body: [
-                
+
                 [
-                    {
+                  {
             			image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFoCAMAAABNO5HnAAAABlBMVEX///8AAABVwtN+AAAErUlEQVR42u3d246jMBBFUTOa//9l5n0kum5O1MJrv3UCBLZKpdOWsdcCAAAAAAAAAAAAAAAAAAAAgHdwjQ944H44/w6u//95T3+v4PMVXCd7v9XnfeKPWvsORBNNNIgmmmgKvsPfXTkxm7uj3JzN5dk8Xs3lu59XRWsdRINookE00Wfn6Cg3Rnn0Sh6f/T7K01cyT+9+XhWtdRANookG0UTL0Tu4kjm4Oy696/dVtNYBookmGkQTjd+Uo9dDXs2OG69h3o3mf6horQNEEw2iiSYa38jR0/Hbq/g7T3l7FXP4Sp6/+3lVtNZBNIgmGkQTfXaO3j2O+5R3n3Jt9L7gCr6vzo++VLTWAaKJJhpEE41Bjp6Ox97N62XzcPf8Tz2vitY6iAbRRINooo/gmp54Dz+Pbqh6/ZXM393x6O78bRWtdRANookmmgKiz8rR1fnMK8iv0fnVnFy9/0/v86KitQ6iQTTRIJpoObqSf3cdP13n+S5ed9f9qmitg2gQTTSIJlqO3pmrs/mzu193dZw4u5/i7ryvorUOokE00URTQPSrCN8zjNbPmB4f5eJd8yqyubr9D4aK1jqIBtFEg2ii5ehGrvzW/oDd+dPZ8ePq/A/zOrQOokE00SCa6CNJz4/eNQ+6+l7f7vWeq+PW0/VHVLTWQTSIJhpEE/1KyutHZ9/nq+bN7nHd+dpRDt+dp1W01kE0iCaaaAqIfhXl9Tq6ubL7+TQff+r5qvejorUOokE00URTQPRZObp6QnfeRjUfV+9jJXOx/Qy1DhBNNNEgmmgkaK/Xkc2l1aBeHe+9i9fJrq833XdRRWsdRINookE00Wfn6ChvTvfxzs5znq7f3N2HJbqeitY6iAbRRINooo+kPa8jm0u7+bk7HjydV208WusA0UQTDaKJxo4cPV2vLpunuzfYnU89XcdOjtY6iAbRRINooo+mvO7dU57uzs+4ir8bnVfNt9X/E7o5XkVrHUSDaKKJpoDoVzFer6M777g6r6Obj6fX3TWOraK1DqJBNNFEU0D0qyjvCx7l3+x4bnd8N5tz7+L93cXvVbTWQTSIJhpEE300H1s/Osq51XHgLrvXi76a56lorYNoEE000RQQ/Sra60c/5dPuvOkoB0/3Q3waT8/Oj17F41S01kE0iCYaRBP9aq7ugd31Orrr1UU5O3ufa3jf3X0YVbTWQTSIJppoCog+K0d351/seo/wU/t6V3P7dL1rFa11EA2iiSaaAqJfRXndu+r3UR7d9V7hdB28e3i+itY6iAbRRINoouXon3JkNS9X5y1Hvzud3xzl7+r+MOZHax1Eg2iiQTTRcnQmd3Zzd3cd5u7+Lqt5nep6edaP1jqIBtFEg2ii5ehJTp6uH5edf5zN49VcXT2++n6kitY6iAbRRBNNAdFn5+hu7s6ukxfl42r+je5jJX83ytMqWusgGkQTDaKJlqN3smv9jOz7gdem8+/k9+Z1aB1Eg2iiQTTRcvTOXLyS+bT6nuFqHt9d/3rX/uAqWusgGkQTTTQFRJ+Zo3ft0519Xy87H7m6b0p2nvW9+blVtNZBNIgmmmgKiAYAAAAAAAAAAAAAAAAAAAAA/EL+ASlmP3Soo30IAAAAAElFTkSuQmCC',
             			width: 150,
             			height: 150,
-                    }
-                    ],
+                  },
+                ],
               ],
             },
           },
