@@ -641,7 +641,7 @@ export default {
       }]
       const api = 'https://testtingfuck.000webhostapp.com/update_Employee.php'
       const param = new URLSearchParams()
-      console.log('===>',datainsert)
+      console.log('===>', datainsert)
       param.append('data_insert', JSON.stringify(datainsert))
       const response = await Axios.post(api, param)
       const res = response.data
