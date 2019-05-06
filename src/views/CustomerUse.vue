@@ -300,7 +300,7 @@
             </v-card>
 
         </v-dialog>
-  
+
         <v-footer color="black" app>
             <v-spacer></v-spacer>
             <v-flex-text class="white--text">&copy; F&I Garage 2019 Customer service</v-flex-text>

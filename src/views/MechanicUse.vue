@@ -214,7 +214,7 @@
                                                         </v-flex>
 
                                                         <v-flex xs4 text-xs-right>{{timelineR.DateTime_Created}} <br/><b class="blue--text">M.{{item.emp_name}}</b></v-flex>
-                                                    
+
                                                     </v-layout>
                                                <v-divider></v-divider>
                                                       <v-layout wrap ml-4 mt-2>
@@ -222,7 +222,6 @@
                                                          <img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" width="30" height="27" @click="dialog_pictureTimeline = true" >
                                                       </div>
                                                       </v-layout>
-
 
 
                                                 </v-card>
@@ -267,7 +266,7 @@
                             </v-card>
                         </v-dialog>
 
-                        
+
                          <v-dialog v-model="dialog_Ploblem" max-width="300">
                             <v-card>
 
@@ -378,7 +377,7 @@
 
                             </v-card>
                       </v-dialog>
-                        
+
                       <v-dialog v-model="dialog_pictureTimeline" max-width="450">
                             <v-card>
                                 <v-card-text class="grey darken-4 white--text">
