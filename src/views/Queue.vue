@@ -45,8 +45,8 @@
                                     </v-flex>
                                     <v-divider></v-divider>
                                     <v-flex mt-2>
-                                        <v-flex mt-2 headline font-weight-bold>
-                                            <v-icon>person</v-icon> ข้อมูลลูกค้า
+                                        <v-flex mt-2>
+                                            <h2><v-icon size="30">person</v-icon> ข้อมูลลูกค้า</h2>
                                         </v-flex>
                                         <v-flex mt-3 ml-3>
                                             <p><b> เลขที่บัตรประชาชน : </b> {{item.Emp_ID}}</p>
@@ -58,8 +58,8 @@
                                     </v-flex>
                                     <v-divider></v-divider>
                                     <v-flex mt-2>
-                                        <v-flex mt-2 headline font-weight-bold>
-                                            <v-icon>directions_car</v-icon> ข้อมูลรถ
+                                        <v-flex mt-2><h2>
+                                            <v-icon size="30">directions_car</v-icon> ข้อมูลรถ</h2>
                                         </v-flex>
                                         <v-flex mt-3 ml-3>
                                             <p><b> Car :</b>
@@ -312,7 +312,8 @@
 
                                                 <v-flex xs12 sm4 md4>
                                                     <v-select :items="Mac_for_newQ"
-                                                    item-value="Emp_ID" v-model="selectedItem_Owner"
+                                                    :item-value="Mac_for_newQ.Emp_ID" v-model="selectedItem_Owner"
+
                                                     item-text="Mac_Name" label="ช่างผู้รับผิดชอบ"
                                                     single-line return-object></v-select>
                                                 </v-flex>
@@ -398,7 +399,7 @@
                                             </v-layout>
                                         </v-card>
 
-                                        <v-card-text>ข้อมูลรถ</v-card-text>
+                                        <v-card-text>{{selectedItem_Owner}}ข้อมูลรถ{{selectedItem_CM}}</v-card-text>
                                         <v-card style="border-radius:0px 0px 80px 0px"
                                         elevation="0" color="grey lighten-3" width="100%">
                                             <v-layout wrap pl-4 pr-4 pb-3 pt-2>
@@ -406,7 +407,8 @@
                                                 <v-flex xs12 sm6 md6 pr-3>
 
                                                     <v-autocomplete :items="Car_list_forAdd"
-                                                    label='ยี่ห้อ' value="CM_ID"
+                                                    label='ยี่ห้อ'
+                                                    item-value="CM_ID"
                                                     v-model="selectedItem_CM"
                                                     :rules="selectedItem_CMRules"
                                                     item-text="CM_Name"
@@ -848,9 +850,16 @@ export default {
 
       this.dialog_delete = true
     },
+
+    OwnerID(data) {
+      return data;
+    },
+    CarBrandID(data) {
+      return data;
+    },
     getDataExpansDialog_add_to_garage(data) {
-      this.selectedItem_Owner = data.Emp_ID
-      this.selectedItem_CM = data.CM_Name
+      this.selectedItem_Owner = this.Mac_for_newQ.find(Emp => Emp.Emp_ID === data.Emp_ID)
+      this.selectedItem_CM = this.Car_list_forAdd.find(car => car.CM_ID === data.car_brand)
       this.book_ID = data.book_ID
       this.model = data.car_model
 
@@ -951,9 +960,9 @@ export default {
       const res = response.data
       console.log(res)
 
-      if (res === '1') {
+      if (res === 1) {
         console.log('insert finished')
-      } else if (res === '0') {
+      } else if (res === 0) {
         console.log('insert false')
       }
     },

@@ -10,10 +10,10 @@
     </v-tooltip>
     <v-expansion-panel focusable :pagination.sync="pagination" class="elevation-13">
         <v-expansion-panel-content v-for="item in Get_Data_WID">
-
             <template v-slot:header>
                 <div>
-                    <h3><b v-if="moment(myDate).format('YYYY-MM-DD') === item.Start_Date" class="red--text">{{item.Start_Date}}</b><b v-else>{{item.Start_Date}}</b>
+                    <h3><b v-if="moment(myDate).format('YYYY-MM-DD') === item.Start_Date" class="red--text">{{item.Start_Date}}</b>
+                        <b v-else>{{item.Start_Date}}</b>
                         | {{item.W_ID}} | {{item.CM_Name}} {{item.Model}} - {{item.License_plate}}
                         <v-icon v-if="moment(myDate).format('YYYY-MM-DD') === item.Finish_Date" color="amber accent-4">alarm</v-icon>
 
@@ -46,11 +46,14 @@
                                         <p><b> วันเริ่มงาน :</b> {{item.Start_Date}}</p>
                                         <p><b> วันส่งงาน :</b> {{item.Finish_Date}} <b class="red--text" v-if="moment(myDate).format('YYYY-MM-DD') === item.Finish_Date">Today !</b></p>
 
-                                        <p><b> Status :</b> {{item.Status}}
-
-                                            <v-icon v-if="0==1" color="amber accent-4">error</v-icon>
-
-                                            <v-icon v-if="1==1" color="green">hourglass_empty</v-icon>
+                                        <p v-if="item.Status == 0"><b> Status :</b> Error
+                                            <v-icon color="amber accent-4">error</v-icon>
+                                        </p>
+                                        <p v-if="item.Status == 1"><b> Status :</b> Inprocess
+                                            <v-icon v-if="item.Status == 1" color="green">hourglass_empty</v-icon>
+                                        </p>
+                                        <p v-if="item.Status == 2"><b> Status :</b> Complete
+                                            <v-icon color="green">offline_pin</v-icon>
                                         </p>
                                     </v-flex>
                                 </v-flex>
@@ -160,8 +163,8 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
-                            <v-btn color="red white--text" @click="deletewip(WidForDeleteBT),dialog_delete = false">Yes</v-btn>
+                            <v-btn style="border-radius:40px 0px 0px 0px;" color="red white--text" @click="dialog_delete = false">No</v-btn>
+                            <v-btn style="border-radius:0px 0px 40px 0px;" color="red white--text" @click="deletewip(WidForDeleteBT),dialog_delete = false">Yes</v-btn>
                             <v-spacer></v-spacer>
                         </v-card-actions>
                     </v-card>
@@ -178,7 +181,7 @@
                                 <!-- {{dateFormatted}} {{date}} -->
                                     <v-card-text>แผนงาน </v-card-text>
 
-                                    <v-card elevation="0" color="grey lighten-3" width="100%">
+                                    <v-card elevation="0" style="border-radius:40px 0px 0px 0px;" color="grey lighten-3" width="100%">
                                         <v-layout wrap pl-4 pr-4 pt-2>
 
                                             <v-flex xs12 sm6 pr-2>
@@ -199,7 +202,7 @@
                                     </v-card>
 
                                     <v-card-text>ข้อมูลส่วนตัว</v-card-text>
-                                    <v-card elevation="0" color="grey lighten-3" width="100%">
+                                    <v-card elevation="0" color="grey lighten-3" width="100%" style="border-radius:0px 0px 40px 0px;">
                                         <v-layout wrap pl-4 pr-4 pb-3>
                                             <v-flex xs12 sm12 md12 pt-3>
                                                 <div><b>ชื่อ-สกุล : </b>{{item.name}}</div>
@@ -244,8 +247,8 @@
                                     <img src="https://testtingfuck.000webhostapp.com/imageLogo/ForBgDark.png" width="170" height="50">
                             </v-flex>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="red" class="white--text" @click="dialog_Edit = false,insert = true">Cancel</v-btn>
-                                    <v-btn color="red" class="white--text" @click="UpdateDate(dateEditID,date),dialog_Edit = false,alert = !alert">OK</v-btn>
+                                    <v-btn color="red" style="border-radius:20px 0px 0px 0px;" class="white--text" @click="dialog_Edit = false,insert = true">Cancel</v-btn>
+                                    <v-btn color="red" style="border-radius:0px 0px 20px 0px;" class="white--text" @click="UpdateDate(dateEditID,date),dialog_Edit = false,alert = !alert">OK</v-btn>
                             </v-card-actions>
                         </v-card-text>
                     </v-card>
@@ -276,10 +279,10 @@
                                     </v-timeline-item>
 
                                     <v-timeline-item color="red" class="mb-3" small v-for="timelineItem in timelineWID.timeline">
-                                        <v-card class="elevation-15">
+                                        <v-card  class="elevation-15" style="border-radius:30px 0px 35px 0px;" min-width="400px">
                                             <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
                                                 <v-flex xs7>
-                                                    <v-chip class="white--text ml-0" color="purple" label small>
+                                                    <v-chip class="white--text ml-0" color="grey darken-4" label small style="border-radius:15px 0px 15px 0px;">
                                                         รายงานผลปกติ
                                                     </v-chip>
                                                     &nbsp;

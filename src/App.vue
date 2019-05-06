@@ -223,3 +223,17 @@ export default {
   },
 }
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Kanit');
+  #app {
+  font-family: 'Kanit', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100;
+  overflow: hidden;
+  /* text-align: center; */
+  color: #2c3e50;
+}
+</style>
+

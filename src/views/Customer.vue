@@ -5,14 +5,7 @@
         <v-expansion-panel-content :key="item.Cus_ID" v-for="item in GetData_Cus" >
             <template v-slot:header>
                 <div>
-                    <h3>{{item.Cus_ID}} | {{item.CusFullName}}
-                        <v-badge right overlap v-if="1==1">
-                            <template v-slot:badge>
-                                <span>1</span>
-                            </template>
-                            <v-icon medium color="grey lighten-1">notifications_active</v-icon>
-                        </v-badge>
-                    </h3>
+                    <h3>{{item.Cus_ID}} | {{item.CusFullName}}</h3>
                 </div>
             </template>
 

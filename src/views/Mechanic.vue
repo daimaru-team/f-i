@@ -32,8 +32,9 @@
                                 </v-flex>
                                 <v-divider></v-divider>
                                 <v-divider></v-divider>
-                                <v-flex mt-3 headline font-weight-bold>
-                                    <v-icon>account_circle</v-icon> ข้อมูลส่วนตัว
+                                <v-flex mt-3 >
+                                  <h2>
+                                    <v-icon size="30">account_circle</v-icon> ข้อมูลส่วนตัว</h2>
                                 </v-flex>
                                 <v-flex mt-3 ml-3>
                                     <p><b> เลขที่บัตรประชาชน :</b> 232301040-1-301-3132 </p>
@@ -54,8 +55,10 @@
 
                                 <v-divider></v-divider>
                                 <v-divider></v-divider>
-                                <v-flex mt-3 headline font-weight-bold>
-                                    <v-icon>ballot</v-icon> งานที่รับผิดชอบ
+                                <v-flex mt-3>
+                                  <h2>
+                                    <v-icon size="30">ballot</v-icon> งานที่รับผิดชอบ
+                                  </h2>
                                 </v-flex>
                                 <v-flex ml-3>
 
@@ -66,14 +69,21 @@
                                     </div >
                                     <div v-else v-for="work in item.WorkDesc" v-bind:key="work.W_ID">
                                         <v-flex mt-3>
-                                        <h3>
+                                        <h3 class="blue--text">
                                             <p><b> Work ID : {{work.W_ID}} </b></p>
                                         </h3>
-                                        <p><b>  Status : "{{work.Status}}" </b></p>
+                                        <p v-if="work.Status == 0"><b> Status :</b> Error
+                                            <v-icon color="amber accent-4">error</v-icon>
+                                        </p>
+                                        <p v-if="work.Status == 1"><b> Status :</b> Inprocess
+                                            <v-icon color="green">hourglass_empty</v-icon>
+                                        </p>
+                                        <p v-if="work.Status == 2"><b> Status :</b> Complete
+                                            <v-icon color="green">offline_pin</v-icon>
+                                        </p>
 
                                         <p><b> Car_ID : </b>{{work.Car_ID}}</p>
                                         <p><b> Description : </b> {{work.W_Desc}}</p>
-
                                         <p><b>วันนัดรับรถ :</b> {{work.Finish_Date}} </p>
                                         </v-flex>
                                         <v-divider></v-divider>
@@ -82,7 +92,6 @@
 
                             </v-card-text>
                         </v-flex>
-
                         <v-flex md1 xl1 sm1 lg1 xs1>
                             <v-layout justify-end wrap>
                                 <v-tooltip left>

@@ -26,7 +26,7 @@
                 <v-expansion-panel-content v-for="item in dataWorkInProcess" :key="i">
                     <template v-slot:header>
                         <div>
-                            <h3>Toyota Revo 2.4J<v-icon color="amber accent-4">mail</v-icon>
+                            <h3>{{item.CM_Name +" "+item.Model +" "+item.Car_Year +" | "+item.License_plate}}
                             </h3>
                         </div>
                     </template>
@@ -41,8 +41,8 @@
                                         <v-divider></v-divider>
                                         <v-divider></v-divider>
                                         <v-flex mt-2>
-                                            <v-flex mt-2 headline font-weight-bold>
-                                                <v-icon>person</v-icon> รายระเอียดงาน
+                                            <v-flex mt-2 >
+                                                <h2> <v-icon size="30px">person</v-icon> รายระเอียดงาน</h2>
                                             </v-flex>
                                             <v-flex mt-3 ml-3>
                                                 <p><b> Car :</b> {{item.CM_Name}} </p>
@@ -50,6 +50,7 @@
                                                 <p><b> ปี :</b> {{item.Car_Year}}</p>
                                                 <p><b> ทะเบียน :</b> {{item.License_plate}} </p>
                                                 <p><b> อาการ/สาเหตุ :</b> {{item.W_Desc}}</p>
+                                                <p><b> ลูกค้า :</b> {{item.cus_name}}</p>
                                                 <p><b> ช่างผู้รับผิดชอบ :</b> {{item.emp_name}}</p>
                                                 <p><b> วันเริ่มงาน :</b>{{item.Start_Date}}</p>
                                                 <p><b> วันส่งงาน :</b> {{item.Finish_Date}}</p>
@@ -99,8 +100,8 @@
                             </v-layout>
                         </v-flex>
 
-                        <v-dialog v-model="dialog_Timeline" max-width="700px">
-                            <v-card>
+                        <v-dialog v-model="dialog_Timeline" max-width="700px" >
+                            <v-card style="border-radius:30px 0px 0px 30px;">
                                 <v-flex headline pt-2 pb-3>
                                     <v-layout justify-space-around>
                                         <v-flex xs11 md11 xl11 lg11 sm11 ml-4 mt-3>
@@ -124,10 +125,10 @@
                                             </v-timeline-item>
 
                                             <v-timeline-item color="red" class="mb-3" small v-for="timelineItem in DataTimeLine.timeline">
-                                                <v-card class="elevation-15">
+                                                <v-card class="elevation-6" style="border-radius:30px 0px 35px 0px;" min-width="400px">
                                                     <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
                                                         <v-flex xs7>
-                                                            <v-chip class="white--text ml-0" color="purple" label small>
+                                                            <v-chip class="white--text ml-0" color="grey darken-4" style="border-radius:15px 0px 15px 0px;" label small>
                                                                 รายงานผลปกติ
                                                             </v-chip>
                                                             &nbsp;
@@ -139,7 +140,7 @@
                                                             <v-layout justify-end wrap>
                                                                 <v-flex xs12 md12 xl12 lg12 sm12>Datetime : {{timelineItem.DateTime_Created}}</v-flex>
                                                                 <v-flex mt-1 xs12 md12 xl12 lg12 sm12>
-                                                                    <h4>M.{{item.emp_name}}</h4>
+                                                                    <h4 class="blue--text">M.{{item.emp_name}}</h4>
                                                                 </v-flex>
                                                             </v-layout>
                                                         </v-flex>
@@ -164,15 +165,15 @@
 
         <v-dialog v-model="dialog_Detail" max-width="350">
             <v-card>
-                <v-list>
-                    <v-list-tile avatar>
+                <v-list class="grey darken-4 white--text">
+                    <v-list-tile avatar >
                         <v-list-tile-avatar>
                             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
                               </v-list-tile-avatar>
 
                             <v-list-tile-content>
                                 <v-list-tile-title>{{dataCustomer[0].CusFullName}}</v-list-tile-title>
-                                <v-list-tile-sub-title>Customer</v-list-tile-sub-title>
+                                <v-list-tile-sub-title class="white--text">Customer</v-list-tile-sub-title>
                             </v-list-tile-content>
 
                             <v-list-tile-action>
@@ -185,9 +186,9 @@
                 </v-list>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-list-tile-title>Phonsiri Sirichai</v-list-tile-title>
+                    <v-list-tile-title><b>Car in garage </b></v-list-tile-title>
                     <v-list-tile-title v-for="(item,i) in dataWorkInProcess">
-                          Car {{i+1}} : {{item.CM_Name +' '+ item.Model}}
+                          Car {{i+1}} : {{item.CM_Name +' '+ item.Model +"sss "+item.Car_Year}}
                         </v-list-tile-title>
 
                 </v-card-text>
@@ -196,7 +197,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
 
-                    <v-btn color="primary" flat @click="dialog_Detail = false">OK</v-btn>
+                    <v-btn style="border-radius:15px 0px 15px 0px" color="red" @click="dialog_Detail = false">Close</v-btn>
                 </v-card-actions>
 
             </v-card>
@@ -299,6 +300,12 @@
             </v-card>
 
         </v-dialog>
+  
+        <v-footer color="black" app>
+            <v-spacer></v-spacer>
+            <v-flex-text class="white--text">&copy; F&I Garage 2019 Customer service</v-flex-text>
+            <v-spacer></v-spacer>
+        </v-footer>
 
     </div>
 </v-app>

@@ -10,7 +10,7 @@
             dismissible>
                 ทำการจองคิวสำเร็จ! โปรดรอเจ้าหน้าที่ติดต่อกลับ เพื่อยืนยันคิวในการเข้าซ่อมอีกครั้ง
             </v-alert>
-
+            <!-- <v-btn @click="callFunction()">asasasas</v-btn> -->
             <v-alert :value="ErrorInsert"
             type="error"
             transition="scale-transition"
@@ -39,7 +39,7 @@
 
 
                                     <v-btn-toggle v-model="toggle_exclusive"
-                                    dark style="border-radius:15px 0px 15px 0px">
+                                        dark style="border-radius:15px 0px 15px 0px">
                                         <v-btn color="green" style="border-radius:15px 0px 0px 0px"
                                         @click="fromLogin = false">
                                             <h4>จองคิว</h4>
@@ -64,16 +64,14 @@
                                             <v-flex mt-3 md3 xs3 sm3 lg3 xl3>
                                               <v-layout ml-4 justify-center
                                               v-if="window.width > 900">
-
                                                     <img src="https://testtingfuck.000webhostapp.com/imageLogo/newForGray.png" width="130" height="47">
                                               </v-layout>
                                             </v-flex>
 
                                             <v-flex md6 xs6 sm6 lg6 xl6 mt-3>
-                                                <v-layout display-1 justify-center>
-                                                    จองคิวซ่อม
-                                                    <cer/> test                                              </v-layout>
-
+                                                <v-layout justify-center>
+                                                    <h1>จองคิวซ่อม</h1>
+                                                </v-layout>
                                             </v-flex>
 
                                             <v-flex mr-4 md3 xs3 sm3 lg3 xl3>

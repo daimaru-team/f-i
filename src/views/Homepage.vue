@@ -68,11 +68,8 @@
                           {{this.UserData[0].Emp_Name}}
                           {{this.UserData[0].Emp_Lname}}
                         </v-list-tile-title>
-                        <h6 class="blue--text"># Online</h6>
+                        <h6 class="blue--text"># Admin Online</h6>
                     </v-list-tile-content>
-                    <v-btn dark icon @click.stop="dialog_Morword= true">
-                        <v-icon>more_vert</v-icon>
-                    </v-btn>
                 </v-list-tile>
                 <v-divider class="grey darken-4 pt-1"></v-divider>
                 <v-divider></v-divider>
@@ -297,7 +294,7 @@ export default {
         title: 'Work in process',
         icon: 'directions_car',
         link: '/Cars',
-        name: 'Cars',
+        name: 'Work in process',
       },
         // {
         //   // key: 'Celender',

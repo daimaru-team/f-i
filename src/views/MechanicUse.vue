@@ -2,7 +2,8 @@
 <v-app>
     <v-layout>
 
-        <v-toolbar class="v-toolbar  v-toolbar--fixed theme--dark red elevation-6" style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
+                <v-toolbar class="v-toolbar v-toolbar--fixed theme--dark red elevation-6" height="50"
+         style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
             <v-flex title>
                 Mechanic
             </v-flex>
@@ -24,10 +25,8 @@
 
         </v-toolbar>
 
-        <main class="v-content__wrap" full-hight>
-            <v-card v-if="window.width < 600" height="55" color="black"></v-card>
-            <v-card v-if="window.width > 600" height="64" color="black"></v-card>
-            <v-card height="700" color="">
+        <main class="v-content__wrap" style="padding: 49px 0px 0px 0px;" full-hight>
+            <v-card color="">
                 <v-expansion-panel focusable pt-3 mt-4>
                     <v-expansion-panel-content v-for="item in display_wip">
                         <template v-slot:header>
@@ -35,7 +34,6 @@
                                 <h3>{{item.W_ID}} | {{item.CM_Name}} {{item.Model}} {{item.Car_Year}} - {{item.License_plate}} </h3>
                             </div>
                         </template>
-
                         <v-card color="grey lighten-3">
                           <v-flex>
                             <v-layout>
@@ -48,8 +46,8 @@
                                         </v-flex>
                                         <v-divider></v-divider>
                                         <v-divider></v-divider>
-                                        <v-flex mt-3 headline font-weight-bold>
-                                            <v-icon>insert_drive_file</v-icon> รายละเอียดงาน
+                                        <v-flex mt-3>
+                                            <h2><v-icon>insert_drive_file</v-icon> รายละเอียดงาน</h2>
                                         </v-flex>
                                         <v-flex mt-3 ml-3>
                                             <p><b> Car : </b> {{item.CM_Name}} {{item.Model}} </p>
@@ -59,6 +57,8 @@
                                             <p><b> Customer : </b> {{item.cus_name}}</p>
                                             <p><b> อาการเบื้องต้น : </b> {{item.W_Desc}}</p>
                                             <p><b> ช่างผู้รับผิดชอบ : </b>{{item.emp_name}}</p>
+                                            <p><b> วันเริ่มงาน : </b>{{item.Start_Date}}</p>
+                                            <p><b> วันส่งงาน : </b>{{item.Finish_Date}}</p>
                                             <!-- <p><b> Status :</b>{{item.Status}} -->
                                         </v-flex>
                                     </v-card-text>
@@ -72,7 +72,8 @@
                                         </v-flex>
                                         <v-flex>
                                             <v-layout justify-center wrap v-for="day in dayleft" v-if="day.W_ID===item.W_ID">
-                                                <b class="red--text">เหลือเวลาอีก {{day.day_left}} วัน จะถึงกำหนด</b>
+                                                <b class="red--text" v-if="day.day_left <0 ">เกิณระยะเวลาที่กำหนด</b>
+                                                <b class="red--text" v-else>เหลือเวลาอีก {{day.day_left}} วัน จะถึงกำหนด</b>
                                             </v-layout>
                                         </v-flex>
                                     </v-flex>
@@ -81,11 +82,19 @@
                                   <v-layout justify-end wrap>
                                     <v-tooltip left>
                                         <template v-slot:activator="{ on }">
-                                            <v-btn small fab dark color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataExpansDialog_confrim(item),alert = false">
+                                            <v-btn small fab dark color="green" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataFinish(item),alert = false">
                                                 <v-icon dark>check_circle</v-icon>
                                             </v-btn>
                                         </template>
-                                        <span>ยืนยันรับงาน</span>
+                                        <span>งานเสร็จสิ้น</span>
+                                    </v-tooltip>
+                                     <v-tooltip left>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn small fab dark color="amber accent-4" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getDataProblem(item),alert = false">
+                                                <v-icon dark >warning</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>จำหน่าย</span>
                                     </v-tooltip>
                                     </v-layout>
                                 </v-flex>
@@ -117,10 +126,9 @@
                                 <v-container style="max-width: 600px;">
                                     <v-timeline dense align-top clipped>
                                         <v-timeline-item fill-dot class="white--text" color="orange" large>
-                                            <template v-slot:icon><span>Areefeen</span></template>
+                                            <template v-slot:icon><span>JL</span></template>
                                             <v-text-field outline v-model="input_header" hide-details flat label="กรอกรายละเอียด คลิกที่นี่.. " solo @click.stop="Post= true" @keydown.enter="comment">
                                                 <template v-slot:append>
-
                                                     <v-flex>
                                                         <v-layout justify-centee>
                                                             <upload-btn icon ripple :fileChangedCallback="onChangeFileUpload" multiple accept="">
@@ -138,12 +146,12 @@
 
                                             <v-flex>
                                                 <v-layout justify-start>
-                                                    <v-flex>
-                                                        <v-chip small close v-for="(item,i) in 3">
-                                                            <v-avatar class="elevation-5">
-                                                                <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="trevor" width="15" height="20" @click.stop = "dialog_picture= true">
-                                              </v-avatar>
-                                                        </v-chip>
+                                                    <v-flex mt-2 >
+                                                      <v-layout wrap>
+                                                      <div v-for="(item,i) in 4" style="padding-left:5px;">
+                                                         <img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" width="30" height="27" @click="dialog_pictureSelect = true" >
+                                                      </div>
+                                                      </v-layout>
                                                     </v-flex>
                                                 </v-layout>
                                             </v-flex>
@@ -178,10 +186,10 @@
                                                                 </v-flex>
                                                             </v-form>
                                                             <!-- <v-flex mb-3 mr-3>
-                                            <v-layout justify-end>
-                                          <v-btn dark color="blue darken-3" @click.stop="input,Post = false"> OK <v-icon color="white">exit_to_app</v-icon></v-btn>
-                                            </v-layout>
-                                        </v-flex> -->
+                                                <v-layout justify-end>
+                                              <v-btn dark color="blue darken-3" @click.stop="input,Post = false"> OK <v-icon color="white">exit_to_app</v-icon></v-btn>
+                                                </v-layout>
+                                            </v-flex> -->
                                                         </v-flex>
 
                                                     </v-layout>
@@ -194,10 +202,10 @@
                                 </v-timeline-item> -->
                                         <v-slide-x-transition group>
                                             <v-timeline-item class="mb-3" small color="pink" v-for="timelineR in display_timeline" :key="timelineR.Report_ID" v-if="timelineR.W_ID===key_timeline">
-                                                <v-card class="elevation-15">
-                                                    <v-layout justify-space-between pt-3 pb-3 pr-3 pl-3>
+                                                <v-card class="elevation-15" style="border-radius:15px 0px 35px 0px;" min-width="400px">
+                                                    <v-layout justify-space-between pt-3 pr-3 pl-3>
                                                         <v-flex xs8>
-                                                            <v-chip class="white--text ml-0" color="purple" label small>
+                                                            <v-chip class="white--text" color="grey darken-4" style="border-radius:15px 0px 15px 0px;" label small>
                                                                 รายงานผลปกติ
                                                             </v-chip><br/>
                                                             &nbsp;
@@ -205,13 +213,93 @@
                                                             <p><br/>&nbsp;&nbsp;&nbsp;{{timelineR.Description}}</p>
                                                         </v-flex>
 
-                                                        <v-flex xs4 text-xs-right>{{timelineR.DateTime_Created}} <br/><b>M.{{item.emp_name}}</b></v-flex>
+                                                        <v-flex xs4 text-xs-right>{{timelineR.DateTime_Created}} <br/><b class="blue--text">M.{{item.emp_name}}</b></v-flex>
+                                                    
                                                     </v-layout>
+                                               <v-divider></v-divider>
+                                                      <v-layout wrap ml-4 mt-2>
+                                                      <div v-for="(item,i) in 4" style="padding-left:5px;">
+                                                         <img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" width="30" height="27" @click="dialog_pictureTimeline = true" >
+                                                      </div>
+                                                      </v-layout>
+
+
+
                                                 </v-card>
                                             </v-timeline-item>
                                         </v-slide-x-transition>
                                     </v-timeline>
                                 </v-container>
+                            </v-card>
+                        </v-dialog>
+
+                         <v-dialog v-model="dialog_Finish" max-width="260">
+                            <v-card>
+
+                                <v-card-text class="grey darken-4 white--text">
+                                  <v-layout justify-center>
+                                    <h3>
+                                      ยืนยันการเสร็จสิ้นงาน
+                                    </h3>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                 <v-card-text>
+                                  <v-layout justify-center wrap>
+                                    <h3>
+                                      {{dataFinish.W_ID}}
+                                    </h3>
+                                    <p>
+                                      {{dataFinish.CM_Name}} {{dataFinish.Model}} {{dataFinish.Car_Year}} - {{dataFinish.License_plate}}
+                                    </p>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-flex>
+                                    <v-layout justify-center>
+                                      <v-btn small color="red" class="white--text" style="border-radius:20px 0px 0px 0px;" @click="dialog_Finish = false">ยกเลิก</v-btn>
+                                   <v-btn small color="light-green darken-1" class="white--text" style="border-radius:0px 0px 20px 0px;">ยืนยัน</v-btn>
+                                    </v-layout>
+                                  </v-flex>
+                                </v-card-actions>
+
+                            </v-card>
+                        </v-dialog>
+
+                        
+                         <v-dialog v-model="dialog_Ploblem" max-width="300">
+                            <v-card>
+
+                                <v-card-text class="grey darken-4 white--text">
+                                  <v-layout justify-center>
+                                    <h3>
+                                      รายงานปัญหา
+                                    </h3>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                 <v-card-text>
+                                  <v-layout justify-center wrap>
+                                    <h3>
+                                      {{dataProblem.W_ID}}
+                                    </h3>
+                                    <p>
+                                      {{dataProblem.CM_Name}} {{dataProblem.Model}} {{dataProblem.Car_Year}} - {{dataProblem.License_plate}}
+                                    </p>
+                                    <v-text-field class="elevation-10" multi-line box counter="120"></v-text-field>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-flex>
+                                    <v-layout justify-center>
+                                      <v-btn small color="red" class="white--text" style="border-radius:20px 0px 0px 0px;" @click="dialog_Ploblem = false">ยกเลิก</v-btn>
+                                   <v-btn small color="light-green darken-1" class="white--text" style="border-radius:0px 0px 20px 0px;">รายงาน</v-btn>
+                                    </v-layout>
+                                  </v-flex>
+                                </v-card-actions>
+
                             </v-card>
                         </v-dialog>
 
@@ -262,8 +350,60 @@
 
                     </v-card>
                 </v-dialog>
-            </v-card>
 
+                      <v-dialog v-model="dialog_pictureSelect" max-width="450">
+                            <v-card>
+                                <v-card-text class="grey darken-4 white--text">
+                                  <v-layout justify-center>
+                                    <h3>
+                                      ภาพที่ต้องการโพสต์
+                                    </h3>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                 <v-card-text>
+                                  <v-layout justify-center>
+                                    <v-img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" aspect-ratio="1.7"></v-img>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-flex>
+                                    <v-layout justify-center>
+                                      <v-btn small color="red" class="white--text" style="border-radius:60px 0px 0px 0px;" @click="dialog_pictureSelect = false">ลบ</v-btn>
+                                   <v-btn small color="light-green darken-1" class="white--text" style="border-radius:0px 0px 60px 0px;" @click="dialog_pictureSelect = false">เลือก</v-btn>
+                                    </v-layout>
+                                  </v-flex>
+                                </v-card-actions>
+
+                            </v-card>
+                      </v-dialog>
+                        
+                      <v-dialog v-model="dialog_pictureTimeline" max-width="450">
+                            <v-card>
+                                <v-card-text class="grey darken-4 white--text">
+                                  <v-layout justify-center>
+                                    <v-flex>
+                                      <h3>ภาพประกอบการอัพเดท</h3>
+                                    </v-flex>
+                                    <v-flex>
+                                      <v-layout justify-end>
+                                       <v-icon @click="dialog_pictureTimeline = false" color="red">close</v-icon>
+                                      </v-layout>
+
+                                    </v-flex>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                 <v-card-text>
+                                  <v-layout justify-center>
+                                    <v-img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" aspect-ratio="1.7"></v-img>
+                                  </v-layout>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                            </v-card>
+                      </v-dialog>
+            </v-card>
         </main>
 
         <v-footer color="black" app>
@@ -309,11 +449,16 @@ export default {
       nullRules: [
         v => (v.length > 0) || 'กรุณากรอกข้อมูลให้ครบถ้วน',
       ],
+      dataFinish: '',
       valid: true,
       Store: this.$store.state,
       key_timeline: '',
+      dialog_Finish: false,
       alertNotfound: false,
-      dialog_picture: false,
+      dialog_pictureTimeline: false,
+      dialog_pictureSelect: false,
+      dialog_Ploblem: false,
+      dataProblem: '',
       dialog_logout: false,
       alertInsert: false,
       ErrorInsert: false,
@@ -342,6 +487,7 @@ export default {
         width: 0,
         height: 0,
       },
+      a: '',
       // login: true,
       right: null,
     }
@@ -412,13 +558,21 @@ export default {
     Axios.post(api3, day_param)
       .then((response) => {
         this.dayleft = response.data
+        console.log(this.dayleft)
+        console.log('teest')
+
         if (this.display_timeline.length === 0) {
           this.alertNotfound = true
         } else if (this.display_timeline.length !== 0) {
           console.log('dayyyy')
           // alert(this.dayleft.length)
           // alert(typeof (Number(this.dayleft[0].day_left)))
-          console.log(this.dayleft)
+          console.log(this.dayleft.length)
+          // for (let i = 0; i < this.dayleft.length; i += 1) {
+          //   this.dayleft[i].dayleft = Number(this.dayleft[i].day_left)
+          //   console.log('====================>')
+          //   console.log(this.dayleft[i].dayleft)
+          // }
         }
       })
   },
@@ -426,6 +580,24 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    anuoha(data) {
+      if (data < 0) {
+        this.a = 'เกิณระยะเวลาที่กำหนด'
+      } else {
+        console.log('Test iNGGGGGGGGGG', data)
+        this.a = `เหลือเวลาอีก ${data} วัน จะถึงกำหนด`
+        console.log(this.a)
+      }
+      return this.a
+    },
+    getDataFinish(data) {
+      this.dataFinish = data
+      this.dialog_Finish = true
+    },
+    getDataProblem(data) {
+      this.dataProblem = data
+      this.dialog_Ploblem = true
+    },
     momentInsert(date) {
       const year = Number(moment(date).format('YYYY'))
       // console.log(year.length)
