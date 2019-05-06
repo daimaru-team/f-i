@@ -1,7 +1,7 @@
 <template>
 <v-app>
     <v-layout>
-
+      
                 <v-toolbar class="v-toolbar v-toolbar--fixed theme--dark red elevation-6" height="50"
          style="margin-top:0px;padding-right:0px;padding-left:0px;transform:translateY(0px);">
             <v-flex title>
@@ -10,6 +10,7 @@
             <v-flex>
                 <v-flex title justify-center>{{moment().format('DD/MM/YYYY')}}</v-flex>
             </v-flex>
+
 
             <!-- รูปโปรไฟล์ของช่าง -->
             <v-avatar>
@@ -27,6 +28,7 @@
 
         <main class="v-content__wrap" style="padding: 49px 0px 0px 0px;" full-hight>
             <v-card color="">
+                <v-alert :value="alertUpdateEmp" type="success" transition="scale-transition" dismissible> อัพเดทข้อมูลสำเร็จ</v-alert>
                 <v-expansion-panel focusable pt-3 mt-4>
                     <v-expansion-panel-content v-for="item in display_wip">
                         <template v-slot:header>
@@ -258,7 +260,7 @@
                                   <v-flex>
                                     <v-layout justify-center>
                                       <v-btn small color="red" class="white--text" style="border-radius:20px 0px 0px 0px;" @click="dialog_Finish = false">ยกเลิก</v-btn>
-                                   <v-btn small color="light-green darken-1" class="white--text" style="border-radius:0px 0px 20px 0px;">ยืนยัน</v-btn>
+                                   <v-btn small color="light-green darken-1" class="white--text" style="border-radius:0px 0px 20px 0px;" @click="updateMECH()">ยืนยัน</v-btn>
                                     </v-layout>
                                   </v-flex>
                                 </v-card-actions>
@@ -469,6 +471,7 @@ export default {
       dialogFI: false,
       notifications: false,
       dialog_Morword: false,
+      alertUpdateEmp: false,
       sound: true,
       widgets: false,
       HeaderTxt: '',
@@ -579,6 +582,15 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    async updateMECH() {
+      const api = 'https://testtingfuck.000webhostapp.com/update_status_mechanicUse.php'
+      const param = new URLSearchParams()
+      param.append('W_ID', this.dataFinish.W_ID)
+      const response = await Axios.post(api, param)
+      console.log('======>DeleteMacanic', response)
+      this.dialog_Finish = false
+      this.alertUpdateEmp = true
+    },
     anuoha(data) {
       if (data < 0) {
         this.a = 'เกิณระยะเวลาที่กำหนด'
@@ -591,10 +603,12 @@ export default {
     },
     getDataFinish(data) {
       this.dataFinish = data
+      console.log(this.dataFinish.W_ID)
       this.dialog_Finish = true
     },
     getDataProblem(data) {
       this.dataProblem = data
+      console.log(this.dataProblem)
       this.dialog_Ploblem = true
     },
     momentInsert(date) {

@@ -16,7 +16,7 @@ $response = array();
    $response[] = $row;
 }
 if(COUNT($response)==0){
-    $query="DELETE FROM Employee WHERE $ColName ='$whereID' ";
+    $query="DELETE FROM Employee WHERE Emp_ID ='$DeleteID' ";
     $result=$con->query($query);
     if($result){
         echo "1";

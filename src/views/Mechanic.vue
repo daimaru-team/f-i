@@ -1,6 +1,9 @@
 <template>
 <v-card width="100%">
     <v-alert :value="alert" type="success" transition="scale-transition" dismissible>Insert queue successfuly!</v-alert>
+    <v-alert :value="alertInsertEmp" type="success" transition="scale-transition" dismissible> บันทึกข้อมูลสำเร็จ</v-alert>
+    <v-alert :value="alertUpdateEmp" type="success" transition="scale-transition" dismissible> อัพเดทข้อมูลสำเร็จ</v-alert>
+
     <v-tooltip left>
         <template v-slot:activator="{ on }">
             <v-btn fab dark fixed bottom right color="pink" v-on="on" style="margin-top:15px;" @click="dialogInsert = true,alert = false">
@@ -105,7 +108,7 @@
 
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                        <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click=" getdataExpanDeelete(item),dialog_delete = true,alert = false">
                                             <v-icon dark>delete_forever</v-icon>
                                         </v-btn>
                                     </template>
@@ -133,7 +136,7 @@
                                 <v-checkbox dark v-model="isEditing" color="orange" hide-details label="เปิดการแก้ไข"></v-checkbox>
                             </v-flex>
 
-                            <v-card-text>ข้อมูลพนักงาน</v-card-text>
+                            <v-card-text>ข้อมูลพนักงาน </v-card-text>
                             <v-card elevation="5" color="grey lighten-3" width="100%">
                                 <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                                     <v-flex xs12 sm6 md6 pr-3>
@@ -148,6 +151,9 @@
 
                                     <v-flex xs12 sm6 md6>
                                         <v-text-field label="นามสกุล*" :disabled="!isEditing" :value='getdataExpan.Emp_Lname' persistent-hint required></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field label="ชื่อเล่น*" :disabled="!isEditing" :value='getdataExpan.Nickname' persistent-hint required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm12 md12>
@@ -204,7 +210,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" flat @click="dialog_Edit = false">ยกเลิก</v-btn>
-                        <v-btn color="blue darken-1" flat @click="dialog_Edit = false">ยืนยัน</v-btn>
+                        <v-btn color="blue darken-1" flat  @click="updataEmp()">ยืนยัน</v-btn>
                     </v-card-actions>
                 </v-card>
 
@@ -247,6 +253,9 @@
 
                             <v-flex xs12 sm6 md6>
                                 <v-text-field v- label="นามสกุล*" v-model="IData.Emp_Lname" :rules="lNameRules" persistent-hint required></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md6>
+                                <v-text-field v- label="ชื่อเล่น*" v-model="IData.Nickname" :rules="lNameRules" persistent-hint required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm12 md12>
@@ -313,43 +322,43 @@
                         <v-card elevation="3" color="grey lighten-3" width="100%">
                             <v-layout wrap pl-4 pr-4 pb-3 pt-3 subheading>
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ชื่อ : </b>{{Name}}</div>
+                                    <div><b>ชื่อ : </b>{{IData.Emp_Name}}</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>นามสกุล :</b> {{LastName}}</div>
+                                    <div><b>นามสกุล :</b> {{IData.Emp_Lname}}</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ที่อยู่ :</b> 62 / fge5g sdfbse hk sa.fg rgeorg . wr weefefg 10400</div>
+                                    <div><b>ที่อยู่ :</b> {{IData.Address}}</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>วันเกิด :</b> 02/04/40</div>
+                                    <div><b>วันเกิด :</b> {{IData.Birthday}}</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>อีเมลล์ :</b> Phonpisud</div>
+                                    <div><b>อีเมลล์ :</b> {{IData.Email}}</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>Line ID :</b> @fgkqwktwb</div>
+                                    <div><b>Line ID :</b> {{IData.LineID}}</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>เบอร์โทร :</b> 0916984687</div>
+                                    <div><b>เบอร์โทร :</b> {{IData.Phone_Num}}</div>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ตำแหน่ง :</b> หัวหน้าช่าง</div>
+                                    <div><b>ตำแหน่ง :</b> MAC</div>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ความถนัด :</b> ขันน็อตได้</div>
+                                    <div><b>ความถนัด :</b> {{IData.speciality}}</div>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>เงินเดือน :</b> 60,000-</div>
+                                    <div><b>เงินเดือน :</b> {{IData.Salary}}</div>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>รหัสในการเข้าใช้ระบบ :</b> AA23667546</div>
+                                    <div><b>รหัสในการเข้าใช้ระบบ :</b> {{password}}</div>
                                 </v-flex>
                             </v-layout>
                         </v-card>
@@ -361,7 +370,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="amber darken-4" flat @click="insertCheck = false,dialogInsert = true">แก้ไข</v-btn>
-                        <v-btn color="blue darken-1" flat @click="dialogInsert = false,insertCheck = false,alert = !alert">ยืนยัน</v-btn>
+                        <v-btn color="blue darken-1" flat @click="Insert()">ยืนยัน</v-btn>
                     </v-card-actions>
                 </v-flex>
             </v-card>
@@ -376,12 +385,12 @@
             </v-card-title>
 
             <v-card-text>
-                <h4>Employee ID : คุณต้องลบรายการนี้หรือไม่ ?</h4>
+                <h4>Employee ID : คุณต้องการลบรายการนี้หรือไม่ ?</h4>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
-                <v-btn color="red white--text" @click="dialog_delete = false">Yes</v-btn>
+                <v-btn color="red white--text" @click="deleteEmp()" >Yes</v-btn>
                 <v-spacer></v-spacer>
             </v-card-actions>
         </v-card>
@@ -452,6 +461,7 @@ export default {
         width: 0,
         height: 0,
       },
+      alertInsertEmp: false,
       isEditing: false,
       dialog_Edit: false,
       dialog_delete: false,
@@ -459,6 +469,7 @@ export default {
       ExpandID: '',
       GetData_Emp: [],
       GetData_Work_in: [],
+      alertUpdateEmp: false,
       alert: false,
       dialogInsert: false,
       insert: true,
@@ -566,7 +577,7 @@ export default {
 
       ],
 
-
+      getdataExpanDelete: '',
       selectedItem_Owner: '',
       selectedItem_OwnerRules: [
         v => !!v || 'กรุณาเลือกรายการนี้',
@@ -609,6 +620,74 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    getdataExpanDeelete(data) {
+      this.getdataExpanDelete = data
+      console.log(this.getdataExpanDelete)
+    },
+    async updataEmp() {
+      const datainsert = [{
+        Emp_ID: this.getdataExpan.Emp_ID,
+        Pos_ID: 'MAC', // this.IData.Pos_ID
+        Nickname: this.getdataExpan.Nickname,
+        Birthday: this.getdataExpan.Birthday,
+        Start_Date: moment().format('YYYY-MM-DD'),
+        Salary: this.getdataExpan.Salary,
+        Emp_Type: 'FT',
+        Address: this.getdataExpan.Address,
+        Phone_Num: this.getdataExpan.Phone_Num,
+        Email: this.getdataExpan.Email,
+        LineID: this.getdataExpan.LineID,
+        speciality: this.getdataExpan.Speciality,
+      }]
+      const api = 'https://testtingfuck.000webhostapp.com/update_Employee.php'
+      const param = new URLSearchParams()
+      console.log('===>',datainsert)
+      param.append('data_insert', JSON.stringify(datainsert))
+      const response = await Axios.post(api, param)
+      const res = response.data
+      this.alertUpdateEmp = true
+      this.dialog_Edit = false
+      console.log('Insertdata emp =====>', res)
+    },
+    async deleteEmp() {
+      // Delete_Emp
+      const apiCus = 'https://testtingfuck.000webhostapp.com/Delete_Emp.php';
+      const paramKey = new URLSearchParams();
+      console.log()
+      paramKey.append('DeleteID', this.getdataExpanDelete.Emp_ID)
+      const responseCus = await Axios.post(apiCus, paramKey)
+      console.log('Delete_Emp ===>', responseCus)
+      this.dialog_delete = false
+    },
+    async Insert() {
+      const datainsert = [{
+        Emp_ID: '',
+        Emp_PID: this.IData.pId,
+        Emp_Name: this.IData.Emp_Name,
+        Emp_Lname: this.IData.Emp_Lname,
+        Pos_ID: 'MAC', // this.IData.Pos_ID
+        Nickname: this.IData.Nickname,
+        Birthday: this.IData.Birthday,
+        Start_Date: moment().format('YYYY-MM-DD'),
+        Salary: this.IData.Salary,
+        Emp_Type: 'MAC',
+        Address: this.IData.Address,
+        Phone_Num: this.IData.Phone_Num,
+        Email: this.IData.Email,
+        LineID: this.IData.LineID,
+        speciality: this.IData.speciality,
+        password: this.IData.Password,
+      }]
+      const api = 'https://testtingfuck.000webhostapp.com/insert_new_emp.php'
+      const param = new URLSearchParams()
+      console.log(datainsert)
+      param.append('data_insert', JSON.stringify(datainsert))
+      const response = await Axios.post(api, param)
+      const res = response.data
+      this.alertInsertEmp = true
+      this.dialogInsert = false
+      console.log('Insertdata emp =====>', res)
+    },
     async getPosition() {
       const api = ''
       const param = new URLSearchParams()

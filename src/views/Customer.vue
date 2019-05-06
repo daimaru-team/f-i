@@ -86,12 +86,12 @@
                     </v-card-title>
 
                     <v-card-text>
-                        <h4>Customer ID : {{WidForDeleteBT}} <br/> คุณต้องลบรายการนี้หรือไม่ ?</h4>
+                        <h4>Customer ID : {{WidForDeleteBT}} <br/> คุณต้องการลบรายการนี้หรือไม่ ?</h4>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
-                        <v-btn color="red white--text" @click="dialog_delete = false">Yes</v-btn>
+                        <v-btn color="red white--text" @click="DeleteCustomer()">Yes</v-btn>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -181,6 +181,7 @@ export default {
     getDataDelete(data) {
       console.log('data delete=', data)
       this.WidForDeleteBT = data
+      console.log(this.WidForDeleteBT)
       // this.Get_Data_WID.W_ID = data
       //   console.log('kkkkkkkk',this.timelineWID)
     },
@@ -190,16 +191,13 @@ export default {
       console.log(response.data)
       this.GetData_Cus = response.data
     },
-    async DeleteCustomer(id) {
-      const api = ''
+    async DeleteCustomer() {
+      const api = 'https://testtingfuck.000webhostapp.com/delete_customer.php'
       const param = new URLSearchParams()
-      param.append('Cus_ID', id)
+      param.append('DeleteID', this.WidForDeleteBT)
       const response = await Axios.post(api, param)
-      if (response.data === 1) {
-
-      } else {
-
-      }
+      console.log('======>DeleteCustomer', response)
+      this.dialog_delete = false
     },
 
     async UpdateDataCustomer(data) {

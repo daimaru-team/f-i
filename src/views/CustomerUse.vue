@@ -78,7 +78,7 @@
                                         <v-flex text-xs-right md12 xl12 sm12 lg12 xs12>
                                             <v-tooltip left>
                                                 <template v-slot:activator="{ on }">
-                                                    <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_About = true,getDataDeletegetDataDelete(item.W_ID),alert = false">
+                                                    <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_About = true,getDataDeletegetDataDelete(item.Emp_ID),alert = false">
                                                         <v-icon dark>contact_phone</v-icon>
                                                     </v-btn>
                                                 </template>
@@ -203,7 +203,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialog_About" max-height="900">
+        <v-dialog v-model="dialog_About" max-height="800">
 
             <v-card height="100%" style="border-radius:60px 0px 60px 0px">
 
@@ -254,34 +254,34 @@
                                                         <v-layout wrap pl-4 pr-4 pb-3>
 
                                                             <v-flex xs12 sm6 md6 pr-3>
-                                                                <v-text-field label="ชื่อ" readonly :value="window.width"></v-text-field>
+                                                                <v-text-field label="ชื่อ" :disabled="disabledDataEmpDetail" readonly v-model="Emp_Name"></v-text-field>
 
                                                             </v-flex>
 
                                                             <v-flex xs12 sm6 md6>
-                                                                <v-text-field label="นามสกุล"></v-text-field>
+                                                                <v-text-field label="นามสกุล" :disabled="disabledDataEmpDetail" v-model="Emp_Lname"></v-text-field>
                                                             </v-flex>
 
                                                             <v-flex xs12 sm12 md12>
-                                                                <v-text-field label="ที่อยู่ปัจจุบัน"></v-text-field>
+                                                                <v-text-field label="ที่อยู่ปัจจุบัน" :disabled="disabledDataEmpDetail" v-model="Address"></v-text-field>
                                                             </v-flex>
 
                                                             <v-flex xs12 sm6 md6 pr-3>
-                                                                <v-text-field label="วันเกิด"></v-text-field>
+                                                                <v-text-field label="วันเกิด" :disabled="disabledDataEmpDetail" v-model="Birthday"></v-text-field>
                                                             </v-flex>
 
                                                             <v-flex xs12 sm6 md6>
 
-                                                                <v-text-field label="อีเมล์*"></v-text-field>
+                                                                <v-text-field label="อีเมล์*" :disabled="disabledDataEmpDetail" v-model="Email"></v-text-field>
 
                                                             </v-flex>
 
                                                             <v-flex xs12 sm6 md6 pr-3>
-                                                                <v-text-field label="Line ID"></v-text-field>
+                                                                <v-text-field label="Line ID" :disabled="disabledDataEmpDetail" v-model="LineID"></v-text-field>
                                                             </v-flex>
 
                                                             <v-flex xs12 sm6 md6>
-                                                                <v-text-field label="เบอร์โทร"></v-text-field>
+                                                                <v-text-field label="เบอร์โทร" :disabled="disabledDataEmpDetail" v-model="Phone_Num"></v-text-field>
                                                             </v-flex>
                                                         </v-layout>
 
@@ -330,6 +330,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
   },
   data2: () => ({
+
+    Wid: '',
     items2: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     cruds: [
       ['Create', 'add'],
@@ -340,6 +342,22 @@ export default {
   },
   data() {
     return {
+      disabledDataEmpDetail: false,
+      Address: '',
+      Emp_Name: '',
+      Emp_Lname: '',
+      Birthday: '',
+      Email: '',
+      Emp_ID: '',
+      Emp_PID: '',
+      LineID: '',
+      Mac_Name: '',
+      Nickname: '',
+      Phone_Num: '',
+      Salary: '',
+      Speciality: '',
+      Start_Date: '',
+      Type_Name: '',
       window: {
         width: 0,
         height: 0,
@@ -431,6 +449,31 @@ export default {
     // this.read_Table2()
   },
   methods: {
+    async getDataDeletegetDataDelete(data) {
+      console.log(data)
+      const api = 'https://testtingfuck.000webhostapp.com/select_emp_detail.php'
+      const param = new URLSearchParams()
+      param.append('key', data)
+      const response = await Axios.post(api, param)
+      console.log('======>DeleteMacanic', response)
+      this.Address = response.data[0].Address
+      this.Emp_Name = response.data[0].Emp_Name
+      this.Emp_Lname = response.data[0].Emp_Lname
+      this.Birthday = response.data[0].Birthday
+      this.Email = response.data[0].Email
+      this.Emp_ID = response.data[0].Emp_ID
+      this.Emp_PID = response.data[0].Emp_PID
+      this.LineID = response.data[0].LineID
+      this.Mac_Name = response.data[0].Mac_Name
+      this.Nickname = response.data[0].Nickname
+      this.Phone_Num = response.data[0].Phone_Num
+      this.Salary = response.data[0].Salary
+      this.Speciality = response.data[0].Speciality
+      this.Start_Date = response.data[0].Start_Date
+      this.Type_Name = response.data[0].Type_Name
+      this.disabledDataEmpDetail = true
+      console.log(this.Type_Name)
+    },
     getDataExpans(data) {
       this.DataTimeLine = data
     },
