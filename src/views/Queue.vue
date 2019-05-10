@@ -826,7 +826,7 @@ export default {
     // }
   },
   methods: {
-    
+
     async getdataBooking() {
       const apibooking = 'https://testtingfuck.000webhostapp.com/select_display_booking.php';
       const response = await Axios.post(apibooking)
@@ -955,9 +955,9 @@ export default {
         Start_Date: this.come_in_date,
         Finish_Date: this.finish_date,
         Emp_ID: this.selectedItem_Owner.Emp_ID,
-        Emp_Name: this.selectedItem_Owner.Emp_Name+' '+this.selectedItem_Owner.Emp_Lname
+        Emp_Name: `${this.selectedItem_Owner.Emp_Name} ${this.selectedItem_Owner.Emp_Lname}`,
       }]
-      this.Store.pdfData=datainsert
+      this.Store.pdfData = datainsert
 
       const api = 'https://testtingfuck.000webhostapp.com/insert_update_bookingIN.php'
       const param = new URLSearchParams()
@@ -1049,7 +1049,7 @@ export default {
             bold: true,
             margin: [250, 10, 0, 0],
           },
-           {
+          {
             text: [
               'เลขที่เอกสาร: abwed1234444\n',
             ],
@@ -1081,8 +1081,8 @@ export default {
           {
             text: [
               'ข้อมูลลูกค้า\n',
-              'ชิ่อลูกค้า :'+data.Cus_Name+' '+data.Cus_Lname+'\r\n',
-              'ที่อยู่ :'+data.Address+' \n',
+              `ชิ่อลูกค้า :${data.Cus_Name} ${data.Cus_Lname}\r\n`,
+              `ที่อยู่ :${data.Address} \n`,
             ],
             style: 'headerref',
           },
@@ -1096,9 +1096,9 @@ export default {
           },
           {
             text: [
-              'ประเภท: รถยนต์              ยี่ห้อ :'+data.Cm_Name+'\n',
-              'รุ่น: '+data.Model+' สี :'+data.Car_Color+'เลขทะเบียน: '+data.License_Plete+'\n',
-              'อาการ : '+data.Broken_List+'             เลขตัวถัง : '+data.Tank_Num+'\n',
+              `ประเภท: รถยนต์              ยี่ห้อ :${data.Cm_Name}\n`,
+              `รุ่น: ${data.Model} สี :${data.Car_Color}เลขทะเบียน: ${data.License_Plete}\n`,
+              `อาการ : ${data.Broken_List}             เลขตัวถัง : ${data.Tank_Num}\n`,
             ],
             style: 'headerref',
           },
@@ -1115,7 +1115,7 @@ export default {
             fontSize: 12,
             table: {
               body: [
-                [''+data.Finish_Date+''],
+                [`${data.Finish_Date}`],
               ],
             },
           },
@@ -1149,7 +1149,7 @@ export default {
           {
             text: [
               '____________________       ____________________\n',
-              { text: data.Cus_Name+' '+data.Cus_Lname+'                         '+data.Emp_Name },
+              { text: `${data.Cus_Name} ${data.Cus_Lname}                         ${data.Emp_Name}` },
             ],
             fontSize: 12,
 					 margin: [200, 40, 30, 50],
@@ -1195,7 +1195,7 @@ export default {
       printDoc(pdf);
     },
   },
-  
+
   // eslint-disable-next-line space-before-blocks
 }
 </script>

@@ -40,7 +40,7 @@ export default {
             bold: true,
             margin: [250, 10, 0, 0],
           },
-           {
+          {
             text: [
               'เลขที่เอกสาร: abwed1234444\n',
             ],

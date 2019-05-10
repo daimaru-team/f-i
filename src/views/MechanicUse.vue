@@ -151,14 +151,14 @@
                                                       <v-layout wrap>
                                                       <div v-for="itemFile in preview_img">
                                                         <!-- <button onclick="getUrltoDialog()"> -->
-                                                          
+
                                                           <!-- <img :src="itemFile" width="30" height="27"  > -->
                                                         <!-- </button> -->
                                                         <!-- <button onclick="getUrltoDialog()">Click me</button> -->
                                                         <v-btn @click="getUrltoDialog(itemFile)" fab small icon>
                                                           <img :src="itemFile" width="30" height="27"  >
                                                         </v-btn>
-                                                         
+
                                                       </div>
                                                       </v-layout>
                                                     </v-flex>
@@ -454,7 +454,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
 
   },
-  
+
   data() {
     return {
       urlPicSelect: '',
@@ -468,8 +468,8 @@ export default {
       valid: true,
       Store: this.$store.state,
       key_timeline: '',
-      keyUserId:'',
-      keyCus_ID:'',
+      keyUserId: '',
+      keyCus_ID: '',
       dialog_Finish: false,
       alertNotfound: false,
       dialog_pictureTimeline: false,
@@ -514,7 +514,7 @@ export default {
 
   },
   watch: {
-   
+
     display_timeline() {
       return this.display_timeline.slice().reverse()
     },
@@ -598,15 +598,15 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    Notification(userId,data){
-      
+    Notification(userId, data) {
+
     },
     getUrltoDialog(url) {
       console.log('test')
       this.urlPicSelect = url
       this.dialog_pictureSelect = true
     },
-     getUrltoDialogTimeline(url) {
+    getUrltoDialogTimeline(url) {
       console.log('test')
       this.urlPicTimeline = url
       this.dialog_pictureTimeline = true
@@ -707,7 +707,7 @@ export default {
       paramInsert.append('data_insert', dataJson)
       console.log('in insert_timeline =', dataToInsert[0].Iw_ID)
       const response = await Axios.post(api2, paramInsert)
-      console.log('key=',this.keyUserId)
+      console.log('key=', this.keyUserId)
       const res = response.data
       console.log(res.count)
       console.log(res)
@@ -715,9 +715,8 @@ export default {
         if (this.file.length !== 0) {
           this.submitForm(dataToInsert)
           const apiCloud = `https://us-central1-fi-ga-1d5d9.cloudfunctions.net/BasicMessage?txtSend=งานซ่อมของคุณมีความเคลื่อนไหว${this.key_timeline}&userId=${this.keyUserId}&CusID=${this.keyCus_ID}`
-          console.log('api=',apiCloud)
+          console.log('api=', apiCloud)
           await Axios.get(apiCloud);
-
         } else {
           this.alertInsert = true;
           setTimeout(() => {
@@ -768,7 +767,7 @@ export default {
       setTimeout(() => {
         this.alertInsert = false;
       }, 10000);
-      this.file=''
+      this.file = ''
       console.log('test await')
     },
     Gen_ID_WIP() {

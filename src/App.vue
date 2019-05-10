@@ -116,21 +116,17 @@ export default {
       // alert(this.$session.get('userType'))
       if (this.$session.get('userType') === 'Admin') {
         this.Store.display_page = 'AdminPage'
-              this.Store.IDforSELECT = this.$session.get('usersloggedin')
-
+        this.Store.IDforSELECT = this.$session.get('usersloggedin')
       } else if (this.$session.get('userType') === 'Customer') {
         this.Store.display_page = 'CustomerUse'
-              this.Store.IDforSELECT = this.$session.get('usersloggedin')
-
+        this.Store.IDforSELECT = this.$session.get('usersloggedin')
       } else if (this.$session.get('userType') === 'Employee') {
         this.Store.display_page = 'MechanicUse'
-              this.Store.IDforSELECT = this.$session.get('usersloggedin')
-
-      } else if(this.$route.query.CusID){
-      this.Store.display_page = 'CustomerUse'
-            this.Store.IDforSELECT = this.$session.get(this.$route.query.CusID)
+        this.Store.IDforSELECT = this.$session.get('usersloggedin')
+      } else if (this.$route.query.CusID) {
+        this.Store.display_page = 'CustomerUse'
+        this.Store.IDforSELECT = this.$session.get(this.$route.query.CusID)
       }
-
     } else {
       // alert('not found user')
     }

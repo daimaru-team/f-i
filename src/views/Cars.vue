@@ -716,7 +716,7 @@ export default {
         Finish_Date: this.finishDatetDate,
         Emp_ID: this.selectedItem_Owner.Emp_ID,
         Remark: 'ไม่มี',
-        Emp_Name: this.selectedItem_Owner.Emp_Name+' '+this.selectedItem_Owner.Emp_Lname
+        Emp_Name: `${this.selectedItem_Owner.Emp_Name} ${this.selectedItem_Owner.Emp_Lname}`,
 
       }]
       const api = 'https://testtingfuck.000webhostapp.com/insert_new_wip.php'
@@ -729,7 +729,7 @@ export default {
 
       if (res === '1') {
         console.log('insert finished')
-         this.print(datainsert[0])
+        this.print(datainsert[0])
       } else if (res === '0') {
         console.log('insert false')
       }
@@ -795,7 +795,7 @@ export default {
         }, 10000);
       }
     },
-  async print(data) {
+    async print(data) {
       const layout1 = {
         info: {
           title: 'filename',
@@ -812,7 +812,7 @@ export default {
             bold: true,
             margin: [250, 10, 0, 0],
           },
-           {
+          {
             text: [
               'เลขที่เอกสาร: abwed1234444\n',
             ],
@@ -844,8 +844,8 @@ export default {
           {
             text: [
               'ข้อมูลลูกค้า\n',
-              'ชิ่อลูกค้า :'+data.Cus_Name+' '+data.Cus_Lname+'\r\n',
-              'ที่อยู่ :'+data.Address+' \n',
+              `ชิ่อลูกค้า :${data.Cus_Name} ${data.Cus_Lname}\r\n`,
+              `ที่อยู่ :${data.Address} \n`,
             ],
             style: 'headerref',
           },
@@ -859,9 +859,9 @@ export default {
           },
           {
             text: [
-              'ประเภท: รถยนต์              ยี่ห้อ :'+data.Cm_Name+'\n',
-              'รุ่น: '+data.Model+' สี :'+data.Car_Color+'เลขทะเบียน: '+data.License_Plete+'\n',
-              'อาการ : '+data.Broken_List+'             เลขตัวถัง : '+data.Tank_Num+'\n',
+              `ประเภท: รถยนต์              ยี่ห้อ :${data.Cm_Name}\n`,
+              `รุ่น: ${data.Model} สี :${data.Car_Color}เลขทะเบียน: ${data.License_Plete}\n`,
+              `อาการ : ${data.Broken_List}             เลขตัวถัง : ${data.Tank_Num}\n`,
             ],
             style: 'headerref',
           },
@@ -878,7 +878,7 @@ export default {
             fontSize: 12,
             table: {
               body: [
-                [''+data.Finish_Date+''],
+                [`${data.Finish_Date}`],
               ],
             },
           },
@@ -912,7 +912,7 @@ export default {
           {
             text: [
               '____________________       ____________________\n',
-              { text: data.Cus_Name+' '+data.Cus_Lname+'                         '+data.Emp_Name },
+              { text: `${data.Cus_Name} ${data.Cus_Lname}                         ${data.Emp_Name}` },
             ],
             fontSize: 12,
 					 margin: [200, 40, 30, 50],
