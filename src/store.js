@@ -18,7 +18,7 @@ const staticState = {
   login_page: true,
   display_page: 'Login',
   item_wid_delete: '',
-
+  pdfData: '',
 
 };
 

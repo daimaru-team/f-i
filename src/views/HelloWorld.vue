@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-btn @click="print"/>
+    <button @click="print">
+      printPDF
+    </button>
   </div>
 </template>
 <script>

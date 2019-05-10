@@ -1,17 +1,61 @@
 <?php
 error_reporting(E_ALL);
 header('Access-Control-Allow-Origin: *');
-//header('Content-Type:multipart/form-data');
+header('Content-type: application/json charset=utf-8');
+
 include "Config.php";
 
-echo json_encode($_FILES["file"]);
-// if (move_uploaded_file($_FILES["file"]["tmp_name"],$DirectoryName."/".$img_name)) {
-//     echo "\r\n done";
- 
+// $W_ID='WID0000107';
+// $Status='2';
+echo GenerateReport_ID($con);
+
+// echo "\r\n".$W_ID."\r\n";
+// $query="UPDATE `WorkInProcess` SET `Status`='$Status' WHERE `W_ID`='$W_ID'";
+// echo "\r\n".$query."\r\n";
+// $result=$con->query($query);
+
+// if($result){
+//     echo "1";
+//     echo "\r\n".$query;
+// }else{
+//     echo "0";
 // }
-exit();
-// $imagename = $_FILES['new_image']['name'];
-// $source = $_FILES['new_image']['tmp_name'];
-// $target = "temp/".$imagename;
+
+function GenerateReport_ID($con){
+    $query="SELECT * FROM `Timeline_Report` ORDER BY DateTime_Created DESC LIMIT 1";
+    $result = $con->query($query);
+
+    $response = array();
+     while($row = $result->fetch_assoc())
+       $response[] = $row;
+
+    $calID=$response[0]['Report_ID'];
+    $cutStr=str_replace("REP","",$calID);
+    $int = (int) filter_var($calID, FILTER_SANITIZE_NUMBER_INT);
+    
+    $genID="REP";
+    $loopgen=7-strlen((string)$int);
+
+    for($i=0;$i<$loopgen;$i++)
+        $genID.="0";
+
+    $genID.=(string)$int;
+    return $genID;
+}
+
+
+function GenerateUserLogIn($con,$Cus_ID,$tel,$Email){
+    
+    $queryUser="INSERT INTO `users`(`id`, `User_Login`, `password`, `Owner_ID`, `User_Type`) VALUES (NULL,'".$Email."','".$tel."','".$Cus_ID."','Customer')";
+    $reUser=$con->query($queryUser);
+
+    if($reUser){
+        echo "\r\nSuccess User= ".$queryUser."\r\n";
+        return true;
+    }else{
+        return false;
+        echo "\r\nError Customer ".$queryUser."\r\n";
+    }
+}
 
 ?>

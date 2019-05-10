@@ -83,7 +83,7 @@ if(COUNT($carCheck)==0){
 }
 
 
-$query_WIP="INSERT INTO WorkInProcess(W_ID, Car_ID, Cus_ID, W_Desc, Emp_ID, Status, Start_Date, Finish_Date, Remark) VALUES ('".$W_ID."','".$Car_ID."','".$Cus_ID."','".$Broken_List."','".$Emp_ID_Owner."','INPROCESS','".$Start_Date."','".$Finish_Date."','".$Remark."');";
+$query_WIP="INSERT INTO WorkInProcess(W_ID, Car_ID, Cus_ID, W_Desc, Emp_ID, Status, Start_Date, Finish_Date, Remark) VALUES ('".$W_ID."','".$Car_ID."','".$Cus_ID."','".$Broken_List."','".$Emp_ID_Owner."','1','".$Start_Date."','".$Finish_Date."','".$Remark."');";
 
 $re_wip=$con->query($query_WIP);
 
@@ -93,48 +93,65 @@ if($re_wip){
 else{
     // echo "\r\nError Customer ".$query_WIP."\r\n";
 }
+$GenUser=GenerateUserLogIn($con,$Cus_ID,$Cus_Tel,$Email);
 
-
-
-function GenerateWID($con){
-    $query="SELECT COUNT(*) AS TOTAL FROM `WorkInProcess`";
-    $result = $con->query($query);
+function GenerateUserLogIn($con,$Cus_ID,$tel,$Email){
     
-    $response = array();
-     while($row = $result->fetch_assoc())
-       $response[] = $row;
+    $queryUser="INSERT INTO `users`(`id`, `User_Login`, `password`, `Owner_ID`, `User_Type`) VALUES (NULL,'".$Email."','".$tel."','".$Cus_ID."','Customer')";
 
-    $calID=1+(int)$response[0]['TOTAL'];
-    $genID="WID";
-    $loopgen=7-strlen((string)$calID);
+    $reUser=$con->query($queryUser);
 
-    for($i=0;$i<$loopgen;$i++)
-        $genID.="0";
-
-    $genID.=(string)$calID;
-    
-    return $genID;
+    if($reUser){
+        // echo "\r\nSuccess WIP ".$query_WIP."\r\n";
+        return true;
+    }else{
+        return false;
+        // echo "\r\nError Customer ".$query_WIP."\r\n";
+    }
 }
 
 function GenerateCar_ID($con, $cm_id){
-    $query="SELECT COUNT(*) AS TOTAL  FROM Car WHERE Brand='$cm_id'";
+    $query="SELECT * FROM `Car` WHERE Brand LIKE '$cm_id' ORDER BY Car_ID DESC LIMIT 1";
     $result = $con->query($query);
 
     $response = array();
      while($row = $result->fetch_assoc())
        $response[] = $row;
 
-    $calID=1+(int)$response[0]['TOTAL'];
-
+    $calID=$response[0]['Car_ID'];
+    $int = 1+(int) filter_var($calID, FILTER_SANITIZE_NUMBER_INT);
+    
     $genID=$cm_id;
-    $loopgen=5-strlen((string)$calID);
+    $loopgen=5-strlen((string)$int);
+
     for($i=0;$i<$loopgen;$i++)
         $genID.="0";
-    
-    $genID.=(string)$calID;
-    
+
+    $genID.=(string)$int;
     return $genID;
 }
+
+function GenerateWID($con){
+    $query="SELECT * FROM `WorkInProcess` ORDER BY W_ID DESC LIMIT 1";
+    $result = $con->query($query);
+
+    $response = array();
+     while($row = $result->fetch_assoc())
+       $response[] = $row;
+
+    $calID=$response[0]['W_ID'];
+    $int = 1+(int) filter_var($calID, FILTER_SANITIZE_NUMBER_INT);
+    
+    $genID="WID";
+    $loopgen=7-strlen((string)$int);
+
+    for($i=0;$i<$loopgen;$i++)
+        $genID.="0";
+
+    $genID.=(string)$int;
+    return $genID;
+}
+
 
 exit();
 ?>

@@ -1,9 +1,13 @@
 <template>
 <v-card width="100%">
-    <v-alert :value="alert" type="success" transition="scale-transition" dismissible>Insert queue successfuly!</v-alert>
+    <v-alert :value="alert" type="success"
+    transition="scale-transition" dismissible>
+    Insert queue successfuly!</v-alert>
     <v-tooltip left>
         <template v-slot:activator="{ on }">
-            <v-btn fab dark fixed bottom right color="pink" v-on="on" style="margin-top:15px;" @click="dialogInsert = true,alert = false">
+            <v-btn fab dark fixed bottom right
+            color="pink" v-on="on" style="margin-top:15px;"
+            @click="dialogInsert = true,alert = false">
                 <v-icon dark>add</v-icon>
             </v-btn>
         </template>
@@ -16,8 +20,10 @@
 
                     <h3>
                         <v-avatar size="34" color="grey lighten-3">
-                            <v-icon v-if="item.Pos_Name === 'Manager'" color="amber accent-4">supervisor_account</v-icon>
-                            <v-icon v-if="item.Pos_Name === 'Mechanic'" color="amber accent-4">build</v-icon>
+                            <v-icon v-if="item.Pos_Name === 'Manager'"
+                            color="amber accent-4">supervisor_account</v-icon>
+                            <v-icon v-if="item.Pos_Name === 'Mechanic'"
+                            color="amber accent-4">build</v-icon>
                         </v-avatar>
                          <b> {{item.Emp_ID}} | </b> {{item.Mac_Name}} - {{item.Pos_Name}}
                     </h3>
@@ -64,10 +70,12 @@
 
                                     <div  v-if="item.WorkDesc==='null'">
                                         <v-flex mt-3>
-                                            <v-v-card-text><h4>ไม่มีงานที่ค้างอยู่</h4></v-v-card-text>
+                                            <v-v-card-text>
+                                              <h4>ไม่มีงานที่ค้างอยู่</h4></v-v-card-text>
                                          </v-flex>
                                     </div >
-                                    <div v-else v-for="work in item.WorkDesc" v-bind:key="work.W_ID">
+                                    <div v-else v-for="work in item.WorkDesc"
+                                    v-bind:key="work.W_ID">
                                         <v-flex mt-3>
                                         <h3 class="blue--text">
                                             <p><b> Work ID : {{work.W_ID}} </b></p>
@@ -96,7 +104,10 @@
                             <v-layout justify-end wrap>
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn small fab dark right color="orange accent-3" v-on="on" class="elevation-10" style="margin-top:10px;" @click="getdataexpan(item),dialog_Edit = true,alert = false">
+                                        <v-btn small fab dark right color="orange accent-3"
+                                        v-on="on" class="elevation-10" style="margin-top:10px;"
+                                        @click="getdataexpan(item),dialog_Edit = true,
+                                        alert = false">
                                             <v-icon dark>edit</v-icon>
                                         </v-btn>
                                     </template>
@@ -105,7 +116,10 @@
 
                                 <v-tooltip left>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn small fab dark right color="red" v-on="on" class="elevation-10" style="margin-top:10px;" @click="dialog_delete = true,alert = false">
+                                        <v-btn small fab dark right color="red"
+                                        v-on="on" class="elevation-10"
+                                        style="margin-top:10px;"
+                                        @click="dialog_delete = true,alert = false">
                                             <v-icon dark>delete_forever</v-icon>
                                         </v-btn>
                                     </template>
@@ -130,58 +144,91 @@
                     <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
                         <v-layout wrap>
                             <v-flex>
-                                <v-checkbox dark v-model="isEditing" color="orange" hide-details label="เปิดการแก้ไข"></v-checkbox>
+                                <v-checkbox dark v-model="isEditing"
+                                color="orange" hide-details
+                                label="เปิดการแก้ไข"></v-checkbox>
                             </v-flex>
 
                             <v-card-text>ข้อมูลพนักงาน</v-card-text>
                             <v-card elevation="5" color="grey lighten-3" width="100%">
                                 <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="รหัสพนักงาน" :disabled="true" :value='getdataExpan.Emp_ID' required></v-text-field>
+                                        <v-text-field label="รหัสพนักงาน"
+                                        :disabled="true" :value='getdataExpan.Emp_ID'
+                                        required></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="เลขที่บัตรประชาชน" :disabled="!isEditing" :value='getdataExpan.Emp_ID' required></v-text-field>
+                                        <v-text-field label="เลขที่บัตรประชาชน"
+                                        :disabled="!isEditing" :value='getdataExpan.Emp_ID'
+                                        required></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="ชื่อ*" :disabled="!isEditing" :value='getdataExpan.Emp_Name' required></v-text-field>
+                                        <v-text-field label="ชื่อ*" :disabled="!isEditing"
+                                        :value='getdataExpan.Emp_Name' required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm6 md6>
-                                        <v-text-field label="นามสกุล*" :disabled="!isEditing" :value='getdataExpan.Emp_Lname' persistent-hint required></v-text-field>
+                                        <v-text-field label="นามสกุล*" :disabled="!isEditing"
+                                        :value='getdataExpan.Emp_Lname' persistent-hint required>
+                                        </v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm12 md12>
-                                        <v-text-field label="ที่อยู่ปัจจุบัน*" :disabled="!isEditing" :value='getdataExpan.Address' required></v-text-field>
+                                        <v-text-field label="ที่อยู่ปัจจุบัน*"
+                                        :disabled="!isEditing"
+                                        :value='getdataExpan.Address'
+                                        required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="วันเกิด*" :disabled="!isEditing" :value='calculate_age(getdataExpan.Birthday)' required></v-text-field>
+                                        <v-text-field label="วันเกิด*"
+                                        :disabled="!isEditing"
+                                        :value='calculate_age(getdataExpan.Birthday)'
+                                        required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="อายุ*" :disabled="!isEditing" :value='calculate_age(getdataExpan.Birthday)' required></v-text-field>
+                                        <v-text-field label="อายุ*"
+                                        :disabled="!isEditing"
+                                        :value='calculate_age(getdataExpan.Birthday)'
+                                         required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm12 md12 pr-3>
-                                        <v-text-field label="อีเมล์*" :disabled="!isEditing" :value='getdataExpan.Email' required></v-text-field>
+                                        <v-text-field label="อีเมล์*"
+                                        :disabled="!isEditing" :value='getdataExpan.Email'
+                                        required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="Line ID*" :disabled="!isEditing" :value='getdataExpan.LineID' required></v-text-field>
+                                        <v-text-field label="Line ID*"
+                                        :disabled="!isEditing"
+                                        :value='getdataExpan.LineID'
+                                        required></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12 sm6 md6>
-                                        <v-text-field label="เบอร์โทร*" :disabled="!isEditing" :value='getdataExpan.Phone_Num' required></v-text-field>
+                                        <v-text-field label="เบอร์โทร*"
+                                        :disabled="!isEditing"
+                                        :value='getdataExpan.Phone_Num'
+                                        required></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-autocomplete :value='item.Pos_ID' :disabled="!isEditing" :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" label="ตำแหน่ง*" persistent-hint>
+                                        <v-autocomplete :value='item.Pos_ID'
+                                        :disabled="!isEditing"
+                                        :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']"
+                                        label="ตำแหน่ง*" persistent-hint>
                                         </v-autocomplete>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6>
-                                        <v-text-field label="ความถนัด" :disabled="!isEditing" :value='item.Email' required></v-text-field>
+                                        <v-text-field label="ความถนัด"
+                                        :disabled="!isEditing" :value='item.Email'
+                                        required></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="เงินเดือน*" :disabled="!isEditing" :value='item.Email' required></v-text-field>
+                                        <v-text-field label="เงินเดือน*"
+                                        :disabled="!isEditing" :value='item.Email'
+                                         required></v-text-field>
                                     </v-flex>
                                 </v-layout>
                             </v-card>
@@ -189,10 +236,14 @@
                             <v-card elevation="5" color="grey lighten-3" width="100%">
                                 <v-layout wrap pl-4 pr-4 pb-2 pt-2>
                                     <v-flex xs12 sm6 md6 pr-3>
-                                        <v-text-field label="รหัสในการเข้าใช้ระบบ*" :disabled="!isEditing" required></v-text-field>
+                                        <v-text-field label="รหัสในการเข้าใช้ระบบ*"
+                                        :disabled="!isEditing" required>
+                                        </v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm6 md6>
-                                        <v-text-field label="ยืนยันอีกครั้ง*" :disabled="!isEditing" required></v-text-field>
+                                        <v-text-field label="ยืนยันอีกครั้ง*"
+                                        :disabled="!isEditing" required>
+                                        </v-text-field>
                                     </v-flex>
                                 </v-layout>
                             </v-card>
@@ -203,8 +254,10 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="dialog_Edit = false">ยกเลิก</v-btn>
-                        <v-btn color="blue darken-1" flat @click="dialog_Edit = false">ยืนยัน</v-btn>
+                        <v-btn color="blue darken-1" flat
+                        @click="dialog_Edit = false">ยกเลิก</v-btn>
+                        <v-btn color="blue darken-1" flat
+                        @click="dialog_Edit = false">ยืนยัน</v-btn>
                     </v-card-actions>
                 </v-card>
 
@@ -239,44 +292,58 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-3 pt-2>
                             <v-flex xs12 sm12 md12>
-                                <v-text-field label="เลขประจำตัวประชาชน*"  v-model="IData.pId" mask="#-####-#####-##-#" :rules="pIdRules" required></v-text-field>
+                                <v-text-field label="เลขประจำตัวประชาชน*"
+                                v-model="IData.pId" mask="#-####-#####-##-#"
+                                :rules="pIdRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="ชื่อ*" v-model="IData.Emp_Name" :rules="fNameRules" required></v-text-field>
+                                <v-text-field label="ชื่อ*" v-model="IData.Emp_Name"
+                                :rules="fNameRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field v- label="นามสกุล*" v-model="IData.Emp_Lname" :rules="lNameRules" persistent-hint required></v-text-field>
+                                <v-text-field v- label="นามสกุล*" v-model="IData.Emp_Lname"
+                                :rules="lNameRules" persistent-hint required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm12 md12>
-                                <v-text-field label="ที่อยู่ปัจจุบัน*" v-model="IData.Address" :rules="addressRules" required></v-text-field>
+                                <v-text-field label="ที่อยู่ปัจจุบัน*" v-model="IData.Address"
+                                :rules="addressRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="วันเกิด*" v-model="IData.Birthday" :rules="birthdayRules" mask="##/##/####" required></v-text-field>
+                                <v-text-field label="วันเกิด*" v-model="IData.Birthday"
+                                :rules="birthdayRules" mask="##/##/####" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="อีเมล์*" v-model="IData.Email" :rules="emailRules" required></v-text-field>
+                                <v-text-field label="อีเมล์*" v-model="IData.Email"
+                                :rules="emailRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="Line ID*" v-model="IData.LineID" :rules="lineIDRules" required></v-text-field>
+                                <v-text-field label="Line ID*" v-model="IData.LineID"
+                                :rules="lineIDRules" required></v-text-field>
                             </v-flex>
 
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="เบอร์โทร*" v-model="IData.Phone_Num" :rules="telRules" mask="##-####-####" required></v-text-field>
+                                <v-text-field label="เบอร์โทร*" v-model="IData.Phone_Num"
+                                :rules="telRules" mask="##-####-####" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-autocomplete :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']" v-model="IData.Pos_ID" label="ตำแหน่ง*" persistent-hint :rules="positionRules">
+                                <v-autocomplete
+                                :items="['หัวหน้าช่าง', 'ผู้ดูแลระบบ','ผู้ช่วยช่าง']"
+                                v-model="IData.Pos_ID" label="ตำแหน่ง*" persistent-hint
+                                :rules="positionRules">
                                 </v-autocomplete>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ความถนัด" v-model="IData.speciality" :rules="spacialityRules" required></v-text-field>
+                                <v-text-field label="ความถนัด" v-model="IData.speciality"
+                                :rules="spacialityRules" required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="เงินเดือน*" v-model="IData.Salary" :rules="salalyRules" required></v-text-field>
+                                <v-text-field label="เงินเดือน*" v-model="IData.Salary"
+                                :rules="salalyRules" required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -284,10 +351,16 @@
                     <v-card elevation="5" color="grey lighten-3" width="100%">
                         <v-layout wrap pl-4 pr-4 pb-2 pt-2>
                             <v-flex xs12 sm6 md6 pr-3>
-                                <v-text-field label="รหัสในการเข้าใช้ระบบ*" :counter="10" mask="##########" v-model="password" type="password" :rules="passwordRules" required></v-text-field>
+                                <v-text-field label="รหัสในการเข้าใช้ระบบ*"
+                                :counter="10" mask="##########" v-model="password"
+                                type="password" :rules="passwordRules" required>
+                                </v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md6>
-                                <v-text-field label="ยืนยันอีกครั้ง*" :counter="10" mask="##########" type="password" v-model="IData.Password" :rules="passwordConfirmRules"  required></v-text-field>
+                                <v-text-field label="ยืนยันอีกครั้ง*"
+                                :counter="10" mask="##########" type="password"
+                                v-model="IData.Password" :rules="passwordConfirmRules"
+                                required></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -308,7 +381,9 @@
                 <v-container grid-list-md style="padding: 2px 30px 10px 30px;">
                     <v-layout wrap>
                         <v-card-text>
-                            <h2><v-icon color="white">person_outline</v-icon> รหัสพนักงาน : {{EmpID}}</h2>
+                            <h2><v-icon color="white">
+                              person_outline</v-icon>
+                              รหัสพนักงาน : {{EmpID}}</h2>
                         </v-card-text>
                         <v-card elevation="3" color="grey lighten-3" width="100%">
                             <v-layout wrap pl-4 pr-4 pb-3 pt-3 subheading>
@@ -321,7 +396,8 @@
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
-                                    <div><b>ที่อยู่ :</b> 62 / fge5g sdfbse hk sa.fg rgeorg . wr weefefg 10400</div>
+                                    <div><b>ที่อยู่ :
+                                    </b> 62 / fge5g sdfbse hk sa.fg rgeorg . wr weefefg 10400</div>
                                 </v-flex>
 
                                 <v-flex xs12 sm12 md12 pt-3>
@@ -360,8 +436,11 @@
                 <v-flex pr-3 pb-2>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="amber darken-4" flat @click="insertCheck = false,dialogInsert = true">แก้ไข</v-btn>
-                        <v-btn color="blue darken-1" flat @click="dialogInsert = false,insertCheck = false,alert = !alert">ยืนยัน</v-btn>
+                        <v-btn color="amber darken-4" flat
+                        @click="insertCheck = false,dialogInsert = true">แก้ไข</v-btn>
+                        <v-btn color="blue darken-1" flat
+                        @click="dialogInsert = false,insertCheck = false,
+                        alert = !alert">ยืนยัน</v-btn>
                     </v-card-actions>
                 </v-flex>
             </v-card>
@@ -371,7 +450,8 @@
 
     <v-dialog v-model="dialog_delete" max-width="300">
         <v-card>
-            <v-card-title class="headline grey darken-4 white--text" primary-title>F&I Garage -
+            <v-card-title class="headline grey darken-4 white--text"
+            primary-title>F&I Garage -
                 <v-icon large color="red"> delete_forever</v-icon>-
             </v-card-title>
 
@@ -380,8 +460,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red white--text" @click="dialog_delete = false">No</v-btn>
-                <v-btn color="red white--text" @click="dialog_delete = false">Yes</v-btn>
+                <v-btn color="red white--text"
+                @click="dialog_delete = false">No</v-btn>
+                <v-btn color="red white--text"
+                @click="dialog_delete = false">Yes</v-btn>
                 <v-spacer></v-spacer>
             </v-card-actions>
         </v-card>
@@ -406,7 +488,7 @@ export default {
     const api = 'https://testtingfuck.000webhostapp.com/select_display_emp.php';
     // eslint-disable-next-line camelcase
     const Emp_params = new URLSearchParams();
-    let readData = new Array();
+    let readData = []
     Emp_params.append('Table', 'Employee')
     // eslint-disable-next-line global-require
     Axios.post(api, Emp_params)
@@ -427,11 +509,11 @@ export default {
           const aaa = this.calculate_age(this.GetData_Emp[0].Birthday)
         }
       })
-    const WID_params = new URLSearchParams();
-    let readData2 = new Array();
-    WID_params.append('Table', 'WorkInProcess')
+    const WIDparams = new URLSearchParams();
+    let readData2 = []
+    WIDparams.append('Table', 'WorkInProcess')
     // eslint-disable-next-line global-require
-    Axios.post(api, WID_params)
+    Axios.post(api, WIDparams)
       .then((response) => {
         readData2 = response.data
         console.log('loooooop =', readData2.length)

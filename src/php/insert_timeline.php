@@ -31,7 +31,7 @@ else{
 }
 
 function GenerateReport_ID($con){
-    $query="SELECT * FROM `Timeline_Report` ORDER BY DateTime_Created DESC LIMIT 1";
+    $query="SELECT * FROM `Timeline_Report` ORDER BY Report_ID DESC LIMIT 1";
     $result = $con->query($query);
 
     $response = array();

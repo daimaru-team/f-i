@@ -59,6 +59,7 @@
                                             <p><b> ช่างผู้รับผิดชอบ : </b>{{item.emp_name}}</p>
                                             <p><b> วันเริ่มงาน : </b>{{item.Start_Date}}</p>
                                             <p><b> วันส่งงาน : </b>{{item.Finish_Date}}</p>
+                                            <!-- <p><b> วันส่งงาน : </b>{{item.userId}}</p> -->
                                             <!-- <p><b> Status :</b>{{item.Status}} -->
                                         </v-flex>
                                     </v-card-text>
@@ -66,7 +67,7 @@
                                     <v-flex>
                                         <v-flex>
                                             <v-layout justify-center wrap>
-                                                <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID">Update <v-icon>history </v-icon>
+                                                <v-btn style="border-radius:20px 20px 0px 0px" color="light-green darken-1" dark @click="dialogFI = true,key_timeline=item.W_ID,keyUserId=item.Line_userId,keyCus_ID=item.Cus_ID">Update <v-icon>history </v-icon>
                                                 </v-btn>
                                             </v-layout>
                                         </v-flex>
@@ -112,7 +113,7 @@
                                     <v-btn icon dark @click="dialogFI = false">
                                         <v-icon>close</v-icon>
                                     </v-btn>
-                                    <v-toolbar-title>Timeline & Update</v-toolbar-title>
+                                    <v-toolbar-title>Timeline & Update </v-toolbar-title>
                                     <v-spacer></v-spacer>
                                     <v-toolbar-items>
                                         <v-btn dark flat @click="dialogFI = false">OK</v-btn>
@@ -148,8 +149,16 @@
                                                 <v-layout justify-start>
                                                     <v-flex mt-2 >
                                                       <v-layout wrap>
-                                                      <div v-for="(item,i) in 4" style="padding-left:5px;">
-                                                         <img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" width="30" height="27" @click="dialog_pictureSelect = true" >
+                                                      <div v-for="itemFile in preview_img">
+                                                        <!-- <button onclick="getUrltoDialog()"> -->
+                                                          
+                                                          <!-- <img :src="itemFile" width="30" height="27"  > -->
+                                                        <!-- </button> -->
+                                                        <!-- <button onclick="getUrltoDialog()">Click me</button> -->
+                                                        <v-btn @click="getUrltoDialog(itemFile)" fab small icon>
+                                                          <img :src="itemFile" width="30" height="27"  >
+                                                        </v-btn>
+                                                         
                                                       </div>
                                                       </v-layout>
                                                     </v-flex>
@@ -217,9 +226,11 @@
 
                                                     </v-layout>
                                                <v-divider></v-divider>
-                                                      <v-layout wrap ml-4 mt-2>
-                                                      <div v-for="(item,i) in 4" style="padding-left:5px;">
-                                                         <img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" width="30" height="27" @click="dialog_pictureTimeline = true" >
+                                                      <v-layout wrap ml-4 mt-2 v-if="timelineR.Pic_data!=='0'">
+                                                      <div v-for="img_data in timelineR.Pic_data" style="padding-left:5px;">
+                                                        <v-btn @click="getUrltoDialogTimeline('https://testtingfuck.000webhostapp.com/'+img_data.img_path)" fab small icon>
+                                                         <img :src="'https://testtingfuck.000webhostapp.com/'+img_data.img_path" width="30" height="27" @click="dialog_pictureTimeline = true" >
+                                                      </v-btn>
                                                       </div>
                                                       </v-layout>
 
@@ -362,7 +373,7 @@
                                 <v-divider></v-divider>
                                  <v-card-text>
                                   <v-layout justify-center>
-                                    <v-img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" aspect-ratio="1.7"></v-img>
+                                    <v-img :src="urlPicSelect" aspect-ratio="1.7"></v-img>
                                   </v-layout>
                                 </v-card-text>
                                 <v-divider></v-divider>
@@ -396,7 +407,7 @@
                                 <v-divider></v-divider>
                                  <v-card-text>
                                   <v-layout justify-center>
-                                    <v-img src="https://baoduongoto.info/wp-content/uploads/2018/08/bao-duong-hop-so-xe-oto-nhu-the-nao-la-dung.jpg" aspect-ratio="1.7"></v-img>
+                                    <v-img :src="urlPicTimeline" aspect-ratio="1.7"></v-img>
                                   </v-layout>
                                 </v-card-text>
                                 <v-divider></v-divider>
@@ -429,6 +440,7 @@ import UploadButton from 'vuetify-upload-button';
 import Vuetify from 'vuetify'
 
 Vue.use(VueSession)
+const randomize = require('randomatic');
 
 export default {
   components: {
@@ -442,8 +454,12 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
 
   },
+  
   data() {
     return {
+      urlPicSelect: '',
+      urlPicTimeline: '',
+      PreviewUrl: [],
       UserData: [],
       nullRules: [
         v => (v.length > 0) || 'กรุณากรอกข้อมูลให้ครบถ้วน',
@@ -452,6 +468,8 @@ export default {
       valid: true,
       Store: this.$store.state,
       key_timeline: '',
+      keyUserId:'',
+      keyCus_ID:'',
       dialog_Finish: false,
       alertNotfound: false,
       dialog_pictureTimeline: false,
@@ -479,6 +497,7 @@ export default {
       display_wip: [],
       data_to_insert: [],
       display_timeline: [],
+      preview_img: [],
       moment,
       file: [],
       fileInsert: [],
@@ -495,19 +514,19 @@ export default {
 
   },
   watch: {
+   
     display_timeline() {
       return this.display_timeline.slice().reverse()
     },
   },
   mounted() {
-    const a = this.Store.IDforSELECT;
     const api = 'https://testtingfuck.000webhostapp.com/data_user_select.php';
-    const user_data_params = new URLSearchParams();
-    user_data_params.append('Table', 'Employee')
-    user_data_params.append('Colname', 'Emp_ID')
-    user_data_params.append('ID', this.Store.IDforSELECT)
+    const userDataParams = new URLSearchParams();
+    userDataParams.append('Table', 'Employee')
+    userDataParams.append('Colname', 'Emp_ID')
+    userDataParams.append('ID', this.Store.IDforSELECT)
 
-    Axios.post(api, user_data_params)
+    Axios.post(api, userDataParams)
       .then((response) => {
         this.UserData = response.data
         // console.log('select data = ')
@@ -524,9 +543,9 @@ export default {
     this.handleResize();
 
     const api = 'https://testtingfuck.000webhostapp.com/select_wip_forEmp.php';
-    const wip_id_param = new URLSearchParams();
-    wip_id_param.append('Emp_ID', this.Store.IDforSELECT)
-    Axios.post(api, wip_id_param)
+    const wipParam = new URLSearchParams();
+    wipParam.append('Emp_ID', this.Store.IDforSELECT)
+    Axios.post(api, wipParam)
       .then((response) => {
         this.display_wip = response.data
 
@@ -534,7 +553,7 @@ export default {
           console.log('wrong pass or username')
           this.alertNotfound = true
         } else if (this.display_wip.length !== 0) {
-          console.log('reading')
+          console.log('dataWIP', this.display_wip)
         }
       })
 
@@ -550,11 +569,11 @@ export default {
       })
 
     const api3 = 'https://testtingfuck.000webhostapp.com/select_left_day.php';
-    const day_param = new URLSearchParams();
-    day_param.append('Emp_ID', this.Store.IDforSELECT)
-    day_param.append('date', moment().format('YYYY-MM-DD'))
+    const dayParam = new URLSearchParams();
+    dayParam.append('Emp_ID', this.Store.IDforSELECT)
+    dayParam.append('date', moment().format('YYYY-MM-DD'))
 
-    Axios.post(api3, day_param)
+    Axios.post(api3, dayParam)
       .then((response) => {
         this.dayleft = response.data
         console.log(this.dayleft)
@@ -579,6 +598,19 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    Notification(userId,data){
+      
+    },
+    getUrltoDialog(url) {
+      console.log('test')
+      this.urlPicSelect = url
+      this.dialog_pictureSelect = true
+    },
+     getUrltoDialogTimeline(url) {
+      console.log('test')
+      this.urlPicTimeline = url
+      this.dialog_pictureTimeline = true
+    },
     anuoha(data) {
       if (data < 0) {
         this.a = 'เกิณระยะเวลาที่กำหนด'
@@ -620,13 +652,13 @@ export default {
         Iw_ID: this.key_timeline,
         Report_Name: this.input_header,
         Description: this.input_desc,
-        Pic_total: 0, // อยาลืมแก้ให้ระบุจำนวนรูปได้
+        Pic_total: this.file.length, // อยาลืมแก้ให้ระบุจำนวนรูปได้
         DateTime_Created: this.momentInsert(moment().format('YYYYMMDD')),
         Emp_ID_Posted: this.Store.IDforSELECT,
       }];
-
+      console.log('start = ', itemToInsert[0].Iw_ID)
       this.insert_timeline(itemToInsert)
-      this.update_timeline()
+
 
       console.log('this.events', this.events)
       this.input_header = null
@@ -673,18 +705,25 @@ export default {
       console.log('json to insert= ', dataJson)
       const paramInsert = new URLSearchParams();
       paramInsert.append('data_insert', dataJson)
-      // const check = false
-      // Axios.post(api2, paramInsert)
-      //   .then((response) => {
+      console.log('in insert_timeline =', dataToInsert[0].Iw_ID)
       const response = await Axios.post(api2, paramInsert)
+      console.log('key=',this.keyUserId)
       const res = response.data
       console.log(res.count)
       console.log(res)
       if (res === 1) {
-        this.alertInsert = true;
-        setTimeout(() => {
-          this.alertInsert = false;
-        }, 10000);
+        if (this.file.length !== 0) {
+          this.submitForm(dataToInsert)
+          const apiCloud = `https://us-central1-fi-ga-1d5d9.cloudfunctions.net/BasicMessage?txtSend=งานซ่อมของคุณมีความเคลื่อนไหว${this.key_timeline}&userId=${this.keyUserId}&CusID=${this.keyCus_ID}`
+          console.log('api=',apiCloud)
+          await Axios.get(apiCloud);
+
+        } else {
+          this.alertInsert = true;
+          setTimeout(() => {
+            this.alertInsert = false;
+          }, 10000);
+        }
       } else {
         this.ErrorInsert = true;
         setTimeout(() => {
@@ -692,40 +731,50 @@ export default {
         }, 10000);
       }
     },
-
     log_out() {
       this.$session.clear()
       this.$session.destroy()
       this.Store.display_page = 'Login'
       this.dialog_Morword = false
     },
+
     onChangeFileUpload(fileInput) {
-      this.file = fileInput
-      this.addDataImg(this.Store.IDforSELECT)
-    },
-    async addDataImg(IdOfEmp) {
-      for (let i = 0; i < this.file.length; i += 1) {
-        console.log(this.file[i])
-        // if (filename.includes('.jpg') || filename.includes('.png')) {
-        //   formData.append('file', this.file[i]);
-        //   console.log(`databefore sent=${this.file[i].name}`)
-        //   formData.append('name', this.file.name)
-        // }
-        // const blob = this.file[i].slice(0, this.file[i].size, 'image/png');
-        // const newFile = new File([blob], 'name.png', { type: 'image/png' });
-        const dataset = {
-          W_ID: this.key_timeline,
-          img_name: null,
-          img_data: null,
-          Emp_ID: IdOfEmp,
-        }
-        // eslint-disable-next-line no-await-in-loop
-        dataset.img_name = this.file[i].name
-        const jsonS = JSON.stringify(dataset)
-        console.log(jsonS)
-        this.data_to_insert.push(dataset)
+      this.fileInsert = fileInput
+      for (let i = 0; i < this.fileInsert.length; i += 1) {
+        this.file.push(this.fileInsert[i])
       }
-      console.log('dataInsert=', this.data_)
+      for (let i = 0; i < this.file.length; i += 1) {
+        this.preview_img.push(URL.createObjectURL(this.file[i]))
+      }
+    },
+
+    async submitForm(dataToInsert) {
+      console.log('in submit = ', dataToInsert[0].Iw_ID)
+      for (let i = 0; i < this.file.length; i += 1) {
+        const formData = new FormData();
+        const blob = this.file[i].slice(0, this.file[i].size, 'image/jpeg');
+        const newFile = new File([blob], this.file[i].name, { type: 'image/jpeg' });
+        formData.append('file', newFile)
+        formData.append('name', this.Gen_ID_WIP())
+        formData.append('W_ID', dataToInsert[0].Iw_ID)
+        formData.append('Upload_DateTime', moment().format('YYYYMMDDHHmmss'))
+
+        // eslint-disable-next-line no-await-in-loop
+        const response = await Axios.post('https://testtingfuck.000webhostapp.com/Post_file.php', formData)
+        console.log(response.data)
+      }
+      this.update_timeline()
+      this.alertInsert = true;
+      setTimeout(() => {
+        this.alertInsert = false;
+      }, 10000);
+      this.file=''
+      console.log('test await')
+    },
+    Gen_ID_WIP() {
+      const txt = randomize('AAA')
+      const num = randomize('00000')
+      return txt + num;
     },
   },
   computed: {

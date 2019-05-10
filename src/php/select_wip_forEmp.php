@@ -8,7 +8,13 @@ include "Config.php";
 
 $Emp_ID=$_POST['Emp_ID'];
 
-$query="SELECT `WIP`.*,CONCAT(`Cus`.`Cus_Fname`,' ',`Cus`.`Cus_Lname`) AS 'cus_name', `CM`.`CM_Name`,`Car`.`Model`,`Car`.`Car_Year`,`Car`.`License_plate`,CONCAT(`Emp`.`Emp_Name`,' ',`Emp`.`Emp_Lname`) AS 'emp_name'
+$query="SELECT `WIP`.*,CONCAT(`Cus`.`Cus_Fname`,' ',`Cus`.`Cus_Lname`) AS 'cus_name',
+`CM`.`CM_Name`,`Car`.`Model`,`Car`.`Car_Year`,`Car`.`License_plate`,
+CONCAT(`Emp`.`Emp_Name`,' ',`Emp`.`Emp_Lname`) AS 'emp_name', `WIP`.*,
+CONCAT(`Cus`.`Cus_Fname`,' ',`Cus`.`Cus_Lname`) AS 'cus_name', `CM`.`CM_Name`,
+`Car`.`Model`,`Car`.`Car_Year`,
+`Car`.`License_plate`,CONCAT(`Emp`.`Emp_Name`,' ',`Emp`.`Emp_Lname`) AS 'emp_name',
+`Cus`.`Line_userId`,`Cus`.`Cus_ID`
 FROM `WorkInProcess` AS `WIP`
 	, `Customer` AS `Cus`
     , `Car`

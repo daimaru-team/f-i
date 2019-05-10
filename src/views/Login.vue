@@ -52,7 +52,7 @@
                           </v-layout>
 
                         </v-flex>
-
+                        <!-- <cer/> -->
                         <v-flex v-if="fromLogin == false">
                             <v-layout wrap justify-center>
                                 <v-card class="elevation-22 "
@@ -551,7 +551,7 @@ export default {
               } else if (Utype === 'Employee') {
                 this.Store.display_page = 'MechanicUse'
               }
-              // alert(this.Store.display_page)
+              
               this.$session.set('usersloggedin', response.data[0].Owner_ID)
               this.$session.set('userType', Utype)
               this.Store.IDforSELECT = response.data[0].Owner_ID
